@@ -1,0 +1,30 @@
+{
+  "name": "spacewarrealism",
+  "version": "0.5.0",
+  "description": "phaser3",
+  "main": "index.js",
+  "dependencies": {
+    "phaser": "^3.15.1",
+    "phaser3-project-template": "^1.0.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xjxxjx1017/spacewarrealism.git"
+  },
+  "keywords": [
+    "game",
+    "phaser",
+    "space",
+    "spaceship"
+  ],
+  "author": "Jackson Xie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xjxxjx1017/spacewarrealism/issues"
+  },
+  "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme"
+}
