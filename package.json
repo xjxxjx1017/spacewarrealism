@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "npm run build && webpack-dev-server --port=8000 --open chrome"
+    "start": "npm run build && webpack-dev-server --port=8001 --open chrome"
   },
   "repository": {
     "type": "git",

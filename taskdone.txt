@@ -1,0 +1,7 @@
+++++++++++++++ 完成! ;) ++++++++++++++
+
+
+
+-------------- environment -------------------
+* compile without bundle for debugging
+* using classes in ES5
