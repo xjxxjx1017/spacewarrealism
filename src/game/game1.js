@@ -1,67 +1,46 @@
 import 'phaser';
 import { ResourceLoader } from './../resourceloader.js';
+import { CropBob } from './../component/cropbob.js'
 
 class Game1{
-	constructor() {}
+	constructor() {
+        var Point = Phaser.Geom.Point;
+        var game;
+        var gridList = []; 
+        var gridCountXy = new Point( 30, 15 );
 
-	config() {
-        return {};
-	}
+        this.config = function() {
+            return {};
+        }
 
-    preload ()
-    {
-        ResourceLoader.load( this );
-    }
+        this.preload = function() {
+            game = this;
+            ResourceLoader.load( game );
+        }
 
-    create ()
-    {
-        var self = this;
+        this.create = function() {
+            // bg
+            game.add.image(300, 300, 'logo').setAlpha(0.3);
 
-        // graphics
-        self.graphics = self.add.graphics();
+            // grid
+            for ( var i = 0; i < gridCountXy.x; i++ ) {
+                for ( var j = 0; j < gridCountXy.y; j++ ) {
+                    var cropWH = new Point( 10, 10 );
+                    var cropXy = new Point( 0 + i * cropWH.x, 0 + j * cropWH.y );
+                    var displayXy = new Point( 30 + i * cropWH.x, 30 + j * cropWH.y );
+                    var g = new CropBob(
+                        game, 'logo',
+                        cropXy, cropWH, displayXy, true );
+                    gridList.push( g );
+                }
+            }
+        }
 
-        // pointer
-        self.pointer = new Phaser.Geom.Point(),
-        self.input.on('pointermove', function (pointer) {
-            self.pointer.x = pointer.x;
-            self.pointer.y = pointer.y;
-        });
-
-        // bg
-        self.add.image(300, 300, 'logo').setAlpha(0.3);
-
-        // bob
-        self.bob = self.add.image(300, 300, 'logo').setOrigin(0, 0);
-
-        var cropWidth = 50;
-        var cropHeight = 50;
-        var startOffset = new Phaser.Geom.Point( 0, 0 );
-
-        self.offset = self.bob.getTopLeft();
-
-        self.bob.setCrop(
-            startOffset.x,
-            startOffset.y,
-            cropWidth,
-            cropHeight
-        );
-
-        self.input.on('pointermove', function (pointer) {
-            self.bob.x = pointer.x;
-            self.bob.y = pointer.y;
-        });
-    }
-
-    update ()
-    {
-        var self = this;
-        self.graphics.clear();
-        self.graphics.lineStyle(1, 0x00ff00);
-        self.graphics.strokeRect(
-            self.pointer.x, 
-            self.pointer.y, 
-            self.bob._crop.width, 
-            self.bob._crop.height);
+        this.update = function() {
+            gridList.forEach( function(g){
+                g.update();
+            } )
+        }
     }
 }
 
