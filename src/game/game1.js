@@ -1,13 +1,13 @@
-import 'phaser';
 import { ResourceLoader } from './../resourceloader.js';
 import { CropBob } from './../component/cropbob.js'
+import { TextButton } from './../component/textbutton.js'
+import { GridCanvas } from './../component/gridcanvas.js'
 
-class Game1{
+export class Game1{
 	constructor() {
         var Point = Phaser.Geom.Point;
         var game;
-        var gridList = []; 
-        var gridCountXy = new Point( 30, 15 );
+        var gridcanvas;
 
         this.config = function() {
             return {};
@@ -20,29 +20,19 @@ class Game1{
 
         this.create = function() {
             // bg
-            game.add.image(300, 300, 'logo').setAlpha(0.3);
+            game.add.image(0, 0, 'space').setAlpha(1);
 
-            // grid
-            for ( var i = 0; i < gridCountXy.x; i++ ) {
-                for ( var j = 0; j < gridCountXy.y; j++ ) {
-                    var cropWH = new Point( 10, 10 );
-                    var cropXy = new Point( 0 + i * cropWH.x, 0 + j * cropWH.y );
-                    var displayXy = new Point( 30 + i * cropWH.x, 30 + j * cropWH.y );
-                    var g = new CropBob(
-                        game, 'logo',
-                        cropXy, cropWH, displayXy, true );
-                    gridList.push( g );
-                }
-            }
+            // grid canvas
+            gridcanvas = new GridCanvas( game, 
+                new Point( 30, 30 ),    // target xy
+                new Point( 30, 15 ),    // target wh count
+                new Point( 10, 10 ),    // cell wh
+                new Point( 0, 0 ) );    // source xy
         }
 
         this.update = function() {
-            gridList.forEach( function(g){
-                g.update();
-            } )
+            gridcanvas.update();
         }
     }
 }
-
-export {Game1};
 

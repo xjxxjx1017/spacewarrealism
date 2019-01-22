@@ -1,6 +1,15 @@
-import 'phaser';
 
-class CropBob {
+/*
+//////////////////////////////
++++ Example usage
+//////////////////////////////
+var g = new CropBob(
+    game, 'ship',
+    cropXy, cropWH, displayXy, false );
+*/
+
+
+export class CropBob {
 	constructor( game, imageName, cropXyPoint, cropWhPoint, targetXyPoint, isDebug ) {
 		var bob;
 		var debug;
@@ -16,6 +25,7 @@ class CropBob {
 	            cropWhPoint.x,
 	            cropWhPoint.y
 	        );
+	    this.bob = bob;
 
         // Debug graphics
         if ( isDebug )
@@ -29,7 +39,7 @@ class CropBob {
 		this.update = function() {
 	        if ( isDebug ) {
 		        debug.clear();
-		        debug.lineStyle(1, 0x00ff00);
+		        debug.lineStyle(0.5, 0x00ff00);
 		        debug.strokeRect(
 		            bob.x + cropXyPoint.x,
 		            bob.y + cropXyPoint.y, 
@@ -39,5 +49,3 @@ class CropBob {
 		}
 	}
 }
-
-export { CropBob };

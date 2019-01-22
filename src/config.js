@@ -1,7 +1,7 @@
 import 'phaser';
 import {Game1} from './game/game1.js';
 
-class Config{
+export class Config{
 
     constructor() {
         this.game = new Game1();
@@ -20,5 +20,3 @@ class Config{
         Object.assign( this, this.game.config() );
     }
 }
-
-export { Config } 
