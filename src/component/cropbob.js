@@ -36,6 +36,13 @@ export class CropBob {
 			bob.y = xyPoint.y;
 		}
 
+		this.setDebug = function( b ) {
+			if ( b == isDebug )
+				return;
+			isDebug = b;
+			debug.setAlpha( isDebug ? 1 : 0 );
+		}
+
 		this.update = function() {
 	        if ( isDebug ) {
 		        debug.clear();

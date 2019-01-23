@@ -28,7 +28,7 @@ export class Game1{
                 new Point( 30, 30 ),    // target xy
                 new Point( 30, 15 ),    // target wh count
                 new Point( 10, 10 ),    // cell wh
-                new Point( 0, 0 ) );    // source xy
+                new Point( 0, 0 ), true );    // source xy
 
             // button
             var clickCount = 0;
@@ -37,7 +37,7 @@ export class Game1{
                 'button_hover', 
                 'button_down', 
                 'overlay_ship', () => {
-                console.log( ++clickCount );
+                gridcanvas.setIsEdit( !gridcanvas.getIsEdit() );
             });
             var clickButton = new ImageButton(game, 550, 50 + 64 + 5, 
                 'button_normal', 
