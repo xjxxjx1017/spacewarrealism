@@ -33,6 +33,8 @@ export class GridCanvas{
 		var NORMAL_ALPHA = 0.3;
 		var NON_EDIT_ALIVE_ALPHA = 1;
 		var NON_EDIT_NORMAL_ALPHA = 0;
+		var HOVER_ALIVE_ALPHA = 1;
+		var HOVER_NORMAL_ALPHA = 0.8;
 
         // grid
         for ( var i = 0; i < targetWhCount.x; i++ ) {
@@ -91,7 +93,7 @@ export class GridCanvas{
         		( isAlive ? NON_EDIT_ALIVE_ALPHA : NON_EDIT_NORMAL_ALPHA );
         	var d = isEdit && !isAlive;
         	if ( isEdit && isHovering ) {
-        		a = 1;
+        		a = isAlive ? HOVER_ALIVE_ALPHA : HOVER_NORMAL_ALPHA;
         		d = true;
         	}
             g.setLook( { alpha: a, isDebug: d, isEdit: isEdit });
