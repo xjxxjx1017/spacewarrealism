@@ -1,6 +1,7 @@
 import { ResourceLoader } from './../resourceloader.js';
 import { CropBob } from './../component/cropbob.js'
 import { TextButton } from './../component/textbutton.js'
+import { ImageButton } from './../component/imagebutton.js'
 import { GridCanvas } from './../component/gridcanvas.js'
 
 export class Game1{
@@ -28,6 +29,23 @@ export class Game1{
                 new Point( 30, 15 ),    // target wh count
                 new Point( 10, 10 ),    // cell wh
                 new Point( 0, 0 ) );    // source xy
+
+            // button
+            var clickCount = 0;
+            var clickButton = new ImageButton(game, 550, 50, 
+                'button_normal', 
+                'button_hover', 
+                'button_down', 
+                'overlay_ship', () => {
+                console.log( ++clickCount );
+            });
+            var clickButton = new ImageButton(game, 550, 50 + 64 + 5, 
+                'button_normal', 
+                'button_hover', 
+                'button_down', 
+                'overlay_missle', () => {
+                console.log( ++clickCount );
+            });
         }
 
         this.update = function() {
