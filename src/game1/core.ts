@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser-ce';
 
-export class Game1 extends Phaser.State {
+export class Core extends Phaser.State {
     private cursors: Phaser.CursorKeys;
     private text: Phaser.BitmapText;
 

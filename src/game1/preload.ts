@@ -1,4 +1,3 @@
-
 import * as Phaser from 'phaser-ce';
 
 export class Preload extends Phaser.State {
@@ -30,7 +29,7 @@ export class Preload extends Phaser.State {
 
     public update(): void {
         if ( this.ready === true ) {
-            this.game.state.start('Game');
+            this.game.state.start('Core');
         }
     }
 
