@@ -1,9 +1,24 @@
- <!DOCTYPE html>
- <html style="background: #444;">
-     <head>
-         <meta charset="utf-8">
-     </head>
-     <body>
-         <script src="build/project.bundle.js" charset="utf-8"></script>
-     </body>
- </html>
+<!DOCTYPE html>
+ <html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            width: 100%;
+            background: #444;
+        }
+
+        body {
+            touch-action: manipulation;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <head><title>SpaceWarRealism</title></head>
+    <body>
+        <script src="/dist/app.bundle.js"></script>
+        <script src="/dist/vendor.bundle.js"></script>
+    </body>
+</html>

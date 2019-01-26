@@ -3,29 +3,40 @@
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = {
+const phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
+const phaser = path.join(phaserModule, 'build/custom/phaser-arcade-physics.js');
+const pixi = path.join(phaserModule, 'build/custom/pixi.js');
+const p2 = path.join(phaserModule, 'build/custom/p2.js');
 
+module.exports = {
     mode: 'development',
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'build'),
-        publicPath: '/build/',
-        filename: 'project.bundle.js'
-    },
-    devtool: 'source-map',
-    module: {
-        rules: [
-          {
-            test: [ /\.vert$/, /\.frag$/ ],
-            use: 'raw-loader'
-          }
+    devtool: 'inline-source-map',
+    entry: {
+        vendor: ['pixi', 'p2', 'phaser'],
+        app: [
+            path.resolve(__dirname, 'src/app.ts')
         ]
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            'CANVAS_RENDERER': JSON.stringify(true),
-            'WEBGL_RENDERER': JSON.stringify(true)
-        })
-    ]
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/dist/',
+        filename: '[name].bundle.js'
+    },
+    resolve: {
+        extensions: ['.js', '.ts'],
+        alias: {
+            'phaser': phaser,
+            'pixi': pixi,
+            'p2': p2
+        }
+    },
+    module: {
+        rules: [
+            { test: /\.ts?$/, loader: 'ts-loader', exclude: '/node_modules/' },
+            { test: /phaser-arcade-physics\.js/, use: ['expose-loader?Phaser'] },
+            { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
+            { test: /p2\.js$/, use: ['expose-loader?p2'] }
+        ]
+    }
 
 };

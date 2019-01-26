@@ -1,20 +1,9 @@
 {
   "name": "spacewarrealism",
-  "version": "0.5.0",
-  "description": "phaser3",
-  "main": "index.js",
-  "dependencies": {
-    "phaser": "^3.15.1",
-    "raw-loader": "^1.0.0",
-    "webpack": "^4.28.4",
-    "webpack-dev-server": "^3.1.14"
-  },
-  "devDependencies": {
-    "webpack-cli": "^3.2.1"
-  },
+  "version": "0.6.0",
+  "description": "Phaser",
   "scripts": {
-    "build": "webpack",
-    "start": "npm run build && webpack-dev-server --port=8001 --open chrome"
+    "start": "webpack-dev-server --config webpack.config.js --port=8001 --open chrome"
   },
   "repository": {
     "type": "git",
@@ -32,5 +21,16 @@
   "bugs": {
     "url": "https://github.com/xjxxjx1017/spacewarrealism/issues"
   },
-  "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme"
+  "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme",
+  "dependencies": {
+    "phaser-ce": "^2.11.1"
+  },
+  "devDependencies": {
+    "expose-loader": "^0.7.5",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  }
 }
