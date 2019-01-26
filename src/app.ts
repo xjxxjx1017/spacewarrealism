@@ -6,7 +6,7 @@ import {Config} from './config';
 
 import {Boot} from './states/boot';
 import {Preload} from './states/preload';
-import {Game} from './states/game';
+import {Game1} from './games/game1';
 
 class Template extends Phaser.Game {
 
@@ -15,7 +15,7 @@ class Template extends Phaser.Game {
 
         this.state.add('Boot', Boot, false);
         this.state.add('Preload', Preload, false);
-        this.state.add('Game', Game, false);
+        this.state.add('Game', Game1, false);
 
         this.state.start('Boot');
     }

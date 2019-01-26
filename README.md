@@ -21,5 +21,6 @@ A space war game
 * Image button
 
 ### ++ environment
-* compile without bundle for debugging
-* using classes in ES5
+* Phaser 2 
+* Typescript
+* Webpack
