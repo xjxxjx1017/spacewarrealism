@@ -1,5 +1,5 @@
 
-import {Main} from './game1/main';
+import {Main} from './game2/main';
 
 window.onload = () => {
     new Main();

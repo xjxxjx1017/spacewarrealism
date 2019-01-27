@@ -20,7 +20,7 @@ A space war game
 * Text button
 * Image button
 
-### ++ environment
+### ++ Environment
 * Phaser 2 
 * Typescript
 * Webpack
