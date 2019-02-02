@@ -200,12 +200,12 @@ export class Core extends Phaser.State {
             createDrawingArea();
             createEventListeners();
             resetData();
-            setColor(2, null);
+            setColor(2, undefined);
         }
 
         function onDown(pointer) {
             if (pointer.y <= 32) {
-                setColor(Phaser.Math.snapToFloor(pointer.x, 32) / 32, null);
+                setColor(Phaser.Math.snapToFloor(pointer.x, 32) / 32, undefined);
             } else {
                 isDown = true;
                 if (pointer.rightButton.isDown) {
