@@ -5,3 +5,4 @@ terminal.glue
 assets/ship.jpg
 assets/space.png
 tmp/
+dist/

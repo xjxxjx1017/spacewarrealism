@@ -175,7 +175,7 @@ export class Core extends Phaser.State {
             refresh();
         }
 
-        function setColor(i, p) {
+        function setColor(i, p = undefined) {
             if (typeof p !== 'undefined')
                 //  It came from a Keyboard Event, in which case the color index is in p, not i.
                 i = p;
@@ -200,12 +200,12 @@ export class Core extends Phaser.State {
             createDrawingArea();
             createEventListeners();
             resetData();
-            setColor(2, undefined);
+            setColor(2);
         }
 
         function onDown(pointer) {
             if (pointer.y <= 32) {
-                setColor(Phaser.Math.snapToFloor(pointer.x, 32) / 32, undefined);
+                setColor(Phaser.Math.snapToFloor(pointer.x, 32) / 32);
             } else {
                 isDown = true;
                 if (pointer.rightButton.isDown) {
