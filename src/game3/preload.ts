@@ -1,8 +1,21 @@
 import * as Phaser from 'phaser-ce';
 
-import {FkCounter} from '../components/fkCounter';
+import {FkCounter} from '../components/fkcounter';
 
 export class Preload extends Phaser.State {
+
+	public preload() : void {
+        this.load.image('ship', 'assets/ship.jpg');
+        this.load.image('ship', 'assets/ship.jpg');
+        this.load.image('space', 'assets/space.png');
+        this.load.image('button_normal', 'assets/button/normal.png');
+        this.load.image('button_hover', 'assets/button/hover.png');
+        this.load.image('button_down', 'assets/button/down.png');
+        this.load.image('overlay_ship', 'assets/buttonoverlay/ship.png');
+        this.load.image('overlay_missle', 'assets/buttonoverlay/missle.png');
+        this.load.image('overlay_grass', 'assets/buttonoverlay/grass.png');
+		this.load.image('overlay_nohuman', 'assets/buttonoverlay/nohuman.png');
+	}
 
 	public create(): void {
 		var loadCount = new FkCounter();
