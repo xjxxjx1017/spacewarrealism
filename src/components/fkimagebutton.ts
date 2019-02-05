@@ -18,23 +18,20 @@ export class FkImageButton {
 		}, this);
 
 
-		// if( icon != null ) {
-  //           game.add.image(x, y, icon);
-		// }
+		if( icon != null ) {
+            game.add.image(x, y, icon);
+		}
 
 		function enterButtonHoverState() {
-	    	spr.setTexture( hover );
-	    	console.log( "aaa" );
+	    	spr.loadTexture( hover );
 		}
 
 		function enterButtonRestState() {
-	    	spr.setTexture( normal );
-	    	console.log( "aaa" );
+	    	spr.loadTexture( normal );
 		}
 
 		function enterButtonActiveState() {
-	    	spr.setTexture( down );
-	    	console.log( "aaa" );
+	    	spr.loadTexture( down );
 		}
 	}
 
