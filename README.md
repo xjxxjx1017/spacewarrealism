@@ -4,9 +4,9 @@ A space war game
 ## Task List
 
 1. 基本物体编辑器
+
 Tables | Status | Date
 --- | --- | ---
-*Still* | `renders` | **nicely**
 开关编辑器(无UI设计)      				| 完成
 一般飞船船体的显示, 编辑中 与 非编辑状态  	|
 画出一般飞船船体							|
