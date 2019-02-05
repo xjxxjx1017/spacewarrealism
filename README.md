@@ -26,7 +26,7 @@ Tables | Status | Date
 Tables | Status | Date
 --- | --- | ---
 Bitmap data rendering	| 完成
-Image button 	| 完成
+Image button 			| 完成
 
 ### ++ Environment
 
