@@ -3,24 +3,27 @@ A space war game
 
 ## Task List
 
-1. 地图.极小像素
-	* 画画类canvas
-2. 地图.编辑器基础
-3. 物体定义 与 显示
-	* 多个宇宙飞船的显示 与 同样构成的大地图
-4. 物体运动.交叉
-5. 战斗操作 与 流程
-6. 迭代 - 编辑器 优化, 基于Canvas的碰撞检测
+1. 基本物体编辑器
+| Tables		| Status		| Date		|
+| ------------- |:-------------:| --------:	|
+| 开关编辑器(无UI设计)      					| 完成	|
+| 一般飞船船体的显示, 编辑中 与 非编辑状态  	|		|
+| 画出一般飞船船体							|		|
+| 画刷的切换(无UI设计)						|		|
+| 擦除一般飞船船体							|		|
+| 画刷的切换(按UI设计)						|		|
 
 ## Finished
 ### +++ 组成部件
 
-### +++基础功能
-* Bitmap data rendering (用graphics显示部分渲染原图片)
-* Text button
+### +++ 基础功能
+* Bitmap data rendering
 * Image button
 
 ### ++ Environment
 * Phaser 2 
 * Typescript
 * Webpack
+
+### ++ Old Code (Phaser3)
+* Text button
