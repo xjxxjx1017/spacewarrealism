@@ -5,22 +5,22 @@ export class FkImageButton {
 		x, y, normal, hover, down, icon, callback) {
 
 		var spr = new Phaser.Sprite( game, x, y, normal );
+		game.add.existing( spr );
 
 		spr.inputEnabled = true;
 
-		spr.events.onInputOver.add( enterButtonHoverState );
-		spr.events.onInputOut.add( enterButtonRestState );
-		spr.events.onInputDown.add( enterButtonActiveState );
+		spr.events.onInputOver.add( enterButtonHoverState, this );
+		spr.events.onInputOut.add( enterButtonRestState, this );
+		spr.events.onInputDown.add( enterButtonActiveState, this );
 		spr.events.onInputUp.add( () => {
 			enterButtonHoverState();
 			callback();
-		});
+		}, this);
 
-		game.add.existing( spr );
 
-		if( icon != null ) {
-            game.add.image(x, y, icon);
-		}
+		// if( icon != null ) {
+  //           game.add.image(x, y, icon);
+		// }
 
 		function enterButtonHoverState() {
 	    	spr.setTexture( hover );
