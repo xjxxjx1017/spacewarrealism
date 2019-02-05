@@ -5,7 +5,7 @@ A space war game
 
 Currently working on item No.1 - No.3 of the spec.
 
-![alt text](https://github.com/xjxxjx1017/spacewarrealism/assets/spec/实派宇宙III.png "Specification")
+![Specification](/assets/spec/实派宇宙III.png "Specification")
 
 1. 基本物体编辑器
 
