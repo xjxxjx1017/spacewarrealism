@@ -46,5 +46,6 @@ export class FkGameData {
 	}
 
     public Update() {
+        this.layerGridCanvas.Update();
     }
 }

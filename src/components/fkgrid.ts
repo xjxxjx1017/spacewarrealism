@@ -46,7 +46,7 @@ export class FkGrid {
 			_alpha );
 	}
 
-	public UpdateGridFrame( _gridEdgeGraphic : Phaser.Graphics, 
+	public DrawGridFrame( _gridEdgeGraphic : Phaser.Graphics, 
 		_showFrame : boolean ) {
         if ( _showFrame ) {
             _gridEdgeGraphic.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);

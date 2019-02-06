@@ -10,11 +10,14 @@ export class FkGridCanvas{
     private HOVER_NORMAL_ALPHA : number = 0.8;
     private FRAME_ALPHA : number = 1;   
 
+    public dataGame : Phaser.Game;
     public dataIsEdit : boolean = false;
+    public dataTargetXy : Phaser.Point;
 
     private resBrush1Name : string;
     private layerGridEdge : Phaser.Graphics;
-    private layerCanvas : Phaser.BitmapData;
+    private layerCanvas : Phaser.Image;
+    private layerCursor : Phaser.Graphics;
     private dataGrid : FkGrid[];
     private dataIsAlive : boolean[];
 
@@ -25,17 +28,23 @@ export class FkGridCanvas{
         _sourceXy : Phaser.Point, 
         _isEdit : boolean ) {
 
+        this.dataGame = _game;
         this.dataIsEdit = _isEdit;
+        this.dataTargetXy = _targetXy;
  
         this.resBrush1Name = 'ship';
 
         this.layerGridEdge = _game.add.graphics( _targetXy.x, _targetXy.y );
         this.layerGridEdge.alpha = this.FRAME_ALPHA;
 
-        this.layerCanvas = _game.make.bitmapData( 
+        var cv = _game.make.bitmapData( 
             _targetWhCount.x * _sourceWh.x, 
             _targetWhCount.y * _sourceWh.y );
-        this.layerCanvas.addToWorld( _targetXy.x, _targetXy.y );
+        this.layerCanvas = cv.addToWorld( _targetXy.x, _targetXy.y );
+        this.layerCanvas.inputEnabled = true;
+
+        this.layerCursor = _game.add.graphics( _targetXy.x, _targetXy.y );
+        this.layerCursor.alpha = this.FRAME_ALPHA;
 
         // grid
         this.dataGrid = []; 
@@ -48,14 +57,20 @@ export class FkGridCanvas{
                     _sourceXy.x + i * _sourceWh.x, 
                     _sourceXy.y + j * _sourceWh.y );
                 var dXy = new Phaser.Point( i * _sourceWh.x, j * _sourceWh.y );
-                var g = new FkGrid( this.layerCanvas, this.resBrush1Name, sXy, _sourceWh, dXy );
+                var g = new FkGrid( cv, this.resBrush1Name, sXy, _sourceWh, dXy );
                 this.dataGrid.push( g );
                 this.dataIsAlive.push( isA );
             }
         }
 
-        this.UpdateCanvas();
+        this.DrawCanvas();
 	}
+
+    public Update() {
+        var isO = this.layerCanvas.input.checkPointerOver( this.dataGame.input.mousePointer );
+        if ( isO )
+            this.UpdateCursor();
+    }
 
     public GetIsEdit() : boolean { 
         return this.dataIsEdit; 
@@ -65,21 +80,29 @@ export class FkGridCanvas{
         if ( this.dataIsEdit == b )
             return;
         this.dataIsEdit = b;
-        this.UpdateCanvas();
+        this.DrawCanvas();
     }
 
-    private UpdateCanvas() {
+    private UpdateCursor() {
+        this.layerCursor.clear();
+        this.layerCursor.lineStyle( 1, 0x00ff00, 1);
+        this.layerCursor.drawCircle( 
+            this.dataGame.input.mousePointer.x - this.dataTargetXy.x,
+            this.dataGame.input.mousePointer.y - this.dataTargetXy.y, 10 );
+    }
+
+    private DrawCanvas() {
         for ( var idx = 0; idx < this.dataGrid.length; idx++ ) {
-            this.UpdateGridLook( idx );
+            this.DrawGrid( idx );
         }
-        this.UpdateGridEdges();
+        this.DrawGridEdges();
     }
 
     private ToggleAlive( idx ) {
         this.dataIsAlive[ idx ] = !this.dataIsAlive[idx];
     }
 
-    private UpdateGridLook( idx, isHovering = false ) {
+    private DrawGrid( idx, isHovering = false ) {
         var g = this.dataGrid[ idx ];
         var isA = this.dataIsAlive[ idx ];
         var a = this.dataIsEdit ?
@@ -90,14 +113,14 @@ export class FkGridCanvas{
         g.Draw( a );
     }
 
-    private UpdateGridEdges() {
+    private DrawGridEdges() {
         // Grid update will update all the other grid edges ( to optimize )
         this.layerGridEdge.clear();
         for ( var idx = 0; idx < this.dataGrid.length; idx++ ) {
             var g = this.dataGrid[ idx ];
             var isA = this.dataIsAlive[ idx ];
             var isD = this.dataIsEdit && isA;
-            g.UpdateGridFrame( this.layerGridEdge, isD );
+            g.DrawGridFrame( this.layerGridEdge, isD );
         }
     }
 }
