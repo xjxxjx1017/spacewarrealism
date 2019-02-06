@@ -5,6 +5,7 @@ import {FkImageButton} from "../../components/fkimagebutton";
 
 export class FkGameData {
 	private game : Phaser.Game;
+    private gridCanvas : FkGridCanvas;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -21,7 +22,7 @@ export class FkGameData {
 
 	public Run() {
 
-        var gridcanvas = new FkGridCanvas( this.game, 
+        this.gridCanvas = new FkGridCanvas( this.game, 
             new Phaser.Point( 30, 30 ),    // target xy
             new Phaser.Point( 40, 20 ),    // target wh count
             new Phaser.Point( 20, 20 ),    // cell wh
@@ -44,7 +45,7 @@ export class FkGameData {
             'button_hover', 
             'button_down', 
             'overlay_ship', () => {
-            gridcanvas.SetIsEdit( !gridcanvas.GetIsEdit() );
+            this.gridCanvas.SetIsEdit( !this.gridCanvas.GetIsEdit() );
         });
         var clickButton = new FkImageButton( this.game, 550, 50 + 64 + 5, 
             'button_normal', 
@@ -54,4 +55,8 @@ export class FkGameData {
             console.log( ++clickCount );
         });
 	}
+
+    public Update() {
+        this.gridCanvas.Update();
+    }
 }

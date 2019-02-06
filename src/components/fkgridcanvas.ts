@@ -1,8 +1,10 @@
 import {FkGrid} from "./fkgrid";
+import {FkUtil} from "./fkutil";
 
 export class FkGridCanvas{
     public GetIsEdit;
     public SetIsEdit;
+    public Update;
 
 	constructor( game : Phaser.Game, 
         targetXy : Phaser.Point, 
@@ -17,7 +19,7 @@ export class FkGridCanvas{
 		var NON_EDIT_NORMAL_ALPHA : number = 0;
 		var HOVER_ALIVE_ALPHA : number = 1;
 		var HOVER_NORMAL_ALPHA : number = 0.8;
-        var DEBUG_FRAME_ALPHA : number = 0.5;
+        var DEBUG_FRAME_WIDTH : number = 0.5;
 
         var brush1Name : string = 'ship';
         var gridMap : FkGrid[] = []; 
@@ -26,6 +28,7 @@ export class FkGridCanvas{
             targetWhCount.x * sourceWh.x, 
             targetWhCount.y * sourceWh.y );
         var canvasSprite = canvas.addToWorld( targetXy.x, targetXy.y );
+        var gridEdgeGraphic = game.add.graphics();
 
         // grid
         for ( var i = 0; i < targetWhCount.x; i++ ) {
@@ -53,6 +56,22 @@ export class FkGridCanvas{
         	isEdit = b;
         	UpdateCanvas();
         }
+        this.Update = function() {
+            gridEdgeGraphic.clear();
+            var isHovering = false;
+            var isAlive = false;
+            var isDebug = isEdit && !isAlive;
+            if ( isEdit && isHovering ) {
+                isDebug = true;
+            }
+            if ( isDebug ) {
+                gridEdgeGraphic.lineStyle(DEBUG_FRAME_WIDTH, 0x00ff00);
+                FkUtil.strokeRect( gridEdgeGraphic,
+                    targetXy.x, targetXy.y, 
+                    targetXy.x + targetWhCount.x * sourceWh.x, 
+                    targetXy.y + targetWhCount.y * sourceWh.y );
+            }
+        }
 
         function UpdateCanvas() {
 	        for ( var i = 0; i < targetWhCount.x; i++ ) {
@@ -73,11 +92,8 @@ export class FkGridCanvas{
         	var a = isEdit ?
         		( isAlive ? ALIVE_ALPHA : NORMAL_ALPHA ) :
         		( isAlive ? NON_EDIT_ALIVE_ALPHA : NON_EDIT_NORMAL_ALPHA );
-        	var isDebug = isEdit && !isAlive;
-        	if ( isEdit && isHovering ) {
+        	if ( isEdit && isHovering )
         		a = isAlive ? HOVER_ALIVE_ALPHA : HOVER_NORMAL_ALPHA;
-        		isDebug = true;
-        	}
             g.Draw( a );
         }
 	}

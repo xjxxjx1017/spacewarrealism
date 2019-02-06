@@ -24,7 +24,7 @@ Tables | Status | Date
 
 | Tables | Status 	| Date
 | ------ | ------ 	| ---
-| 基本物体编辑器、	一般画刷与擦除	| Working On
+| 基本物体编辑器、	一般画刷与擦除	| In Progress
 
 ## 基础功能
 
@@ -32,7 +32,7 @@ Tables | Status | Date
 | ------ | ------ 		| ---
 | Counter				|
 | Grid					| 完成
-| Grid Canvas 			| Working On
+| Grid Canvas 			| In Progress
 | Image button 			| 完成
 
 ## Environment

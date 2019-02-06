@@ -7,4 +7,8 @@ export class Core extends Phaser.State {
 		FkGameData.inst().Init( this.game );
 		FkGameData.inst().Run();
 	}
+
+	public update(): void {
+		FkGameData.inst().Update();
+	}
 }
