@@ -6,64 +6,53 @@ import * as _ from "lodash";
 //////////////////////////////
 +++ Example usage
 //////////////////////////////
-var g = new FkGrid(
-    game, 'ship',
-    cropXy, cropWH, displayXy, false );
+var g = new FkGrid( c, 'ship',
+        	new Phaser.Point( 20, 20 ), new Phaser.Point( 40, 40 ),
+        	new Phaser.Point( 100, 100 ) );
+g.Draw( 1 );
 */
 
 export class FkGrid {
 	private FRAME_COLOR : number = 0x00ff00;
 	private FRAME_WIDTH : number = 2;	
 
-	public isHovering : boolean = false;
-
-	private bitmapData : Phaser.BitmapData;
-	private imageName : string;
-	private sourceXyPoint : Phaser.Point;
-	private sourceWhPoint : Phaser.Point;
-	private targetXyPoint : Phaser.Point;
+	private resImageName : string;
+	private layerBitmapData : Phaser.BitmapData;
+	private dataSourceXy : Phaser.Point;
+	private dataSourceWh : Phaser.Point;
+	private dataTargetXy : Phaser.Point;
 
 	constructor( 
-		bitmapData : Phaser.BitmapData, 
-		imageName : string, 
-		sourceXyPoint : Phaser.Point, 
-		sourceWhPoint : Phaser.Point, 
-		targetXyPoint : Phaser.Point ) {
-		this.bitmapData = bitmapData;
-		this.imageName = imageName;
-		this.sourceXyPoint = _.cloneDeep( sourceXyPoint );
-		this.sourceWhPoint = _.cloneDeep( sourceWhPoint );
-		this.targetXyPoint = _.cloneDeep( targetXyPoint );
+		_bitmapData : Phaser.BitmapData, 
+		_imageName : string, 
+		_sourceXy : Phaser.Point, 
+		_sourceWh : Phaser.Point, 
+		_targetXy : Phaser.Point ) {
+		this.layerBitmapData = _bitmapData;
+		this.resImageName = _imageName;
+		this.dataSourceXy = _sourceXy;
+		this.dataSourceWh = _sourceWh;
+		this.dataTargetXy = _targetXy;
 	}
 
-	public Draw( alpha : number ) {
-		this.bitmapData.clear( 
-			this.sourceXyPoint.x, this.sourceXyPoint.y,
-			this.sourceWhPoint.x, this.sourceWhPoint.y );
-		this.bitmapData.copyRect( this.imageName, new Phaser.Rectangle(
-			this.targetXyPoint.x, this.targetXyPoint.y,
-			this.sourceWhPoint.x, this.sourceWhPoint.y ), 
-			this.sourceXyPoint.x, this.sourceXyPoint.y, 
-			alpha );
+	public Draw( _alpha : number ) {
+		this.layerBitmapData.clear( 
+			this.dataSourceXy.x, this.dataSourceXy.y,
+			this.dataSourceWh.x, this.dataSourceWh.y );
+		this.layerBitmapData.copyRect( this.resImageName, new Phaser.Rectangle(
+			this.dataTargetXy.x, this.dataTargetXy.y,
+			this.dataSourceWh.x, this.dataSourceWh.y ), 
+			this.dataSourceXy.x, this.dataSourceXy.y, 
+			_alpha );
 	}
 
-	public UpdateGridFrame( gridEdgeGraphic : Phaser.Graphics, 
-		showFrame : boolean ) {
-        if ( showFrame ) {
-            gridEdgeGraphic.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);
-            console.log ( "" + this.sourceXyPoint.x + " : " + this.sourceXyPoint.y)
-            FkUtil.strokeRect( gridEdgeGraphic,
-                this.sourceXyPoint.x, this.sourceXyPoint.y, 
-                this.sourceWhPoint.x, this.sourceWhPoint.y );
-            FkUtil.strokeRect( gridEdgeGraphic,
-                this.sourceXyPoint.x, this.sourceXyPoint.y, 
-                this.sourceWhPoint.x, this.sourceWhPoint.y );
-            FkUtil.strokeRect( gridEdgeGraphic,
-                this.sourceXyPoint.x, this.sourceXyPoint.y, 
-                this.sourceWhPoint.x, this.sourceWhPoint.y );
-            FkUtil.strokeRect( gridEdgeGraphic,
-                this.sourceXyPoint.x, this.sourceXyPoint.y, 
-                this.sourceWhPoint.x, this.sourceWhPoint.y );
+	public UpdateGridFrame( _gridEdgeGraphic : Phaser.Graphics, 
+		_showFrame : boolean ) {
+        if ( _showFrame ) {
+            _gridEdgeGraphic.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);
+            FkUtil.strokeRect( _gridEdgeGraphic,
+                this.dataSourceXy.x, this.dataSourceXy.y, 
+                this.dataSourceWh.x, this.dataSourceWh.y );
         }
 	}
 }

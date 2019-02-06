@@ -1,38 +1,48 @@
 import * as Phaser from 'phaser-ce';
 
 export class FkImageButton {
-	constructor( game : Phaser.Game, 
-		x, y, normal, hover, down, icon, callback) {
 
-		var spr = new Phaser.Sprite( game, x, y, normal );
-		game.add.existing( spr );
+	private resNormal : string;
+	private resHover : string;
+	private resDown : string;
+	private layerSpr : Phaser.Sprite;
 
-		spr.inputEnabled = true;
+	constructor( _game : Phaser.Game, 
+		_x, _y, _normal, _hover, _down, _icon, _callback) {
 
-		spr.events.onInputOver.add( enterButtonHoverState, this );
-		spr.events.onInputOut.add( enterButtonRestState, this );
-		spr.events.onInputDown.add( enterButtonActiveState, this );
-		spr.events.onInputUp.add( () => {
-			enterButtonHoverState();
-			callback();
+		this.resNormal = _normal;
+		this.resHover = _hover;
+		this.resDown = _down;
+
+		this.layerSpr = new Phaser.Sprite( _game, _x, _y, _normal );
+		_game.add.existing( this.layerSpr );
+
+		this.layerSpr.inputEnabled = true;
+
+		this.layerSpr.events.onInputOver.add( this.enterButtonHoverState, this );
+		this.layerSpr.events.onInputOut.add( this.enterButtonRestState, this );
+		this.layerSpr.events.onInputDown.add( this.enterButtonActiveState, this );
+		this.layerSpr.events.onInputUp.add( () => {
+			this.enterButtonHoverState();
+			_callback();
 		}, this);
 
 
-		if( icon != null ) {
-            game.add.image(x, y, icon);
+		if( _icon != null ) {
+            _game.add.image(_x, _y, _icon);
 		}
+	}
 
-		function enterButtonHoverState() {
-	    	spr.loadTexture( hover );
-		}
+	private enterButtonHoverState() {
+    	this.layerSpr.loadTexture( this.resHover );
+	}
 
-		function enterButtonRestState() {
-	    	spr.loadTexture( normal );
-		}
+	private enterButtonRestState() {
+    	this.layerSpr.loadTexture( this.resNormal );
+	}
 
-		function enterButtonActiveState() {
-	    	spr.loadTexture( down );
-		}
+	private enterButtonActiveState() {
+    	this.layerSpr.loadTexture( this.resDown );
 	}
 
 }

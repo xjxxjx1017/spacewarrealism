@@ -3,8 +3,8 @@ import {FkGameData} from './service/fkgamedata';
 
 export class Core extends Phaser.State {
 	public create(): void {
-		var game = this.game;
-		FkGameData.inst().Init( this.game );
+		var g = this.game;
+		FkGameData.inst().Init( g );
 		FkGameData.inst().Run();
 	}
 

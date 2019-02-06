@@ -2,99 +2,102 @@ import {FkGrid} from "./fkgrid";
 import {FkUtil} from "./fkutil";
 
 export class FkGridCanvas{
-    public GetIsEdit;
-    public SetIsEdit;
-    public Update;
+    private ALIVE_ALPHA : number = 1;
+    private NORMAL_ALPHA : number = 0.3;
+    private NON_EDIT_ALIVE_ALPHA : number = 1;
+    private NON_EDIT_NORMAL_ALPHA : number = 0;
+    private HOVER_ALIVE_ALPHA : number = 1;
+    private HOVER_NORMAL_ALPHA : number = 0.8;
+    private FRAME_ALPHA : number = 1;   
 
-	constructor( game : Phaser.Game, 
-        targetXy : Phaser.Point, 
-        targetWhCount : Phaser.Point, 
-        sourceWh : Phaser.Point, 
-        sourceXy : Phaser.Point, 
-        isEdit : boolean ) {
+    public dataIsEdit : boolean = false;
 
-		var ALIVE_ALPHA : number = 1;
-		var NORMAL_ALPHA : number = 0.3;
-		var NON_EDIT_ALIVE_ALPHA : number = 1;
-		var NON_EDIT_NORMAL_ALPHA : number = 0;
-		var HOVER_ALIVE_ALPHA : number = 1;
-		var HOVER_NORMAL_ALPHA : number = 0.8;
-        var FRAME_ALPHA : number = 0.3;    
+    private resBrush1Name : string;
+    private layerGridEdge : Phaser.Graphics;
+    private layerCanvas : Phaser.BitmapData;
+    private dataGrid : FkGrid[];
+    private dataIsAlive : boolean[];
 
-        var brush1Name : string = 'ship';
-        var gridMap : FkGrid[] = []; 
-        var isAliveMap : boolean[] = [];
-        var gridEdgeGraphic = game.add.graphics( targetXy.x, targetXy.y );
-        gridEdgeGraphic.alpha = FRAME_ALPHA;
-        var canvas = game.make.bitmapData( 
-            targetWhCount.x * sourceWh.x, 
-            targetWhCount.y * sourceWh.y );
-        var canvasSprite = canvas.addToWorld( targetXy.x, targetXy.y );
+	constructor( _game : Phaser.Game, 
+        _targetXy : Phaser.Point, 
+        _targetWhCount : Phaser.Point, 
+        _sourceWh : Phaser.Point, 
+        _sourceXy : Phaser.Point, 
+        _isEdit : boolean ) {
+
+        this.dataIsEdit = _isEdit;
+ 
+        this.resBrush1Name = 'ship';
+
+        this.layerGridEdge = _game.add.graphics( _targetXy.x, _targetXy.y );
+        this.layerGridEdge.alpha = this.FRAME_ALPHA;
+
+        this.layerCanvas = _game.make.bitmapData( 
+            _targetWhCount.x * _sourceWh.x, 
+            _targetWhCount.y * _sourceWh.y );
+        this.layerCanvas.addToWorld( _targetXy.x, _targetXy.y );
 
         // grid
-        for ( var i = 0; i < targetWhCount.x; i++ ) {
-            for ( var j = 0; j < targetWhCount.y; j++ ) {
-            	var idx = i * targetWhCount.y + j;
-                var isAlive = Math.random() > 0.5;
-                var cellSourceXy = new Phaser.Point( 
-                	sourceXy.x + i * sourceWh.x, 
-                	sourceXy.y + j * sourceWh.y );
-                var displayXy = new Phaser.Point( 
-                	i * sourceWh.x, 
-                	j * sourceWh.y );
-                var g = new FkGrid( canvas, brush1Name, cellSourceXy, sourceWh, displayXy );
-                gridMap.push( g );
-                isAliveMap.push( isAlive );
+        this.dataGrid = []; 
+        this.dataIsAlive = [];
+        for ( var i = 0; i < _targetWhCount.x; i++ ) {
+            for ( var j = 0; j < _targetWhCount.y; j++ ) {
+            	var idx = i * _targetWhCount.y + j;
+                var isA = Math.random() > 0.5;
+                var sXy = new Phaser.Point( 
+                    _sourceXy.x + i * _sourceWh.x, 
+                    _sourceXy.y + j * _sourceWh.y );
+                var dXy = new Phaser.Point( i * _sourceWh.x, j * _sourceWh.y );
+                var g = new FkGrid( this.layerCanvas, this.resBrush1Name, sXy, _sourceWh, dXy );
+                this.dataGrid.push( g );
+                this.dataIsAlive.push( isA );
             }
         }
 
-        UpdateCanvas();
-
-        this.GetIsEdit = function() { return isEdit; }
-        this.SetIsEdit = function( b ) {
-        	if ( isEdit == b )
-        		return;
-        	isEdit = b;
-        	UpdateCanvas();
-        }
-
-        function UpdateCanvas() {
-	        for ( var i = 0; i < targetWhCount.x; i++ ) {
-	            for ( var j = 0; j < targetWhCount.y; j++ ) {
-            		var idx = i * targetWhCount.y + j;
-	                UpdateGridLook( idx );
-	            }
-	        }
-            UpdateGridEdges();
-        }
-
-        function ToggleAlive( idx ) {
-        	isAliveMap[ idx ] = !isAliveMap[idx];
-        }
-
-        function UpdateGridLook( idx, isHovering = false ) {
-        	var g = gridMap[ idx ];
-        	var isAlive = isAliveMap[ idx ];
-        	var a = isEdit ?
-        		( isAlive ? ALIVE_ALPHA : NORMAL_ALPHA ) :
-        		( isAlive ? NON_EDIT_ALIVE_ALPHA : NON_EDIT_NORMAL_ALPHA );
-        	if ( isEdit && isHovering )
-        		a = isAlive ? HOVER_ALIVE_ALPHA : HOVER_NORMAL_ALPHA;
-            g.Draw( a );
-        }
-
-        function UpdateGridEdges() {
-            // Grid update will update all the other grid edges ( to optimize )
-            gridEdgeGraphic.clear();
-            for ( var i = 0; i < targetWhCount.x; i++ ) {
-                for ( var j = 0; j < targetWhCount.y; j++ ) {
-                    var idx = i * targetWhCount.y + j;
-                    var g = gridMap[ idx ];
-                    var isAlive = isAliveMap[ idx ];
-                    var isDebug = isEdit && isAlive;
-                    g.UpdateGridFrame( gridEdgeGraphic, isDebug );
-                }
-            }
-        }
+        this.UpdateCanvas();
 	}
+
+    public GetIsEdit() : boolean { 
+        return this.dataIsEdit; 
+    }
+
+    public SetIsEdit( b ) {
+        if ( this.dataIsEdit == b )
+            return;
+        this.dataIsEdit = b;
+        this.UpdateCanvas();
+    }
+
+    private UpdateCanvas() {
+        for ( var idx = 0; idx < this.dataGrid.length; idx++ ) {
+            this.UpdateGridLook( idx );
+        }
+        this.UpdateGridEdges();
+    }
+
+    private ToggleAlive( idx ) {
+        this.dataIsAlive[ idx ] = !this.dataIsAlive[idx];
+    }
+
+    private UpdateGridLook( idx, isHovering = false ) {
+        var g = this.dataGrid[ idx ];
+        var isA = this.dataIsAlive[ idx ];
+        var a = this.dataIsEdit ?
+            ( isA ? this.ALIVE_ALPHA : this.NORMAL_ALPHA ) :
+            ( isA ? this.NON_EDIT_ALIVE_ALPHA : this.NON_EDIT_NORMAL_ALPHA );
+        if ( this.dataIsEdit && isHovering )
+            a = isA ? this.HOVER_ALIVE_ALPHA : this.HOVER_NORMAL_ALPHA;
+        g.Draw( a );
+    }
+
+    private UpdateGridEdges() {
+        // Grid update will update all the other grid edges ( to optimize )
+        this.layerGridEdge.clear();
+        for ( var idx = 0; idx < this.dataGrid.length; idx++ ) {
+            var g = this.dataGrid[ idx ];
+            var isA = this.dataIsAlive[ idx ];
+            var isD = this.dataIsEdit && isA;
+            g.UpdateGridFrame( this.layerGridEdge, isD );
+        }
+    }
 }
