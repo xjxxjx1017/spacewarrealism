@@ -57,6 +57,5 @@ export class FkGameData {
 	}
 
     public Update() {
-        this.gridCanvas.Update();
     }
 }

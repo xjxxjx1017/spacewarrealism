@@ -23,9 +23,11 @@
   },
   "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
     "phaser-ce": "^2.11.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.120",
     "expose-loader": "^0.7.5",
     "ts-loader": "^5.3.3",
     "typescript": "^3.2.4",

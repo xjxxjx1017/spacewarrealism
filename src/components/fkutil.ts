@@ -3,13 +3,13 @@ import * as Phaser from 'phaser-ce';
 export class FkUtil {
 	public static strokeRect( 
 		graphics : Phaser.Graphics,
-		x1 : number, y1 : number,
-		x2 : number, y2 : number ) : void 
+		x : number, y : number,
+		w : number, h : number )
 	{
-		graphics.moveTo( x1, y1 );
-		graphics.lineTo( x2, y1 );
-		graphics.lineTo( x2, y2 );
-		graphics.lineTo( x1, y2 );
-		graphics.lineTo( x1, y1 );
+		graphics.moveTo( x, y );
+		graphics.lineTo( x + w, y );
+		graphics.lineTo( x + w, y + h );
+		graphics.lineTo( x, y + h );
+		graphics.lineTo( x, y );
 	}
 }

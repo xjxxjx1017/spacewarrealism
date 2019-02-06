@@ -19,16 +19,17 @@ export class FkGridCanvas{
 		var NON_EDIT_NORMAL_ALPHA : number = 0;
 		var HOVER_ALIVE_ALPHA : number = 1;
 		var HOVER_NORMAL_ALPHA : number = 0.8;
-        var DEBUG_FRAME_WIDTH : number = 0.5;
+        var FRAME_ALPHA : number = 0.3;    
 
         var brush1Name : string = 'ship';
         var gridMap : FkGrid[] = []; 
         var isAliveMap : boolean[] = [];
+        var gridEdgeGraphic = game.add.graphics( targetXy.x, targetXy.y );
+        gridEdgeGraphic.alpha = FRAME_ALPHA;
         var canvas = game.make.bitmapData( 
             targetWhCount.x * sourceWh.x, 
             targetWhCount.y * sourceWh.y );
         var canvasSprite = canvas.addToWorld( targetXy.x, targetXy.y );
-        var gridEdgeGraphic = game.add.graphics();
 
         // grid
         for ( var i = 0; i < targetWhCount.x; i++ ) {
@@ -56,22 +57,6 @@ export class FkGridCanvas{
         	isEdit = b;
         	UpdateCanvas();
         }
-        this.Update = function() {
-            gridEdgeGraphic.clear();
-            var isHovering = false;
-            var isAlive = false;
-            var isDebug = isEdit && !isAlive;
-            if ( isEdit && isHovering ) {
-                isDebug = true;
-            }
-            if ( isDebug ) {
-                gridEdgeGraphic.lineStyle(DEBUG_FRAME_WIDTH, 0x00ff00);
-                FkUtil.strokeRect( gridEdgeGraphic,
-                    targetXy.x, targetXy.y, 
-                    targetXy.x + targetWhCount.x * sourceWh.x, 
-                    targetXy.y + targetWhCount.y * sourceWh.y );
-            }
-        }
 
         function UpdateCanvas() {
 	        for ( var i = 0; i < targetWhCount.x; i++ ) {
@@ -80,6 +65,7 @@ export class FkGridCanvas{
 	                UpdateGridLook( idx );
 	            }
 	        }
+            UpdateGridEdges();
         }
 
         function ToggleAlive( idx ) {
@@ -95,6 +81,20 @@ export class FkGridCanvas{
         	if ( isEdit && isHovering )
         		a = isAlive ? HOVER_ALIVE_ALPHA : HOVER_NORMAL_ALPHA;
             g.Draw( a );
+        }
+
+        function UpdateGridEdges() {
+            // Grid update will update all the other grid edges ( to optimize )
+            gridEdgeGraphic.clear();
+            for ( var i = 0; i < targetWhCount.x; i++ ) {
+                for ( var j = 0; j < targetWhCount.y; j++ ) {
+                    var idx = i * targetWhCount.y + j;
+                    var g = gridMap[ idx ];
+                    var isAlive = isAliveMap[ idx ];
+                    var isDebug = isEdit && isAlive;
+                    g.UpdateGridFrame( gridEdgeGraphic, isDebug );
+                }
+            }
         }
 	}
 }

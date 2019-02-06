@@ -42,7 +42,7 @@ Tables | Status | Date
 | Phaser 2 			| 完成
 | Typescript 		| 完成
 | Webpack 			| 完成
-| Lodash			|
+| Lodash			| 完成
 
 ## Old code porting from Phaser3
 
