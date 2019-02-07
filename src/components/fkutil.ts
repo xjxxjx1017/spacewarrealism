@@ -12,4 +12,8 @@ export class FkUtil {
 		_graphics.lineTo( _x, _y + _h );
 		_graphics.lineTo( _x, _y );
 	}
+
+	public static snapToPos( a : number, m : number ) : number {
+		return Math.floor( a / m ) * m;
+	}
 }

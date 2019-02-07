@@ -12,6 +12,8 @@ export class FkGridCanvas{
 
     public dataGame : Phaser.Game;
     public dataIsEdit : boolean = false;
+    public dataSourceXy : Phaser.Point;
+    public dataSourceWh : Phaser.Point;
     public dataTargetXy : Phaser.Point;
 
     private resBrush1Name : string;
@@ -30,6 +32,8 @@ export class FkGridCanvas{
 
         this.dataGame = _game;
         this.dataIsEdit = _isEdit;
+        this.dataSourceXy = _sourceXy;
+        this.dataSourceWh = _sourceWh;
         this.dataTargetXy = _targetXy;
  
         this.resBrush1Name = 'ship';
@@ -86,9 +90,10 @@ export class FkGridCanvas{
     private UpdateCursor() {
         this.layerCursor.clear();
         this.layerCursor.lineStyle( 1, 0x00ff00, 1);
-        this.layerCursor.drawCircle( 
-            this.dataGame.input.mousePointer.x - this.dataTargetXy.x,
-            this.dataGame.input.mousePointer.y - this.dataTargetXy.y, 10 );
+        FkUtil.strokeRect( this.layerCursor, 
+            FkUtil.snapToPos( this.dataGame.input.mousePointer.x - this.dataTargetXy.x, this.dataSourceWh.x ),
+            FkUtil.snapToPos( this.dataGame.input.mousePointer.y - this.dataTargetXy.y, this.dataSourceWh.y ),
+            this.dataSourceWh.x, this.dataSourceWh.y );
     }
 
     private DrawCanvas() {
