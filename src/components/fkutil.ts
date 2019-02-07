@@ -16,4 +16,8 @@ export class FkUtil {
 	public static snapToPos( a : number, m : number ) : number {
 		return Math.floor( a / m ) * m;
 	}
+
+	public static snapToXy( a : number, m : number ) : number {
+		return Math.floor( a / m );
+	}
 }

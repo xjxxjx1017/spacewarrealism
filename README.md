@@ -11,12 +11,12 @@ Currently working on item No.1 - No.3 of the spec.
 
 Tables | Status | Date
 --- | --- | ---
-开关编辑器(无UI设计)      				| 完成 | 2019-02-05
-一般飞船船体的显示, 编辑中 与 非编辑状态  	| In Progress
-画出一般飞船船体							|
-画刷的切换(无UI设计)						|
+画刷的切换(无UI设计)						| In Progress
 擦除一般飞船船体							|
 画刷的切换(按UI设计)						|
+开关编辑器(无UI设计)      				| 完成 | 2019-02-05
+一般飞船船体的显示, 编辑中 与 非编辑状态  	| 完成 | 2019-02-06
+画出一般飞船船体							| 完成 | 2019-02-07
 
 # Finished
 
@@ -30,10 +30,10 @@ Tables | Status | Date
 
 | Tables | Status 		| Date
 | ------ | ------ 		| ---
-| Counter				| 
-| Grid					| In Progress
 | Grid Canvas 			| In Progress
+| Grid					| 完成
 | Image button 			| 完成
+| Counter				| 完成
 
 ## Environment
 

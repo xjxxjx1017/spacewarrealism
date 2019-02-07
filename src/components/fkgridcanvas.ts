@@ -6,8 +6,6 @@ export class FkGridCanvas{
     private NORMAL_ALPHA : number = 0.3;
     private NON_EDIT_ALIVE_ALPHA : number = 1;
     private NON_EDIT_NORMAL_ALPHA : number = 0;
-    private HOVER_ALIVE_ALPHA : number = 1;
-    private HOVER_NORMAL_ALPHA : number = 0.8;
     private FRAME_ALPHA : number = 1;   
 
     public dataGame : Phaser.Game;
@@ -72,8 +70,11 @@ export class FkGridCanvas{
 
     public Update() {
         var isO = this.layerCanvas.input.checkPointerOver( this.dataGame.input.mousePointer );
-        if ( isO )
+        if ( isO ) {
             this.UpdateCursor();
+            if ( this.dataGame.input.mousePointer.isDown )
+                this.UpdatePaintNormal();
+        }
     }
 
     public GetIsEdit() : boolean { 
@@ -96,6 +97,18 @@ export class FkGridCanvas{
             this.dataSourceWh.x, this.dataSourceWh.y );
     }
 
+    private UpdatePaintNormal() {
+        var x = FkUtil.snapToXy( this.dataGame.input.mousePointer.x - this.dataTargetXy.x, this.dataSourceWh.x );
+        var y = FkUtil.snapToXy( this.dataGame.input.mousePointer.y - this.dataTargetXy.y, this.dataSourceWh.y );
+        var idx = x * this.dataSourceWh.y + y;
+        if ( idx >= 0 && idx < this.dataIsAlive.length ) {
+            this.dataIsAlive[idx] = true;
+            this.DrawGrid( idx );
+            this.DrawGridEdges();
+        }
+        else console.log( "Unexpected error E1001" );
+    }
+
     private DrawCanvas() {
         for ( var idx = 0; idx < this.dataGrid.length; idx++ ) {
             this.DrawGrid( idx );
@@ -107,14 +120,12 @@ export class FkGridCanvas{
         this.dataIsAlive[ idx ] = !this.dataIsAlive[idx];
     }
 
-    private DrawGrid( idx, isHovering = false ) {
+    private DrawGrid( idx ) {
         var g = this.dataGrid[ idx ];
         var isA = this.dataIsAlive[ idx ];
         var a = this.dataIsEdit ?
             ( isA ? this.ALIVE_ALPHA : this.NORMAL_ALPHA ) :
             ( isA ? this.NON_EDIT_ALIVE_ALPHA : this.NON_EDIT_NORMAL_ALPHA );
-        if ( this.dataIsEdit && isHovering )
-            a = isA ? this.HOVER_ALIVE_ALPHA : this.HOVER_NORMAL_ALPHA;
         g.Draw( a );
     }
 
