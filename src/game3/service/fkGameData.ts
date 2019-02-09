@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser-ce';
-import {FkGridCanvas} from "../../components/fkgridcanvas";
+import {FkGridCanvas, FkBrush} from "../../components/fkgridcanvas";
 import {FkGrid} from "../../components/fkgrid";
 import {FkImageButton} from "../../components/fkimagebutton";
 
@@ -21,31 +21,43 @@ export class FkGameData {
 	}
 
 	public Run() {
+        var self = this;
         this.layerGridCanvas = new FkGridCanvas( this.dataGame, 
             new Phaser.Point( 30, 30 ),    // target xy
             new Phaser.Point( 40, 20 ),    // target wh count
             new Phaser.Point( 20, 20 ),    // cell wh
             new Phaser.Point( 0, 0 ), true );    // source xy
+        this.UseBrushNormal();
 
         // button
-        var cC = 0;
-        var cB1 = new FkImageButton( this.dataGame, 550, 50, 
-            'button_normal', 
-            'button_hover', 
-            'button_down', 
-            'overlay_ship', () => {
-            this.layerGridCanvas.SetIsEdit( !this.layerGridCanvas.GetIsEdit() );
+        var cB1 = this.CreateButton( 1, 'overlay_ship', () => {
+            self.layerGridCanvas.SetIsEdit( !this.layerGridCanvas.GetIsEdit() );
         });
-        var cB2 = new FkImageButton( this.dataGame, 550, 50 + 64 + 5, 
-            'button_normal', 
-            'button_hover', 
-            'button_down', 
-            'overlay_missle', () => {
-            console.log( ++cC );
-        });
+        var cB2 = this.CreateButton( 2, 'overlay_grass', () => { self.UseBrushNormal() } );
+        var cB3 = this.CreateButton( 3, 'overlay_nohuman', () => { self.UseBrushEraser() } );
 	}
 
     public Update() {
         this.layerGridCanvas.Update();
+    }
+
+    private CreateButton( _seq: number, _overlay: string, _onClick: () => void ) : FkImageButton {
+        return new FkImageButton( this.dataGame, 550, 50 + (64 + 5) * (_seq - 1), 
+            'button_normal',  'button_hover',  'button_down', 
+            _overlay, _onClick );
+    }
+
+    private UseBrushNormal() {
+        var self = this;
+        this.layerGridCanvas.SetBrush( new FkBrush( "Normal", ( _idx: number ) => {
+            self.layerGridCanvas.SetGridIsAlive( _idx, true );
+        }))
+    }
+
+    private UseBrushEraser() {
+        var self = this;
+        this.layerGridCanvas.SetBrush( new FkBrush( "Eraser", ( _idx: number ) => {
+            self.layerGridCanvas.SetGridIsAlive( _idx, false );
+        }))
     }
 }

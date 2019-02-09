@@ -1,9 +1,20 @@
 import {FkGrid} from "./fkgrid";
 import {FkUtil} from "./fkutil";
 
+export class FkBrush{
+    public dataBrushName : string;
+    public dataBrushDraw : ( _idx : number ) => void;
+
+    constructor( _brushName: string, _brushDraw: ( _idx : number ) => void )
+    {
+        this.dataBrushName = _brushName;
+        this.dataBrushDraw = _brushDraw;
+    }
+}
+
 export class FkGridCanvas{
     private ALIVE_ALPHA : number = 1;
-    private NORMAL_ALPHA : number = 0.3;
+    private NORMAL_ALPHA : number = 0.5;
     private NON_EDIT_ALIVE_ALPHA : number = 1;
     private NON_EDIT_NORMAL_ALPHA : number = 0;
     private FRAME_ALPHA : number = 1;   
@@ -20,6 +31,7 @@ export class FkGridCanvas{
     private layerCursor : Phaser.Graphics;
     private dataGrid : FkGrid[];
     private dataIsAlive : boolean[];
+    private dataBrush : FkBrush;
 
 	constructor( _game : Phaser.Game, 
         _targetXy : Phaser.Point, 
@@ -73,8 +85,16 @@ export class FkGridCanvas{
         if ( isO ) {
             this.UpdateCursor();
             if ( this.dataGame.input.mousePointer.isDown )
-                this.UpdatePaintNormal();
+                this.UpdateBrushPaint();
         }
+    }
+
+    public SetBrush( _brush: FkBrush ) {
+        this.dataBrush = _brush;
+    }
+
+    public SetGridIsAlive( _idx: number, _isAlive: boolean ) {
+        this.dataIsAlive[_idx] = _isAlive;
     }
 
     public GetIsEdit() : boolean { 
@@ -97,12 +117,16 @@ export class FkGridCanvas{
             this.dataSourceWh.x, this.dataSourceWh.y );
     }
 
-    private UpdatePaintNormal() {
+    private UpdateBrushPaint() {
         var x = FkUtil.snapToXy( this.dataGame.input.mousePointer.x - this.dataTargetXy.x, this.dataSourceWh.x );
         var y = FkUtil.snapToXy( this.dataGame.input.mousePointer.y - this.dataTargetXy.y, this.dataSourceWh.y );
         var idx = x * this.dataSourceWh.y + y;
-        if ( idx >= 0 && idx < this.dataIsAlive.length ) {
-            this.dataIsAlive[idx] = true;
+        if ( idx >= 0 && idx < this.dataIsAlive.length 
+            && this.dataIsEdit == true
+            && this.dataBrush != null 
+            && this.dataBrush.dataBrushDraw != null ) {
+            // this.dataIsAlive[idx] = false;
+            this.dataBrush.dataBrushDraw( idx );
             this.DrawGrid( idx );
             this.DrawGridEdges();
         }
