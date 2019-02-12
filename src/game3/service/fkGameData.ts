@@ -24,8 +24,8 @@ export class FkGameData {
         var self = this;
         this.layerGridCanvas = new FkGridCanvas( this.dataGame, 
             new Phaser.Point( 30, 30 ),    // target xy
-            new Phaser.Point( 40, 20 ),    // target wh count
-            new Phaser.Point( 20, 20 ),    // cell wh
+            new Phaser.Point( 100, 50 ),    // target wh count
+            new Phaser.Point( 5, 5 ),    // cell wh
             new Phaser.Point( 0, 0 ), true );    // source xy
         this.UseBrushNormal();
 

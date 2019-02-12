@@ -24,6 +24,7 @@ export class FkGridCanvas{
     public dataSourceXy : Phaser.Point;
     public dataSourceWh : Phaser.Point;
     public dataTargetXy : Phaser.Point;
+    public dataTargetWhCount : Phaser.Point;
 
     private resBrush1Name : string;
     private layerGridEdge : Phaser.Graphics;
@@ -45,6 +46,7 @@ export class FkGridCanvas{
         this.dataSourceXy = _sourceXy;
         this.dataSourceWh = _sourceWh;
         this.dataTargetXy = _targetXy;
+        this.dataTargetWhCount = _targetWhCount;
  
         this.resBrush1Name = 'ship';
 
@@ -120,7 +122,7 @@ export class FkGridCanvas{
     private UpdateBrushPaint() {
         var x = FkUtil.snapToXy( this.dataGame.input.mousePointer.x - this.dataTargetXy.x, this.dataSourceWh.x );
         var y = FkUtil.snapToXy( this.dataGame.input.mousePointer.y - this.dataTargetXy.y, this.dataSourceWh.y );
-        var idx = x * this.dataSourceWh.y + y;
+        var idx = x * this.dataTargetWhCount.y + y;
         if ( idx >= 0 && idx < this.dataIsAlive.length 
             && this.dataIsEdit == true
             && this.dataBrush != null 
