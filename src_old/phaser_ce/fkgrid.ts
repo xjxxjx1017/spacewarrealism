@@ -17,17 +17,17 @@ export class FkGrid {
 	private FRAME_WIDTH : number = 2;	
 
 	private resImageName : string;
-	private layerBitmapData : Phaser.BitmapData;
-	private dataSourceXy : Phaser.Point;
-	private dataSourceWh : Phaser.Point;
-	private dataTargetXy : Phaser.Point;
+	private layerBitmapData : Phaser.GameObjects.RenderTexture;
+	private dataSourceXy : Phaser.Geom.Point;
+	private dataSourceWh : Phaser.Geom.Point;
+	private dataTargetXy : Phaser.Geom.Point;
 
 	constructor( 
-		_bitmapData : Phaser.BitmapData, 
+		_bitmapData : Phaser.GameObjects.RenderTexture, 
 		_imageName : string, 
-		_sourceXy : Phaser.Point, 
-		_sourceWh : Phaser.Point, 
-		_targetXy : Phaser.Point ) {
+		_sourceXy : Phaser.Geom.Point, 
+		_sourceWh : Phaser.Geom.Point, 
+		_targetXy : Phaser.Geom.Point ) {
 		this.layerBitmapData = _bitmapData;
 		this.resImageName = _imageName;
 		this.dataSourceXy = _sourceXy;
@@ -39,14 +39,14 @@ export class FkGrid {
 		this.layerBitmapData.clear( 
 			this.dataSourceXy.x, this.dataSourceXy.y,
 			this.dataSourceWh.x, this.dataSourceWh.y );
-		this.layerBitmapData.copyRect( this.resImageName, new Phaser.Rectangle(
+		this.layerBitmapData.copyRect( this.resImageName, new Phaser.Geom.Rectangle(
 			this.dataTargetXy.x, this.dataTargetXy.y,
 			this.dataSourceWh.x, this.dataSourceWh.y ), 
 			this.dataSourceXy.x, this.dataSourceXy.y, 
 			_alpha );
 	}
 
-	public DrawGridFrame( _gridEdgeGraphic : Phaser.Graphics, 
+	public DrawGridFrame( _gridEdgeGraphic : Phaser.GameObjects.Graphics, 
 		_showFrame : boolean ) {
         if ( _showFrame ) {
             _gridEdgeGraphic.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);

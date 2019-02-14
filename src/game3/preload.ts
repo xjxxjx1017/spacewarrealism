@@ -1,11 +1,16 @@
-import * as Phaser from 'phaser-ce';
+import 'phaser';
 
 import {FkCounter} from '../components/fkcounter';
 
-export class Preload extends Phaser.State {
+export class Preload extends Phaser.Scene {
 
+    constructor() {
+        super({
+            key: "Preload"
+        });
+    }
+    
     public preload() : void {
-        this.load.image('ship', 'assets/ship.jpg');
         this.load.image('ship', 'assets/ship.jpg');
         this.load.image('space', 'assets/space.png');
         this.load.image('button_normal', 'assets/button/normal.png');
@@ -29,6 +34,6 @@ export class Preload extends Phaser.State {
     }
 
     public nextStage(): void {
-    	this.game.state.start('Core');
+    	this.scene.start('Core');
     }
 }

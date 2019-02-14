@@ -9,8 +9,23 @@ Currently working on item No.1 - No.3 of the spec.
 
 1. 基本物体编辑器
 
-* 在格子细致情况下的debug
-* 画刷的切换(按UI设计)
+* 算法Challenge
+	* Voxel Terrain, new project
+
+* 需要头脑风暴
+	* 百战天虫实际上避免了像素跟物理的计算, 用了不规则图形跟圆的overlap来计算
+	* 火箭流体算法
+		* 如何存取像素信息, 储存游戏Data|结构
+		* 矢量 + BitmapData
+		* A system using very low level API to create 各飞船层级
+
+* UI设计
+	* TabPanel - DesignSample
+	* TabPanel - Res
+	* TabPanel - Select
+	* Button select state
+	* Radio button list
+	* Esc key as "Erase"
 
 # Finished
 

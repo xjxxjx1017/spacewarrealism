@@ -1,18 +1,16 @@
-import * as Phaser from 'phaser-ce';
+import 'phaser';
 
-export class Core extends Phaser.State {
-    private cursors: Phaser.CursorKeys;
-    private text: Phaser.BitmapText;
+export class Core extends Phaser.Scene {
+    private text: Phaser.GameObjects.BitmapText;
 
-    public create(): void {
-
-        this.text = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY + 100, 'font', 'Press Arrows / Space', 15);
-        this.text.x = this.text.x - ~~(this.text.width * 0.5);
-
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+    constructor() {
+        super({
+            key: "Core"
+        });
     }
-
-    public update(): void {
-        this.game.input.update();
+    
+    public create(): void {
+        this.text = this.add.bitmapText( 200, 200, 'font', 'Press Arrows / Space', 15);
+        this.text.x = this.text.x - ~~(this.text.width * 0.5);
     }
 }

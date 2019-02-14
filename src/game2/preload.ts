@@ -1,36 +1,44 @@
-import * as Phaser from 'phaser-ce';
+import 'phaser';
 
-export class Preload extends Phaser.State {
+export class Preload extends Phaser.Scene {
     private ready: boolean;
-    private countLoaded: number = 0;
-    private RES_TO_LOAD: number = 3;
 
-    public preload(): void {}
+    constructor() {
+        super({
+            key: "Preload"
+        });
+    }
+
+    public preload(): void {
+        // Load awesome fonts
+        this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.xml');
+
+        // Load sprite
+        this.load.image('mushroom', 'assets/sprites/mushroom.png');
+        
+        this.load.image('ship', 'assets/ship.jpg');
+        this.load.image('space', 'assets/space.png');
+        this.load.image('button_normal', 'assets/button/normal.png');
+        this.load.image('button_hover', 'assets/button/hover.png');
+        this.load.image('button_down', 'assets/button/down.png');
+        this.load.image('overlay_ship', 'assets/buttonoverlay/ship.png');
+        this.load.image('overlay_missle', 'assets/buttonoverlay/missle.png');
+        this.load.image('overlay_grass', 'assets/buttonoverlay/grass.png');
+        this.load.image('overlay_nohuman', 'assets/buttonoverlay/nohuman.png');
+
+        this.load.on( 'complete', () => { this.onLoadComplete(); } );
+    }
 
     public create(): void {
-        var self = this;
-
-        this.game.create.grid('uiGrid', 32 * 16, 32, 32, 32, 'rgba(255,255,255,0.5)', undefined, 
-            ()=> { self.countLoaded++; });
-
-        var canvasZoom:number = 32;
-        this.game.create.grid('drawingGrid', 16 * canvasZoom, 16 * canvasZoom, 
-                canvasZoom, canvasZoom, 'rgba(0,191,243,0.8)', undefined, ()=> { self.countLoaded++; });
-        
-        var arrow = [
-            '  22  ',
-            ' 2222 ',
-            '222222',
-            '  22  ',
-            '  22  '
-        ];
-        this.game.create.texture('arrow', arrow, 2, undefined, undefined, undefined, 
-            ()=> { self.countLoaded++; });
     }
 
     public update(): void {
-        if ( this.countLoaded >= this.RES_TO_LOAD ) {
-            this.game.state.start('Core');
+        if ( this.ready === true ) {
+            this.scene.start('Core');
         }
+    }
+
+    private onLoadComplete(): void {
+        this.ready = true;
     }
 }

@@ -10,23 +10,13 @@
 		"target": "es5",
 		"typeRoots": [
 			"node_modules/@types",
-			"node_modules/phaser-ce/typescript/phaser.d.ts",
-			"node_modules/phaser-ce/typescript/pixi.d.ts",
-			"node_modules/phaser-ce/typescript/p2.d.ts"
 		],
 		"outDir": "dist"
 	},
-	"files": [
-		"./node_modules/phaser-ce/typescript/phaser.d.ts",
-		"./node_modules/phaser-ce/typescript/pixi.d.ts",
-		"./node_modules/phaser-ce/typescript/p2.d.ts"
-	],
 	"include": [
 		"src/**/*.ts"
 	],
 	"exclude": [
-		"node_modules",
-		"src/**/*.spec.ts",
-		"src/**/__tests__/*.ts"
+		"node_modules"
 	],
 }

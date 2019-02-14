@@ -1,11 +1,11 @@
-import * as Phaser from 'phaser-ce';
+import 'phaser';
 
 export class FkImageButton {
 
 	private resNormal : string;
 	private resHover : string;
 	private resDown : string;
-	private layerSpr : Phaser.Sprite;
+	private layerSpr : Phaser.GameObjects.Sprite;
 
 	constructor( _game : Phaser.Game, 
 		_x, _y, _normal, _hover, _down, _icon, _callback) {
@@ -14,7 +14,7 @@ export class FkImageButton {
 		this.resHover = _hover;
 		this.resDown = _down;
 
-		this.layerSpr = new Phaser.Sprite( _game, _x, _y, _normal );
+		this.layerSpr = new Phaser.GameObjects.Sprite( _game, _x, _y, _normal );
 		_game.add.existing( this.layerSpr );
 
 		this.layerSpr.inputEnabled = true;

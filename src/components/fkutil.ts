@@ -1,8 +1,8 @@
-import * as Phaser from 'phaser-ce';
+import 'phaser';
 
 export class FkUtil {
 	public static strokeRect( 
-		_graphics : Phaser.Graphics,
+		_graphics : Phaser.GameObjects.Graphics,
 		_x : number, _y : number,
 		_w : number, _h : number )
 	{

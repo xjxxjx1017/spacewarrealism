@@ -24,7 +24,7 @@
   "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme",
   "dependencies": {
     "lodash": "^4.17.11",
-    "phaser-ce": "^2.11.1"
+    "phaser": "^3.16.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.120",

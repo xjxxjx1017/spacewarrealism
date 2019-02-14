@@ -1,22 +1,20 @@
-import 'pixi';
-import 'p2';
-import * as Phaser from 'phaser-ce';
-
-import {Config} from '../default/config';
-import {Boot} from '../default/boot';
+import 'phaser';
 
 import {Preload} from './preload';
 import {Core} from './core';
 
+const config: GameConfig = {
+	width: 1200,
+	height: 600,
+	type: Phaser.AUTO,
+	parent: "game",
+	scene: [Preload, Core],
+	backgroundColor: "#000000",
+	render: { pixelArt: false, antialias: true, autoResize: false }
+};
+
 export class Main extends Phaser.Game {
-
     constructor() {
-        super(Config.gameWidth, Config.gameHeight, Phaser.CANVAS, 'content', null);
-
-        this.state.add('Boot', Boot, false);
-        this.state.add('Preload', Preload, false);
-        this.state.add('Core', Core, false);
-
-        this.state.start('Boot');
+        super( config );
     }
 }

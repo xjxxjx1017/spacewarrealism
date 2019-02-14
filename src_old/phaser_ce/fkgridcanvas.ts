@@ -21,24 +21,24 @@ export class FkGridCanvas{
 
     public dataGame : Phaser.Game;
     public dataIsEdit : boolean = false;
-    public dataSourceXy : Phaser.Point;
-    public dataSourceWh : Phaser.Point;
-    public dataTargetXy : Phaser.Point;
-    public dataTargetWhCount : Phaser.Point;
+    public dataSourceXy : Phaser.Geom.Point;
+    public dataSourceWh : Phaser.Geom.Point;
+    public dataTargetXy : Phaser.Geom.Point;
+    public dataTargetWhCount : Phaser.Geom.Point;
 
     private resBrush1Name : string;
-    private layerGridEdge : Phaser.Graphics;
-    private layerCanvas : Phaser.Image;
-    private layerCursor : Phaser.Graphics;
+    private layerGridEdge : Phaser.GameObjects.Graphics;
+    private layerCanvas : Phaser.GameObjects.Image;
+    private layerCursor : Phaser.GameObjects.Graphics;
     private dataGrid : FkGrid[];
     private dataIsAlive : boolean[];
     private dataBrush : FkBrush;
 
 	constructor( _game : Phaser.Game, 
-        _targetXy : Phaser.Point, 
-        _targetWhCount : Phaser.Point, 
-        _sourceWh : Phaser.Point, 
-        _sourceXy : Phaser.Point, 
+        _targetXy : Phaser.Geom.Point, 
+        _targetWhCount : Phaser.Geom.Point, 
+        _sourceWh : Phaser.Geom.Point, 
+        _sourceXy : Phaser.Geom.Point, 
         _isEdit : boolean ) {
 
         this.dataGame = _game;
@@ -69,10 +69,10 @@ export class FkGridCanvas{
             for ( var j = 0; j < _targetWhCount.y; j++ ) {
             	var idx = i * _targetWhCount.y + j;
                 var isA = Math.random() > 0.5;
-                var sXy = new Phaser.Point( 
+                var sXy = new Phaser.Geom.Point( 
                     _sourceXy.x + i * _sourceWh.x, 
                     _sourceXy.y + j * _sourceWh.y );
-                var dXy = new Phaser.Point( i * _sourceWh.x, j * _sourceWh.y );
+                var dXy = new Phaser.Geom.Point( i * _sourceWh.x, j * _sourceWh.y );
                 var g = new FkGrid( cv, this.resBrush1Name, sXy, _sourceWh, dXy );
                 this.dataGrid.push( g );
                 this.dataIsAlive.push( isA );
