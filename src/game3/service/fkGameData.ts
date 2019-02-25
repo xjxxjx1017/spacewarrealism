@@ -7,7 +7,7 @@ export class FkGameData {
     private BRUSH_NORMAL : string = "BRUSH_NORMAL";
     private BRUSH_ERASE : string = "BRUSH_ERASE";
     private dataBrushType : string = this.BRUSH_ERASE;
-    private dataBrushRadius : number = 5;
+    private dataBrushRadius : number = 15;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -26,7 +26,7 @@ export class FkGameData {
 	public run() {
         var self = this;
 
-		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 500, 250, "ship-body-light" );
+		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 500, 250, null );
 		this.dataShip1.drawDstrObject();
 		this.dataBrushType = this.BRUSH_ERASE; 
 

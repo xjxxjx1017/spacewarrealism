@@ -3,9 +3,13 @@ A space war game
 
 # Task List
 
-Currently working on item No.1 - No.3 of the spec.
+Working on item No.1 - No.3 of the spec:
 
 ![Specification](/assets/spec/实派宇宙III.png "Specification")
+
+Current progress:
+
+![Progress](/assets/spec/2019-02-25.11-19-07.png "Progress")
 
 1. 基本物体编辑器
 
