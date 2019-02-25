@@ -1,8 +1,13 @@
 import 'phaser';
+import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 
 export class FkGameData {
 	private dataGame : Phaser.Scene;
-    // private layerGridCanvas : FkGridCanvas;
+    private dataShip1 : FkDestructibleObject;
+    private BRUSH_NORMAL : string = "BRUSH_NORMAL";
+    private BRUSH_ERASE : string = "BRUSH_ERASE";
+    private dataBrushType : string = this.BRUSH_ERASE;
+    private dataBrushRadius : number = 5;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -13,19 +18,19 @@ export class FkGameData {
 
 	private constructor() {}
 
-	public Init( _game : Phaser.Scene ) : Phaser.Scene {
-		return this.dataGame = _game;
+	public init( _game : Phaser.Scene ) : Phaser.Scene {
+		this.dataGame = _game;
+		return this.dataGame;
 	}
 
-	public Run() {
+	public run() {
         var self = this;
-        // this.layerGridCanvas = new FkGridCanvas( this.dataGame, 
-        //     new Phaser.Geom.Point( 30, 30 ),    // target xy
-        //     new Phaser.Geom.Point( 100, 50 ),    // target wh count
-        //     new Phaser.Geom.Point( 5, 5 ),    // cell wh
-        //     new Phaser.Geom.Point( 0, 0 ), true );    // source xy
-        // this.UseBrushNormal();
 
+		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 500, 250, "ship-body-light" );
+		this.dataShip1.drawDstrObject();
+		this.dataBrushType = this.BRUSH_ERASE; 
+
+		this.initBrush();
         // button
         // var cB1 = this.CreateButton( 1, 'overlay_ship', () => {
         //     self.layerGridCanvas.SetIsEdit( !this.layerGridCanvas.GetIsEdit() );
@@ -34,27 +39,42 @@ export class FkGameData {
         // var cB3 = this.CreateButton( 3, 'overlay_nohuman', () => { self.UseBrushEraser() } );
 	}
 
-    // public Update() {
-    //     this.layerGridCanvas.Update();
-    // }
-
     // private CreateButton( _seq: number, _overlay: string, _onClick: () => void ) : FkImageButton {
     //     return new FkImageButton( this.dataGame, 550, 50 + (64 + 5) * (_seq - 1), 
     //         'button_normal',  'button_hover',  'button_down', 
     //         _overlay, _onClick );
     // }
 
-    // private UseBrushNormal() {
-    //     var self = this;
-    //     this.layerGridCanvas.SetBrush( new FkBrush( "Normal", ( _idx: number ) => {
-    //         self.layerGridCanvas.SetGridIsAlive( _idx, true );
-    //     }))
-    // }
+    private initBrush() {
+        var self = this;
+        this.dataGame.input.on( "pointerdown", function( _p ) {
+        	self.onBrushDraw( _p );
+        })
+        this.dataGame.input.on( "pointermove", function( _p ) {
+        	if ( self.dataGame.input.mousePointer.isDown ) {
+        		self.onBrushDraw( _p );
+        	}
+        })
+    }
 
-    // private UseBrushEraser() {
-    //     var self = this;
-    //     this.layerGridCanvas.SetBrush( new FkBrush( "Eraser", ( _idx: number ) => {
-    //         self.layerGridCanvas.SetGridIsAlive( _idx, false );
-    //     }))
-    // }
+    private onBrushDraw( _p : Phaser.Geom.Point ) {
+        var self = this;
+    	switch ( self.dataBrushType ) {
+    		case self.BRUSH_NORMAL:
+    			self.dataShip1.modifyByCircle( 
+    				new Phaser.Geom.Circle( _p.x, _p.y, self.dataBrushRadius),
+    				FkDstrGridData.getStateVisible() );
+				self.dataShip1.drawDstrObject();
+    			break;
+    		case self.BRUSH_ERASE:
+    			self.dataShip1.modifyByCircle( 
+    				new Phaser.Geom.Circle( _p.x, _p.y, self.dataBrushRadius),
+    				FkDstrGridData.getStateHide() );
+				self.dataShip1.drawDstrObject();
+    			break;
+    		default:
+    			console.log( "Brush not found." );
+    			break;
+    	}
+    }
 }

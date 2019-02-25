@@ -12,6 +12,8 @@ export class Preload extends Phaser.Scene {
     
     public preload() : void {
         this.load.image('ship', 'assets/ship.jpg');
+        this.load.image('ship-body', 'assets/ship-body.png');
+        this.load.image('ship-body-light', 'assets/ship-body-light.png');
         this.load.image('space', 'assets/space.png');
         this.load.image('button_normal', 'assets/button/normal.png');
         this.load.image('button_hover', 'assets/button/hover.png');

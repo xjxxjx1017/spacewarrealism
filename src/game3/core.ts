@@ -11,8 +11,8 @@ export class Core extends Phaser.Scene {
     
 	public create(): void {
 		var g = this;
-		FkGameData.inst().Init( g );
-		FkGameData.inst().Run();
+		FkGameData.inst().init( g );
+		FkGameData.inst().run();
 	}
 
 	// public update(): void {
