@@ -1,6 +1,6 @@
 <!DOCTYPE html>
  <html>
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <style type="text/css">
         body, html {
@@ -13,12 +13,39 @@
             margin: 0;
             padding: 0;
         }
-    </style> -->
+    </style>
+    <script type="text/javascript">
+        var dataUI = {
+            dataBrushType = "erase",
+        };
+        function onBrushTypeChange(e) { dataUI.dataBrushType = e.value; }
+    </script>
     <head>
         <title>SpaceWarRealism</title>
         <script src="/dist/app.bundle.js"></script>
     </head>
     <body>
-        <div id="phaser-example"></div>
+        <div id="phaser-example" ></div>
+        <div class="ui-main-container" style="
+            color: rgb(140,255,255); font-weight:bold;
+            position: fixed; top: 0; width: 100%; 
+            pointer-events: none;">
+            <div class="ui-main-panel" style="
+                margin-left: 70%; width: 100%; 
+                pointer-events: auto;">
+                <br>
+                <span style="user-select: none;">Brush select</span>
+                <div>
+                    <input type="radio" name="brush" id="brush-paint" value="paint"
+                        onchange="onBrushTypeChange(this)">
+                    <label for="brush-paint">Paint</label>
+                </div>
+                <div>
+                    <input type="radio" name="brush" id="brush-erase" value="erase" checked="" 
+                        onchange="onBrushTypeChange(this)">
+                    <label for="brush-erase">Erase</label>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

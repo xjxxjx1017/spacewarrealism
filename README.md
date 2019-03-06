@@ -13,13 +13,9 @@ Current progress:
 
 1. 基本物体编辑器
 
-* UI设计
-	* TabPanel - DesignSample
-	* TabPanel - Res
-	* TabPanel - Select
-	* Button select state
-	* Radio button list
-	* Esc key as "Erase"
+* Mixing JS with Typescript
+* Using Vue
+* Find a suitable UI framework
 
 # Finished
 
@@ -39,4 +35,5 @@ Current progress:
 * Phaser 3 			
 * Typescript 		
 * Webpack 			
-* Lodash			
+* Lodash
+* Html DOM for UI

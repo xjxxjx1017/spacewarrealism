@@ -26,7 +26,7 @@ export class FkGameData {
 	public run() {
         var self = this;
 
-		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 500, 250, null );
+		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 200, 250, null );
 		this.dataShip1.drawDstrObject();
 		this.dataBrushType = this.BRUSH_ERASE; 
 
@@ -59,6 +59,7 @@ export class FkGameData {
 
     private onBrushDraw( _p : Phaser.Geom.Point ) {
         var self = this;
+        // var self.dataBrushType = dataUI.dataBrushType;
     	switch ( self.dataBrushType ) {
     		case self.BRUSH_NORMAL:
     			self.dataShip1.modifyByCircle( 
