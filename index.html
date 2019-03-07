@@ -14,12 +14,6 @@
             padding: 0;
         }
     </style>
-    <script type="text/javascript">
-        var dataUI = {
-            dataBrushType = "erase",
-        };
-        function onBrushTypeChange(e) { dataUI.dataBrushType = e.value; }
-    </script>
     <head>
         <title>SpaceWarRealism</title>
         <script src="/dist/app.bundle.js"></script>
@@ -33,17 +27,17 @@
             <div class="ui-main-panel" style="
                 margin-left: 70%; width: 100%; 
                 pointer-events: auto;">
-                <br>
-                <span style="user-select: none;">Brush select</span>
-                <div>
-                    <input type="radio" name="brush" id="brush-paint" value="paint"
-                        onchange="onBrushTypeChange(this)">
-                    <label for="brush-paint">Paint</label>
-                </div>
-                <div>
-                    <input type="radio" name="brush" id="brush-erase" value="erase" checked="" 
-                        onchange="onBrushTypeChange(this)">
-                    <label for="brush-erase">Erase</label>
+                <div id="vue-panel-editor-ship">
+                    <br>
+                    <span style="user-select: none;">Brush select</span>
+                    <div>
+                        <input type="radio" id="brush-paint" :value="ui.dataBrushNormal" v-model="out.dataBrushType">
+                        <label for="brush-paint">Paint</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="brush-erase" :value="ui.dataBrushErase" v-model="out.dataBrushType">
+                        <label for="brush-erase">Erase</label>
+                    </div>
                 </div>
             </div>
         </div>

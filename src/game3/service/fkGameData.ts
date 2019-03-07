@@ -1,13 +1,14 @@
 import 'phaser';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
+import {EditorShip} from "../controller/editorship";
 
 export class FkGameData {
-	private dataGame : Phaser.Scene;
-    private dataShip1 : FkDestructibleObject;
     private BRUSH_NORMAL : string = "BRUSH_NORMAL";
     private BRUSH_ERASE : string = "BRUSH_ERASE";
-    private dataBrushType : string = this.BRUSH_ERASE;
+	private dataGame : Phaser.Scene;
+    private dataShip1 : FkDestructibleObject;
     private dataBrushRadius : number = 15;
+    private uiEditorShip : EditorShip;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -20,6 +21,9 @@ export class FkGameData {
 
 	public init( _game : Phaser.Scene ) : Phaser.Scene {
 		this.dataGame = _game;
+        this.uiEditorShip = new EditorShip(
+            this.BRUSH_NORMAL,
+            this.BRUSH_ERASE );
 		return this.dataGame;
 	}
 
@@ -28,22 +32,9 @@ export class FkGameData {
 
 		this.dataShip1 = new FkDestructibleObject( this.dataGame, 30, 30, 200, 250, null );
 		this.dataShip1.drawDstrObject();
-		this.dataBrushType = this.BRUSH_ERASE; 
 
 		this.initBrush();
-        // button
-        // var cB1 = this.CreateButton( 1, 'overlay_ship', () => {
-        //     self.layerGridCanvas.SetIsEdit( !this.layerGridCanvas.GetIsEdit() );
-        // });
-        // var cB2 = this.CreateButton( 2, 'overlay_grass', () => { self.UseBrushNormal() } );
-        // var cB3 = this.CreateButton( 3, 'overlay_nohuman', () => { self.UseBrushEraser() } );
 	}
-
-    // private CreateButton( _seq: number, _overlay: string, _onClick: () => void ) : FkImageButton {
-    //     return new FkImageButton( this.dataGame, 550, 50 + (64 + 5) * (_seq - 1), 
-    //         'button_normal',  'button_hover',  'button_down', 
-    //         _overlay, _onClick );
-    // }
 
     private initBrush() {
         var self = this;
@@ -59,8 +50,7 @@ export class FkGameData {
 
     private onBrushDraw( _p : Phaser.Geom.Point ) {
         var self = this;
-        // var self.dataBrushType = dataUI.dataBrushType;
-    	switch ( self.dataBrushType ) {
+    	switch ( self.uiEditorShip.out.dataBrushType ) {
     		case self.BRUSH_NORMAL:
     			self.dataShip1.modifyByCircle( 
     				new Phaser.Geom.Circle( _p.x, _p.y, self.dataBrushRadius),

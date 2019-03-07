@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.js');
+var vue = path.join(__dirname, 'src/vue.js');
 
 module.exports = {
     mode: 'development',
@@ -21,7 +22,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.ts'],
         alias: {
-          phaser: phaser
+          phaser: phaser,
+          vue: vue,
         }
     },
     module: {

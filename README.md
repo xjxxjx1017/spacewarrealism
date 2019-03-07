@@ -9,13 +9,12 @@ Working on item No.1 - No.3 of the spec:
 
 Current progress:
 
-![Progress](/assets/spec/2019-02-25.11-19-07.png "Progress")
+![Progress](/assets/spec/2019-03-07.22-55-53.png "Progress")
 
 1. 基本物体编辑器
 
-* Mixing JS with Typescript
-* Using Vue
 * Find a suitable UI framework
+* Build a tab panel and a slider using vue component
 
 # Finished
 
@@ -32,7 +31,8 @@ Current progress:
 
 ## Environment
 
-* Phaser 3 			
+* Phaser 3 		
+* Vue	
 * Typescript 		
 * Webpack 			
 * Lodash

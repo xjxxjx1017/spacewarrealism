@@ -54,7 +54,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
         this.layerGridEdge.clear();
         this.debugDrawCounter = 0;
         this.draw( ( _rect, _data ) => { this.render( _rect, _data ); } );
-        console.log( "Draw: " + this.debugDrawCounter + " rects" );
+        // console.log( "Draw: " + this.debugDrawCounter + " rects" );
     }
 
     private render(  _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) {
