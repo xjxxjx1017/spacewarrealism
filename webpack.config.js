@@ -2,9 +2,6 @@
 
 const webpack = require('webpack');
 const path = require('path');
-var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
-var phaser = path.join(pathToPhaser, 'dist/phaser.js');
-var vue = path.join(__dirname, 'src/vue.js');
 
 module.exports = {
     mode: 'development',
@@ -22,15 +19,24 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.ts'],
         alias: {
-          phaser: phaser,
-          vue: vue,
+          phaser: path.join(__dirname, '/node_modules/phaser/dist/phaser.js'),
+          vue: path.join(__dirname, 'src/vue.js'),
         }
     },
     module: {
         rules: [
             { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
-            { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
+            { test: /phaser\.js$/, loader: 'expose-loader?Phaser' },
+            { test: /\.scss$/, use: [
+                { loader: "style-loader" }, 
+                { loader: "css-loader", options: { sourceMap: true } }, 
+                { loader: "sass-loader", options: { sourceMap: true } }
+            ] },
+            { test: /\.css$/, use: [
+                { loader: "style-loader" }, 
+                { loader: "css-loader", options: { sourceMap: true } }, 
+                { loader: "sass-loader", options: { sourceMap: true } }
+            ] },
         ]
     }
-
 };

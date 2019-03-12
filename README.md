@@ -13,27 +13,16 @@ Current progress:
 
 1. 基本物体编辑器
 
-* Find a suitable UI framework
-* Build a tab panel and a slider using vue component
-
-# Finished
-
-## 组成部件
-
-| Tables | Status 	| Date
-| ------ | ------ 	| ---
-| 基本物体编辑器、	一般画刷与擦除	| In Progress
-
-## 基础功能
-
-* Destructible Terrain/Objects			
-* Counter		
+* SASS
+* Keen-UI, not a framework, but a library
+* Build a tab panel and a slider using vue component	
 
 ## Environment
 
 * Phaser 3 		
-* Vue	
+* Vue
+* Keen-UI
+* SASS
 * Typescript 		
 * Webpack 			
 * Lodash
-* Html DOM for UI

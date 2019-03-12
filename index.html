@@ -1,35 +1,20 @@
 <!DOCTYPE html>
  <html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-    <style type="text/css">
-        body, html {
-            height: 100%;
-            width: 100%;
-            background: #444;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
     <head>
         <title>SpaceWarRealism</title>
         <script src="/dist/app.bundle.js"></script>
     </head>
     <body>
         <div id="phaser-example" ></div>
-        <div class="ui-main-container" style="
-            color: rgb(140,255,255); font-weight:bold;
-            position: fixed; top: 0; width: 100%; 
-            pointer-events: none;">
-            <div class="ui-main-panel" style="
-                margin-left: 70%; width: 100%; 
-                pointer-events: auto;">
+        <div class="ui-main-container">
+            <div class="ui-main-panel">
                 <div id="vue-panel-editor-ship">
                     <br>
-                    <span style="user-select: none;">Brush select</span>
+                    <span class="no-user-select">Brush select</span>
+                    <div>
+                        <ui-button size="normal">Test Button</ui-button>
+                    </div>
                     <div>
                         <input type="radio" id="brush-paint" :value="ui.dataBrushNormal" v-model="out.dataBrushType">
                         <label for="brush-paint">Paint</label>

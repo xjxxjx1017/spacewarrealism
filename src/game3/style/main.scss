@@ -1,0 +1,32 @@
+
+// Window
+body, html {
+    height: 100%;
+    width: 100%;
+    background: #444;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+// Phaser Container
+body {
+	.ui-main-container {
+        color: rgb(140,255,255); font-weight:bold;
+        position: fixed; top: 0; width: 100%; 
+        pointer-events: none;
+        .ui-main-panel {
+            margin-left: 70%; width: 100%; 
+            pointer-events: auto;
+        }
+	}
+}
+
+// UI
+.ui-main-container {
+	.no-user-select {
+		user-select: none;
+	}
+}
