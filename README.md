@@ -13,8 +13,6 @@ Current progress:
 
 1. 基本物体编辑器
 
-* SASS
-* Keen-UI, not a framework, but a library
 * Build a tab panel and a slider using vue component	
 
 ## Environment
