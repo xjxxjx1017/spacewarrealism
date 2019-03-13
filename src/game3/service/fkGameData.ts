@@ -7,7 +7,6 @@ export class FkGameData {
     private BRUSH_ERASE : string = "BRUSH_ERASE";
 	private dataGame : Phaser.Scene;
     private dataShip1 : FkDestructibleObject;
-    private dataBrushRadius : number = 15;
     private uiEditorShip : EditorShip;
 
 	private static _inst:FkGameData = null;
@@ -53,13 +52,13 @@ export class FkGameData {
     	switch ( self.uiEditorShip.out.dataBrushType ) {
     		case self.BRUSH_NORMAL:
     			self.dataShip1.modifyByCircle( 
-    				new Phaser.Geom.Circle( _p.x, _p.y, self.dataBrushRadius),
+    				new Phaser.Geom.Circle( _p.x, _p.y, self.uiEditorShip.out.dataBrushSize),
     				FkDstrGridData.getStateVisible() );
 				self.dataShip1.drawDstrObject();
     			break;
     		case self.BRUSH_ERASE:
     			self.dataShip1.modifyByCircle( 
-    				new Phaser.Geom.Circle( _p.x, _p.y, self.dataBrushRadius),
+    				new Phaser.Geom.Circle( _p.x, _p.y, self.uiEditorShip.out.dataBrushSize),
     				FkDstrGridData.getStateHide() );
 				self.dataShip1.drawDstrObject();
     			break;

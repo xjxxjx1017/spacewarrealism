@@ -13,19 +13,28 @@ body {
 
 // Phaser Container
 body {
-	.ui-main-container {
-        color: rgb(140,255,255); font-weight:bold;
+	.fk-main-container {
+        display: flex;
+        margin-top: 30px;
+        color: rgb(140,255,255); 
+        font-weight:bold;
         position: fixed; top: 0; width: 100%; 
         pointer-events: none;
-        .ui-main-panel {
-            margin-left: 70%; width: 100%; 
+        .fk-left-placeholder-panel {
+            min-width: 270px;
+        }
+        .fk-main-panel {
+            width: 100%; 
             pointer-events: auto;
+            .brush-panel {
+                width: 25rem;
+            }
         }
 	}
 }
 
 // UI
-.ui-main-container {
+.fk-main-container {
 	.no-user-select {
 		user-select: none;
 	}

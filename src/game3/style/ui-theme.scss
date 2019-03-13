@@ -7,5 +7,41 @@
 }
 
 html {
-    font-size: 100%;
+    font-size: 70%;
+}
+
+.fk-dark-tabs {
+	.ui-tabs__body {
+		background-color: #000000;
+	}
+	.ui-radio__outer-circle {
+		border: 0.125rem solid rgba(0, 255, 0, 0.38);
+	}
+	.ui-radio:hover:not(.is-disabled):not(.is-checked) .ui-radio__outer-circle {
+	    border: 0.125rem solid rgba(0, 255, 0, 0.54);
+	}
+}
+
+.fk-inverse-tabs {
+	.ui-tab-header-item::after {
+		bottom: inherit;
+		top: 0;
+	}
+	.ui-tabs {
+		display: flex;
+	    flex-direction: column;
+	}
+	.ui-tabs__header {
+		order: 2;
+	}
+	.ui-tabs__body {
+		border-top: 0.0625rem solid #eeeeee;
+		border-bottom: 0;
+	}
+}
+
+.fk-row {
+	margin-top: 5px;
+    margin-bottom: 5px;
+    min-height: 5px;
 }

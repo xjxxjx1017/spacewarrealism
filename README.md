@@ -9,11 +9,11 @@ Working on item No.1 - No.3 of the spec:
 
 Current progress:
 
-![Progress](/assets/spec/2019-03-07.22-55-53.png "Progress")
+![Progress](/assets/spec/2019-03-13.23-08-56.png "Progress")
 
-1. 基本物体编辑器
-
-* Build a tab panel and a slider using vue component	
+TODO:
+* Compile SCSS for Keen-UI.
+* First Schedule complete! Update Main Task Pic.
 
 ## Environment
 
