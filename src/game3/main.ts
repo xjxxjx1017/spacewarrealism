@@ -5,10 +5,11 @@ import {Core} from './core';
 
 // UI libraries
 import * as Vue from 'vue';
-import KeenUI from 'keen-ui';
-import '../keen-ui.css';
 import "./style/main.scss";
 import "./style/ui-theme.scss";
+import 'element-ui';
+import 'element_ui_css';
+declare var ElementUI : any;
 
 const config: GameConfig = {
 	width: 1200,
@@ -16,11 +17,11 @@ const config: GameConfig = {
 	type: Phaser.AUTO,
 	parent: "game",
 	scene: [Preload, Core],
-	backgroundColor: "#000000",
+	backgroundColor: "#cccccc",
 	render: { pixelArt: false, antialias: true, autoResize: false }
 };
 
-Vue.use(KeenUI);
+Vue.use(ElementUI);
 
 export class Main extends Phaser.Game {
     constructor() {

@@ -7,9 +7,14 @@
 }
 
 html {
-    font-size: 70%;
+    font-size: 100%;
 }
 
+h1,h2,h3,h4 {
+    color: #606266;
+}
+
+/*
 .fk-dark-tabs {
 	.ui-tabs__body {
 		background-color: #000000;
@@ -38,7 +43,7 @@ html {
 		border-top: 0.0625rem solid #eeeeee;
 		border-bottom: 0;
 	}
-}
+}*/
 
 .fk-row {
 	margin-top: 5px;

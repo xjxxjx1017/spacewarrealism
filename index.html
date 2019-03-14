@@ -13,30 +13,31 @@
             <div class="fk-main-panel">
                 <div id="vue-panel-editor-ship">
                     <div class="brush-panel fk-inverse-tabs fk-dark-tabs">
-                        <ui-tabs>
-                            <ui-tab v-for="tab in ui.dataTabs" title="Brush A" 
-                                :key="tab.title" :selected="tab.title === 'Body'"
-                                :title="tab.title">
-                                
+                        <el-tabs tab-position="bottom" type="border-card">
+                            <el-tab-pane :label="tab.title" v-for="tab in ui.dataTabs" >
                                 <div class="fk-row">
-                                    <span class="fk-row no-user-select">{{ tab.title }}</span>
+                                    <h2 class="fk-row no-user-select">{{ tab.title }}</h2>
                                 </div>
                                 <div class="fk-row">
                                 </div>
                                 <div class="fk-row">
-                                    <ui-slider show-marker :min="1" :max="30" :step="1" v-model="out.dataBrushSize">
-                                    </ui-slider>
+                                    <el-slider v-model="out.dataBrushSize" 
+                                        :min="1" :max="30">
+                                    </el-slider>
                                 </div>
                                 <div class="fk-row">
-                                    <ui-radio-group
+                                </div>
+                                <div class="fk-row">
+                                    <el-radio-group
                                         name="dataBrushType"
                                         vertical
                                         :options="ui.dataRadioGroup"
                                         v-model="out.dataBrushType">
-                                    </ui-radio-group>
+                                        <el-radio v-for="rb in ui.dataRadioGroup" :label="rb.value">{{rb.title}}</el-radio>
+                                    </el-radio-group>
                                 </div>
-                            </ui-tab>
-                        </ui-tabs>
+                            </el-tab-pane>
+                        </el-tabs>
                     </div>
                 </div>
             </div>

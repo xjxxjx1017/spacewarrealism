@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme",
   "dependencies": {
-    "keen-ui": "^1.1.2",
+    "element-ui": "^2.6.1",
     "lodash": "^4.17.11",
     "phaser": "^3.16.2"
   },
@@ -31,6 +31,7 @@
     "@types/lodash": "^4.14.120",
     "css-loader": "^2.1.1",
     "expose-loader": "^0.7.5",
+    "file-loader": "^3.0.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",

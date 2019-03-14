@@ -3,7 +3,6 @@
 body, html {
     height: 100%;
     width: 100%;
-    background: #444;
 }
 
 body {
@@ -16,8 +15,6 @@ body {
 	.fk-main-container {
         display: flex;
         margin-top: 30px;
-        color: rgb(140,255,255); 
-        font-weight:bold;
         position: fixed; top: 0; width: 100%; 
         pointer-events: none;
         .fk-left-placeholder-panel {
@@ -27,7 +24,7 @@ body {
             width: 100%; 
             pointer-events: auto;
             .brush-panel {
-                width: 25rem;
+                width: 20rem;
             }
         }
 	}

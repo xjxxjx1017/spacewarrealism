@@ -25,24 +25,21 @@ export class EditorShip {
 					dataBrushNormal: _brushNormal,
 					dataBrushErase: _brushErase,
 					dataRadioGroup: [{
-					        label: "Paint",
+					        title: "Paint",
 					        value: _brushNormal
 					    },
 					    {
-					        label: "Erase",
+					        title: "Erase",
 					        value: _brushErase
 					    }],
 					dataTabs: [{
 		                    title: 'Body Paint',
-		                    icon: 'person'
 		                },
 		                {
 		                    title: 'Armor Paint',
-		                    icon: 'book'
 		                },
 		                {
 		                    title: 'Add-ons',
-		                    icon: 'favorite'
 		                }],
 				},
 			},
