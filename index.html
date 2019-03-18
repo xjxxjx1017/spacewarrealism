@@ -7,39 +7,49 @@
     </head>
     <body>
         <div id="phaser-example" ></div>
-        <div class="fk-main-container">
+        <div class="fk-main-container" id="vue-main-container">
             <div class="fk-left-placeholder-panel">
             </div>
             <div class="fk-main-panel">
-                <div id="vue-panel-editor-ship">
-                    <div class="brush-panel fk-inverse-tabs fk-dark-tabs">
-                        <el-tabs tab-position="bottom" type="border-card">
-                            <el-tab-pane :label="tab.title" v-for="tab in ui.dataTabs" >
-                                <div class="fk-row">
-                                    <h2 class="fk-row no-user-select">{{ tab.title }}</h2>
-                                </div>
-                                <div class="fk-row">
-                                </div>
-                                <div class="fk-row">
-                                    <el-slider v-model="out.dataBrushSize" 
-                                        :min="1" :max="30">
-                                    </el-slider>
-                                </div>
-                                <div class="fk-row">
-                                </div>
-                                <div class="fk-row">
-                                    <el-radio-group
-                                        name="dataBrushType"
-                                        vertical
-                                        :options="ui.dataRadioGroup"
-                                        v-model="out.dataBrushType">
-                                        <el-radio v-for="rb in ui.dataRadioGroup" :label="rb.value">{{rb.title}}</el-radio>
-                                    </el-radio-group>
-                                </div>
-                            </el-tab-pane>
-                        </el-tabs>
+                <el-button v-show="!ui.dataEditPanelVsb" @click="ui.dataEditPanelVsb = true">EditShip</el-button>
+                <el-dialog
+                  title="Edit Ship" :modal="false" :modal-append-to-body="false"
+                  :visible.sync="ui.dataEditPanelVsb" :close-on-click-modal="false"
+                  center>
+                    <div id="vue-panel-editor-ship">
+                        <div class="brush-panel fk-inverse-tabs fk-dark-tabs">
+                            <el-tabs tab-position="bottom" type="border-card">
+                                <el-tab-pane :label="tab.title" v-for="tab in ui.dataTabs" >
+                                    <div class="fk-row">
+                                        <h2 class="fk-row no-user-select">{{ tab.title }}</h2>
+                                    </div>
+                                    <div class="fk-row">
+                                    </div>
+                                    <div class="fk-row">
+                                        <el-slider v-model="out.dataBrushSize" 
+                                            :min="1" :max="30">
+                                        </el-slider>
+                                    </div>
+                                    <div class="fk-row">
+                                    </div>
+                                    <div class="fk-row">
+                                        <el-radio-group
+                                            name="dataBrushType"
+                                            vertical
+                                            :options="ui.dataRadioGroup"
+                                            v-model="out.dataBrushType">
+                                            <el-radio v-for="rb in ui.dataRadioGroup" :label="rb.value">{{rb.title}}</el-radio>
+                                        </el-radio-group>
+                                    </div>
+                                </el-tab-pane>
+                            </el-tabs>
+                        </div>
                     </div>
-                </div>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="ui.dataEditPanelVsb = false">Cancel</el-button>
+                        <el-button type="primary" @click="ui.dataEditPanelVsb = false">Save</el-button>
+                    </span>
+                </el-dialog>
             </div>
         </div>
     </body>

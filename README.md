@@ -12,13 +12,14 @@ Current progress:
 ![Progress](/assets/spec/2019-03-13.23-08-56.png "Progress")
 
 TODO:
-* Quit From Edit
 * Battle! Battle Ground
-* Go to Edit
+* Modularize
+* Go to Edit ( From left or right )
 * 1 vs 1
 * HP Calculation
 * Battle Start Button
 * Timer & Rand-Laser
+* Deploy to google drive
 
 ## Environment
 

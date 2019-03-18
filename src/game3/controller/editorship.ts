@@ -18,10 +18,11 @@ export class EditorShip {
 
 	constructor( _brushNormal : string, _brushErase : string ) {
 		this.vueData = new Vue({
-			el: '#vue-panel-editor-ship',
+			el: '#vue-main-container',
 			data: {
 				out: new EditorShipOut( _brushErase, 15 ),
 				ui: {
+					dataEditPanelVsb: false,
 					dataBrushNormal: _brushNormal,
 					dataBrushErase: _brushErase,
 					dataRadioGroup: [{
