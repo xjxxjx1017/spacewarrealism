@@ -11,7 +11,10 @@
             <div class="fk-left-placeholder-panel">
             </div>
             <div class="fk-main-panel">
-                <el-button v-show="!ui.dataEditPanelVsb" @click="ui.dataEditPanelVsb = true">EditShip</el-button>
+                <el-button v-show="!ui.dataEditPanelVsb" @click="ui.dataEditPanelVsb = true" 
+                    icon="el-icon-edit" type="primary" circle>
+                </el-button>
+                <test-tag/>
                 <el-dialog
                   title="Edit Ship" :modal="false" :modal-append-to-body="false"
                   :visible.sync="ui.dataEditPanelVsb" :close-on-click-modal="false"

@@ -12,8 +12,8 @@ Current progress:
 ![Progress](/assets/spec/2019-03-13.23-08-56.png "Progress")
 
 TODO:
-* Battle! Battle Ground
 * Modularize
+* Battle! Battle Ground
 * Go to Edit ( From left or right )
 * 1 vs 1
 * HP Calculation

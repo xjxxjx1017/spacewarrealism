@@ -46,7 +46,7 @@ module.exports = {
                         outputPath: 'fonts/'
                     }
                 }]
-            },
+            }
         ]
     },
     plugins: [

@@ -10,6 +10,7 @@ import "./style/ui-theme.scss";
 import 'element-ui';
 import 'element_ui_css';
 declare var ElementUI : any;
+import './components/test';
 
 const config: GameConfig = {
 	width: 1200,
