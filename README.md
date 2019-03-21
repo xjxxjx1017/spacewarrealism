@@ -9,10 +9,9 @@ Working on item No.1 - No.3 of the spec:
 
 Current progress:
 
-![Progress](/assets/spec/2019-03-13.23-08-56.png "Progress")
+![Progress](/assets/spec/2019-03-21.21-46-12.png "Progress")
 
 TODO:
-* Modularize
 * Battle! Battle Ground
 * Go to Edit ( From left or right )
 * 1 vs 1
