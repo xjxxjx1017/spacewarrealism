@@ -1,0 +1,18 @@
+
+.panel-edit-ship {
+    width: 100%; 
+    pointer-events: auto;
+    .el-dialog__wrapper {
+        top: inherit;
+        right: inherit;
+        bottom: inherit;
+        left: inherit;
+        .el-dialog {
+            margin-top: inherit !important;
+            width: 20rem;
+        }
+    }
+    .v-modal {
+        width: 0;
+    }
+}

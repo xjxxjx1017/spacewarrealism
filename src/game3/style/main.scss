@@ -20,27 +20,7 @@ body {
         .fk-left-placeholder-panel {
             min-width: 270px;
         }
-        .fk-main-panel {
-            width: 100%; 
-            pointer-events: auto;
-            // .brush-panel {
-            //     width: 20rem;
-            // }
-        }
-        .el-dialog__wrapper {
-            top: inherit;
-            right: inherit;
-            bottom: inherit;
-            left: inherit;
-            .el-dialog {
-                margin-top: inherit !important;
-                width: 20rem;
-            }
-        }
 	}
-    .v-modal {
-        width: 0;
-    }
 }
 
 // UI

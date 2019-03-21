@@ -5,12 +5,14 @@ import {Core} from './core';
 
 // UI libraries
 import * as Vue from 'vue';
-import "./style/main.scss";
-import "./style/ui-theme.scss";
 import 'element-ui';
 import 'element_ui_css';
 declare var ElementUI : any;
-import './components/test';
+// import other components
+import './components/panel-edit-ship';
+import "./style/main.scss";
+import "./style/ui-theme.scss";
+import "./style/panel-edit-ship.scss";
 
 const config: GameConfig = {
 	width: 1200,

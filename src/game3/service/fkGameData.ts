@@ -1,13 +1,13 @@
 import 'phaser';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
-import {EditorShip} from "../controller/editorship";
+import {PanelEditShip} from "../controller/panel-edit-ship";
 
 export class FkGameData {
     private BRUSH_NORMAL : string = "BRUSH_NORMAL";
     private BRUSH_ERASE : string = "BRUSH_ERASE";
 	private dataGame : Phaser.Scene;
     private dataShip1 : FkDestructibleObject;
-    private uiEditorShip : EditorShip;
+    private uiEditorShip : PanelEditShip;
 
 	private static _inst:FkGameData = null;
 	public static inst():FkGameData {
@@ -20,7 +20,7 @@ export class FkGameData {
 
 	public init( _game : Phaser.Scene ) : Phaser.Scene {
 		this.dataGame = _game;
-        this.uiEditorShip = new EditorShip(
+        this.uiEditorShip = new PanelEditShip(
             this.BRUSH_NORMAL,
             this.BRUSH_ERASE );
 		return this.dataGame;
