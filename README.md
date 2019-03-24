@@ -12,8 +12,7 @@ Current progress:
 ![Progress](/assets/spec/2019-03-21.21-46-12.png "Progress")
 
 TODO:
-* Battle! Battle Ground
-* Go to Edit ( From left or right )
+* Go to Edit, for 2 ships
 * 1 vs 1
 * HP Calculation
 * Battle Start Button
