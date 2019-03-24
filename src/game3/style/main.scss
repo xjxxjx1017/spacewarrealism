@@ -14,11 +14,10 @@ body {
 body {
 	.fk-main-container {
         display: flex;
-        margin-top: 30px;
         position: fixed; top: 0; width: 100%; 
         pointer-events: none;
-        .fk-left-placeholder-panel {
-            min-width: 270px;
+        .panel-edit-ship {
+            position: fixed;
         }
 	}
 }

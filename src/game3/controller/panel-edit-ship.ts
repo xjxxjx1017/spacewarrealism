@@ -7,7 +7,10 @@ export class PanelEditShip {
         return this.vueData.out;
     }
     // Construct UI from Game logic loop
-	constructor( _brushNormal : string, _brushErase : string ) {
+	constructor( 
+		_posX : number, _posY : number, 
+		_brushNormal : string, _brushErase : string ) {
+		
 		this.vueData = new Vue({
 			el: '#vue-main-container',
 			data: {
@@ -17,7 +20,9 @@ export class PanelEditShip {
 				},
 				ui: {
 					stateBrushNormal: _brushNormal,
-					stateBrushErase: _brushErase
+					stateBrushErase: _brushErase,
+					statePosX: _posX,
+					statePosY: _posY,
 				},
 			}
 		});

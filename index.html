@@ -11,6 +11,8 @@
             <div class="fk-left-placeholder-panel"></div>
             <div class="fk-main-panel">
                 <panel-edit-ship 
+                    :pos-x="ui.statePosX"
+                    :pos-y="ui.statePosY"
                     :brush-normal="ui.stateBrushNormal" 
                     :brush-erase="ui.stateBrushErase" 
                     :brush-size.sync="out.dataBrushSize" 

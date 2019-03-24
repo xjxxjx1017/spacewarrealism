@@ -2,6 +2,8 @@ import * as Vue from 'vue';
 
 Vue.component('panel-edit-ship', {
 	props: {
+		posX: Number,
+		posY: Number,
 		brushSize: Number,	
 		brushType: String,
 		brushNormal: String,
@@ -24,7 +26,7 @@ Vue.component('panel-edit-ship', {
 		}
 	},
 	template: `
-<div class="panel-edit-ship">
+<div class="panel-edit-ship" :style="{ top: posY + 'px', left: posX + 'px' }">
     <el-button v-show="!ui.dataEditPanelVsb" @click="ui.dataEditPanelVsb = true" 
         icon="el-icon-edit" type="primary" circle>
     </el-button>
