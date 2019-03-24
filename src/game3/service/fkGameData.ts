@@ -28,8 +28,8 @@ export class FkGameData {
         var self = this;
 
         var shipData = [
-            new Phaser.Geom.Rectangle( 15, 15, 100, 125 ),
-            new Phaser.Geom.Rectangle( 100 + 15 + 200, 15, 100, 125 ) ];
+            new Phaser.Geom.Rectangle( 15, 15, 200, 200 ),
+            new Phaser.Geom.Rectangle( 100 + 15 + 300, 15, 200, 200 ) ];
 
         this.dataShipList = [];
         _.forEach( shipData, function(d){

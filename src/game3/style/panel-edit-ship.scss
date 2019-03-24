@@ -1,14 +1,16 @@
 
-.panel-edit-ship {
+.panel-edit-ship {    
+    transform: scale(0.7);
+    transform-origin: 0 0;
     width: 100%; 
     pointer-events: auto;
     .el-dialog__wrapper {
-        top: inherit;
-        right: inherit;
-        bottom: inherit;
-        left: inherit;
+        top: initial;
+        right: initial;
+        bottom: initial;
+        left: initial;
         .el-dialog {
-            margin-top: inherit !important;
+            margin-top: initial !important;
             width: 20rem;
         }
     }
