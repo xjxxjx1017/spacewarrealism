@@ -2,12 +2,13 @@ import 'phaser';
 import * as _ from 'lodash';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 import {PanelEditShip} from "../controller/panel-edit-ship";
+import {FkShip} from "./fkship";
 
 export class FkGameData {
     private BRUSH_NORMAL : string = "BRUSH_NORMAL";
     private BRUSH_ERASE : string = "BRUSH_ERASE";
 	private dataGame : Phaser.Scene;
-    private dataShipList : FkDestructibleObject[];
+    private dataShipList : FkShip[];
     private uiEditorShip : PanelEditShip;
 
 	private static _inst:FkGameData = null;
@@ -33,50 +34,13 @@ export class FkGameData {
 
         this.dataShipList = [];
         _.forEach( shipData, function(d){
-            var ship = new FkDestructibleObject( self.dataGame, d.x, d.y, 
-                d.width, d.height, null );
-            ship.drawDstrObject();
+            var ship = new FkShip( self.dataGame, d );
             self.dataShipList.push( ship );
         })
 
         this.uiEditorShip = new PanelEditShip(
-            shipData[0].width + shipData[0].x + 15, 15,
+            self.dataGame, self.dataShipList,
             this.BRUSH_NORMAL,
             this.BRUSH_ERASE );
-
-		this.initBrush();
 	}
-
-    private initBrush() {
-        var self = this;
-        this.dataGame.input.on( "pointerdown", function( _p ) {
-        	self.onBrushDraw( _p );
-        })
-        this.dataGame.input.on( "pointermove", function( _p ) {
-        	if ( self.dataGame.input.mousePointer.isDown ) {
-        		self.onBrushDraw( _p );
-        	}
-        })
-    }
-
-    private onBrushDraw( _p : Phaser.Geom.Point ) {
-        var self = this;
-    	switch ( self.uiEditorShip.out.dataBrushType ) {
-    		case self.BRUSH_NORMAL:
-    			self.dataShipList[0].modifyByCircle( 
-    				new Phaser.Geom.Circle( _p.x, _p.y, self.uiEditorShip.out.dataBrushSize),
-    				FkDstrGridData.getStateVisible() );
-				self.dataShipList[0].drawDstrObject();
-    			break;
-    		case self.BRUSH_ERASE:
-    			self.dataShipList[0].modifyByCircle( 
-    				new Phaser.Geom.Circle( _p.x, _p.y, self.uiEditorShip.out.dataBrushSize),
-    				FkDstrGridData.getStateHide() );
-				self.dataShipList[0].drawDstrObject();
-    			break;
-    		default:
-    			console.log( "Brush not found." );
-    			break;
-    	}
-    }
 }
