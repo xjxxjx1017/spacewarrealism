@@ -19,3 +19,7 @@ h1,h2,h3,h4 {
     margin-bottom: 5px;
     min-height: 5px;
 }
+
+.el-dialog--center .el-dialog__body, .el-dialog__body {
+	padding: 0;
+}

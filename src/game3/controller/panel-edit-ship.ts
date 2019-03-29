@@ -10,7 +10,7 @@ export class PanelEditShip {
 	public get out() {
         return this.dataVue.out;
     }
-    // Construct UI from Game logic loop
+
 	constructor( 
 		_game : Phaser.Scene,
 		_unitList : FkShip[],
@@ -18,6 +18,8 @@ export class PanelEditShip {
 
 		this.dataGame = _game;
 		this.dataUnitList = _unitList;
+		
+    	// Construct UI from Game logic loop
 		this.dataVue = new Vue({
 			el: '#vue-main-container',
 			data: {
@@ -28,8 +30,8 @@ export class PanelEditShip {
 				ui: {
 					stateBrushNormal: _brushNormal,
 					stateBrushErase: _brushErase,
-					statePosX: _unitList[0].dataRect.x,
-					statePosY: _unitList[0].dataRect.y,
+					statePosX: 15,// _unitList[0].dataRect.x,
+					statePosY: 235,// _unitList[0].dataRect.y,
 				},
 			}
 		});

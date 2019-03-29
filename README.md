@@ -12,11 +12,11 @@ Current progress:
 ![Progress](/assets/spec/2019-03-21.21-46-12.png "Progress")
 
 TODO:
-* Go to Edit, for 2 ships
+* Turret Placement
+* Turret Damage & Fire Interval
 * 1 vs 1
-* HP Calculation
-* Battle Start Button
-* Timer & Rand-Laser
+* HP Bar / Calculation
+* Battle Start Button, Reset BUtton
 * Deploy to google drive
 
 ## Environment
