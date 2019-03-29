@@ -9,7 +9,7 @@ Working on item No.1 - No.3 of the spec:
 
 Current progress:
 
-![Progress](/assets/spec/2019-03-21.21-46-12.png "Progress")
+![Progress](/assets/spec/2019-03-29.20-44-35.png "Progress")
 
 TODO:
 * Turret Placement
