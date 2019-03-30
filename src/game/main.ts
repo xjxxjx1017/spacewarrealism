@@ -9,10 +9,10 @@ import 'element-ui';
 import 'element_ui_css';
 declare var ElementUI : any;
 // import other components
-import './components/panel-edit-ship';
-import "./style/main.scss";
-import "./style/ui-theme.scss";
-import "./style/panel-edit-ship.scss";
+import './ui-components/panel-edit-ship';
+import "./ui-style/main.scss";
+import "./ui-style/ui-theme.scss";
+import "./ui-style/panel-edit-ship.scss";
 
 const config: GameConfig = {
 	width: 1200,

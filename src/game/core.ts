@@ -1,7 +1,9 @@
 import 'phaser';
-import {FkGameData} from './service/fkgamedata';
+import {GameData} from './objects/gamedata';
 
 export class Core extends Phaser.Scene {
+
+	private dataGame : GameData;
 
     constructor() {
         super({
@@ -10,9 +12,7 @@ export class Core extends Phaser.Scene {
     }
     
 	public create(): void {
-		var g = this;
-		
-		FkGameData.inst().init( g );
-		FkGameData.inst().run();
+		this.dataGame = new GameData( this );
+		this.dataGame.run();
 	}
 }

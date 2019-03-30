@@ -1,27 +1,10 @@
 import 'phaser';
 import * as _ from 'lodash';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
-import {PanelEditShip} from "../controller/panel-edit-ship";
+import {PanelEditShip} from "../ui-components/panel-edit-ship";
+import {EventShipBrush} from "../events/eventshipbrush";
 
-export class FkEventShipBrush {
-    public name : string;
-    public pos : Phaser.Geom.Point;
-    public brushType : string;
-    public brushSize : number;
-
-    public constructor( _name : string, _pos : Phaser.Geom.Point,
-        _brushType : string, _brushSize : number ) {
-        this.name = _name;
-        this.pos = _pos;
-        this.brushType = _brushType;
-        this.brushSize = _brushSize;
-    }
-}
-
-export class FkShip {
-    public static EVENT_DRAW : string = "DRAW";
-    public static BRUSH_NORMAL : string = "BRUSH_NORMAL";
-    public static BRUSH_ERASE : string = "BRUSH_ERASE";
+export class Ship {
     public dataRect : Phaser.Geom.Rectangle;
 	private dataGame : Phaser.Scene;
     private dataShipEntity : FkDestructibleObject;
@@ -36,25 +19,25 @@ export class FkShip {
         this.dataShipEntity.drawDstrObject();
 	}
 
-    public eventAction( _evt : FkEventShipBrush ) {
+    public eventAction( _evt : EventShipBrush ) {
         var self = this;
         switch ( _evt.name ) {
-            case FkShip.EVENT_DRAW:
+            case EventShipBrush.EVENT_DRAW:
                 self.onBrushDraw( _evt );
                 break;
         }
     }
 
-    private onBrushDraw( _evt : FkEventShipBrush ) {
+    private onBrushDraw( _evt : EventShipBrush ) {
         var self = this;
     	switch ( _evt.brushType ) {
-    		case FkShip.BRUSH_NORMAL:
+    		case EventShipBrush.BRUSH_NORMAL:
     			self.dataShipEntity.modifyByCircle( 
     				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
     				FkDstrGridData.getStateVisible() );
 				self.dataShipEntity.drawDstrObject();
     			break;
-    		case FkShip.BRUSH_ERASE:
+    		case EventShipBrush.BRUSH_ERASE:
     			self.dataShipEntity.modifyByCircle( 
     				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
     				FkDstrGridData.getStateHide() );
