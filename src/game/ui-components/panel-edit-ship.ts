@@ -4,7 +4,7 @@ import {Ship} from '../objects/ship';
 import {EventShipBrush} from "../events/eventshipbrush";
 
 export class PanelEditShip {
-    private dataVue;
+    private dataVue : Vue;
     private dataGame : Phaser.Scene;
     private dataUnitList : Ship[];
 
@@ -13,11 +13,9 @@ export class PanelEditShip {
     }
 
     constructor( 
-        _game : Phaser.Scene,
-        _unitList : Ship[] ) {
+        _game : Phaser.Scene ) {
 
         this.dataGame = _game;
-        this.dataUnitList = _unitList;
         
         // Construct UI from Game logic loop
         this.dataVue = new Vue({
@@ -58,9 +56,7 @@ export class PanelEditShip {
             EventShipBrush.EVENT_DRAW, p, 
             this.dataVue.out.dataBrushType,
             this.dataVue.out.dataBrushSize ); 
-        _.forEach( this.dataUnitList, function(unit : Ship) {
-            unit.eventAction( evt );
-        })
+        EventShipBrush.Manager.notify( evt );
     }
 }
 

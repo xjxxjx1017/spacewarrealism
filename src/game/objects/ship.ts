@@ -11,22 +11,16 @@ export class Ship {
 
 	public constructor( _game : Phaser.Scene, _rect : Phaser.Geom.Rectangle ) {
         var self = this;
+
 		this.dataGame = _game;
         this.dataRect = _rect;
 
         this.dataShipEntity = new FkDestructibleObject( self.dataGame, _rect.x, _rect.y, 
             _rect.width, _rect.height, null );
         this.dataShipEntity.drawDstrObject();
-	}
 
-    public eventAction( _evt : EventShipBrush ) {
-        var self = this;
-        switch ( _evt.name ) {
-            case EventShipBrush.EVENT_DRAW:
-                self.onBrushDraw( _evt );
-                break;
-        }
-    }
+        EventShipBrush.Manager.attach( this, (evt)=> { self.onBrushDraw( evt ); } );
+	}
 
     private onBrushDraw( _evt : EventShipBrush ) {
         var self = this;

@@ -26,7 +26,6 @@ export class GameData {
             self.dataShipList.push( ship );
         })
 
-        this.uiEditorShip = new PanelEditShip(
-            self.dataGame, self.dataShipList );
+        this.uiEditorShip = new PanelEditShip( self.dataGame );
 	}
 }
