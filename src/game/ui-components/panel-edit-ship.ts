@@ -12,8 +12,7 @@ export class PanelEditShip {
         return this.dataVue.out;
     }
 
-    constructor( 
-        _game : Phaser.Scene ) {
+    constructor( _game : Phaser.Scene ) {
 
         this.dataGame = _game;
         
@@ -29,8 +28,8 @@ export class PanelEditShip {
                 ui: {
                     stateBrushNormal: EventShipBrush.BRUSH_NORMAL,
                     stateBrushErase: EventShipBrush.BRUSH_ERASE,
-                    statePosX: 15,// _unitList[0].dataRect.x,
-                    statePosY: 235,// _unitList[0].dataRect.y,
+                    statePosX: 15,
+                    statePosY: 235,
                 },
             }
         });
@@ -52,8 +51,7 @@ export class PanelEditShip {
     private eventDraw( p ) {
         if ( !this.dataVue.out.brushEnabled )
             return;
-        var evt = new EventShipBrush( 
-            EventShipBrush.EVENT_DRAW, p, 
+        var evt = new EventShipBrush( p, 
             this.dataVue.out.dataBrushType,
             this.dataVue.out.dataBrushSize ); 
         EventShipBrush.Manager.notify( evt );

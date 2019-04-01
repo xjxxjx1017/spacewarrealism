@@ -12,7 +12,7 @@ Current progress:
 ![Progress](/assets/spec/2019-03-29.20-44-35.png "Progress")
 
 TODO:
-* 美术资源. 具体放塔流程效果
+* Turret when click, cursor change
 * Turret Placement
 * Turret Damage & Fire Interval
 * 1 vs 1
@@ -29,3 +29,10 @@ TODO:
 * SASS	
 * Webpack 			
 * Lodash
+
+## How to run
+
+* install nodejs
+* go to file directory in terminal
+* npm install
+* run devserver.bat

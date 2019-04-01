@@ -22,6 +22,8 @@ export class Preload extends Phaser.Scene {
         this.load.image('overlay_missle', 'assets/buttonoverlay/missle.png');
         this.load.image('overlay_grass', 'assets/buttonoverlay/grass.png');
         this.load.image('overlay_nohuman', 'assets/buttonoverlay/nohuman.png');
+        this.load.image('red_turret', 'assets/sprites/2019.04.01.Turret.png');
+        this.load.image('red_laser', 'assets/sprites/2019.04.01.Line.png');
     }
 
     public create(): void {
