@@ -33,6 +33,6 @@ TODO:
 ## How to run
 
 * install nodejs
-* go to file directory in terminal
+* Open terminal, go to file directory
 * npm install
 * run devserver.bat

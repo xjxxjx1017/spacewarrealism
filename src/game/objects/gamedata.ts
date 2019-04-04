@@ -2,6 +2,7 @@ import 'phaser';
 import * as _ from 'lodash';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 import {PanelEditShip} from "../ui-components/panel-edit-ship";
+import "../ui-components/panel-edit-ship-vue";
 import {Ship} from "./ship";
 import {FkWithMouse} from "../../components/fkwithmouse";
 import {EventWithMouse} from "../events/eventwithmouse";

@@ -2,7 +2,7 @@ import 'phaser';
 import * as _ from 'lodash';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 import {PanelEditShip} from "../ui-components/panel-edit-ship";
-import {EventShipBrush} from "../events/eventshipbrush";
+import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
 
 export class Ship {
     public dataRect : Phaser.Geom.Rectangle;
@@ -25,13 +25,13 @@ export class Ship {
     private onBrushDraw( _evt : EventShipBrush ) {
         var self = this;
     	switch ( _evt.brushType ) {
-    		case EventShipBrush.BRUSH_NORMAL:
+    		case EBrushType.BRUSH_NORMAL:
     			self.dataShipEntity.modifyByCircle( 
     				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
     				FkDstrGridData.getStateVisible() );
 				self.dataShipEntity.drawDstrObject();
     			break;
-    		case EventShipBrush.BRUSH_ERASE:
+    		case EBrushType.BRUSH_ERASE:
     			self.dataShipEntity.modifyByCircle( 
     				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
     				FkDstrGridData.getStateHide() );
