@@ -13,11 +13,12 @@
                 <panel-edit-ship 
                     :pos-x="ui.statePosX"
                     :pos-y="ui.statePosY"
-                    :brush-normal="ui.stateBrushNormal" 
-                    :brush-erase="ui.stateBrushErase" 
-                    :brush-enabled.sync="out.brushEnabled"
+                    :brush-enabled.sync="out.dataBrushEnabled"
+                    :brush-type.sync="out.dataBrushType"
                     :brush-size.sync="out.dataBrushSize" 
-                    :brush-type.sync="out.dataBrushType"/>
+                    :stamp-enabled.sync="out.dataStampEnabled"
+                    :stamp-type.sync="out.dataStampType" />
+                }),
             </div>
         </div>
     </body>

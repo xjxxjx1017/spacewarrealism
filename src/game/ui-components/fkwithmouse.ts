@@ -1,8 +1,9 @@
 import "phaser";
+import {EventWithMouse} from "../events/eventwithmouse";
 
 export class FkWithMouse{
 	private dataCurSrcName : string;
-	private dataSprite : Phaser.GameObjects.Sprite;
+	private dataSprite : Phaser.GameObjects.Sprite = null;
 	private dataGame : Phaser.Scene;
 	private dataIsActive : boolean = false;
 
@@ -16,6 +17,11 @@ export class FkWithMouse{
 				self.dataSprite.setY( _p.y );
 			}
 		} );
+		
+        EventWithMouse.Manager.attach( this, ( _evt : EventWithMouse ) => { 
+                _evt.isActive ? 
+                self.LoadImage( _evt.src ) : self.UnloadImage(); 
+        } );
 	}
 
 	public LoadImage( _srcName : string ) {
@@ -38,6 +44,7 @@ export class FkWithMouse{
 
 	public UnloadImage() {
 		this.dataIsActive = false;
-		this.dataSprite.setVisible( false );
+		if ( this.dataSprite != null )
+			this.dataSprite.setVisible( false );
 	}
 }

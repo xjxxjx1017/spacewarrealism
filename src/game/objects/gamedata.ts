@@ -4,8 +4,7 @@ import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibl
 import {PanelEditShip} from "../ui-components/panel-edit-ship";
 import "../ui-components/panel-edit-ship-vue";
 import {Ship} from "./ship";
-import {FkWithMouse} from "../../components/fkwithmouse";
-import {EventWithMouse} from "../events/eventwithmouse";
+import {FkWithMouse} from "../ui-components/fkwithmouse";
 
 export class GameData {
 	private dataGame : Phaser.Scene;
@@ -32,14 +31,5 @@ export class GameData {
 
         this.uiEditorShip = new PanelEditShip( this.dataGame );
         this.uiWithMouse = new FkWithMouse( this.dataGame );
-        EventWithMouse.Manager.attach( this, ( _evt : EventWithMouse ) => { 
-                _evt.isActive ? 
-                self.uiWithMouse.LoadImage( _evt.src ) : self.uiWithMouse.UnloadImage(); 
-        } );
-
-        this.dataGame.input.on( "pointerdown", function( _p ) {
-            EventWithMouse.Manager.notify( new EventWithMouse( 
-                EventWithMouse.IMAGE_RED_TURRET ) );
-        })
 	}
 }

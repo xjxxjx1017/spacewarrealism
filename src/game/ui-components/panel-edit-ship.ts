@@ -2,56 +2,34 @@ import * as Vue from 'vue';
 import * as _ from 'lodash';
 import {Ship} from '../objects/ship';
 import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
-
-class PanelEditShipUI {
-    public stateBrushNormal : EBrushType;
-    public stateBrushErase : EBrushType;
-    public statePosX : number;
-    public statePosY : number;
-
-    constructor( fields : Partial<PanelEditShipUI> ){ 
-        Object.assign( this, fields ); 
-    }
-}
-
-class PanelEditShipOut {
-    public dataBrushType : EBrushType;
-    public dataBrushSize : number;
-    public brushEnabled : boolean;
-
-    constructor( fields : Partial<PanelEditShipOut> ){ 
-        Object.assign( this, fields ); 
-    }
-}
+import {EventStampType, EStampType} from "../events/eventplacestamp";
 
 export class PanelEditShip {
     private dataVue : Vue;
     private dataGame : Phaser.Scene;
-    private dataUnitList : Ship[];
 
-    public get out() : PanelEditShipOut {
+    public get out() : any {
         return this.dataVue.out;
     }
 
     constructor( _game : Phaser.Scene ) {
-
         this.dataGame = _game;
         
         // Construct UI from Game logic loop
         this.dataVue = new Vue({
             el: '#vue-main-container',
             data: {
-                out: new PanelEditShipOut({ 
+                out: { 
+                    dataBrushEnabled : false,
                     dataBrushType : EBrushType.BRUSH_ERASE, 
                     dataBrushSize : 15,
-                    brushEnabled : false,
-                }),
-                ui: new PanelEditShipUI({
-                    stateBrushNormal: EBrushType.BRUSH_NORMAL,
-                    stateBrushErase: EBrushType.BRUSH_ERASE,
+                    dataStampEnabled : false,
+                    dataStampType : EStampType.STAMP_TURRET_RED,
+                },
+                ui: {
                     statePosX: 15,
                     statePosY: 235,
-                }),
+                },
             }
         });
         this.initEvents();
@@ -70,7 +48,7 @@ export class PanelEditShip {
     }
 
     private eventDraw( p ) {
-        if ( !this.dataVue.out.brushEnabled )
+        if ( !this.dataVue.out.dataBrushEnabled )
             return;
         var evt = new EventShipBrush( p, 
             this.dataVue.out.dataBrushType,

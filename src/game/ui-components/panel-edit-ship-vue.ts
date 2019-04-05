@@ -2,14 +2,18 @@ import * as Vue from 'vue';
 import * as _ from 'lodash';
 import {Ship} from '../objects/ship';
 import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
+import {EventStampType, EStampType} from "../events/eventplacestamp";
+import {EventWithMouse} from "../events/eventwithmouse";
 
 Vue.component('panel-edit-ship', {
 	props: {
-		posX: Number,
-		posY: Number,
         brushEnabled: Boolean, 
 		brushSize: Number,	
 		brushType: EBrushType,
+        stampEnabled: Boolean,
+        stampType: EStampType,
+        posX: Number,
+        posY: Number,
 	},
 	data: function () {
         var TAB_BODY_PAINT = "Body Paint";
@@ -25,7 +29,8 @@ Vue.component('panel-edit-ship', {
 				    { title: "Erase", value: EBrushType.BRUSH_ERASE }
 				],
                 dataRadioGroup2: [
-                    { title: "Turret", value: this.brushNormal },
+                    { title: "Turret", value: EStampType.STAMP_TURRET_RED },
+                    { title: "Shield", value: EStampType.STAMP_SHIELD },
                 ],
 				dataTabs: [
 					{ title: TAB_BODY_PAINT },
@@ -36,23 +41,45 @@ Vue.component('panel-edit-ship', {
 		}
 	},
     methods: {
-        tabChange: function ( label ) {
+        onTabChange: function ( label ) {
             switch( label ) {
                 case this.TAB_BODY_PAINT:
                     this.$emit('update:brushEnabled', true );
+                    this.$emit('update:stampEnabled', false );
+                    break;
+                case this.TAB_ADD_ON:
+                    this.$emit('update:brushEnabled', false );
+                    this.$emit('update:stampEnabled', true );
                     break;
                 default:
                     this.$emit('update:brushEnabled', false );
+                    this.$emit('update:stampEnabled', false );
                     break;
             }
+            this.updateTool();
+        },
+        onToolChange: function( propName : string, value ) {
+            this.$emit( propName, value ); 
+            this.updateTool();
+        },
+        updateTool: function() {
+            var self = this;
+            Vue.nextTick( ()=>{ 
+                if ( self.stampEnabled && self.stampType == EStampType.STAMP_TURRET_RED ) {
+                    EventWithMouse.Manager.notify( new EventWithMouse( EventWithMouse.IMAGE_RED_TURRET ) );
+                }
+                else {
+                    EventWithMouse.Manager.notify( new EventWithMouse( null ) );
+                }
+            } );
         },
     },
     watch: {
         'ui.dataEditPanelVsb' : function( vNew, vOld ) {
             if ( vNew )
-                this.tabChange( this.TAB_DEFAULT );
+                this.onTabChange( this.TAB_DEFAULT );
             else
-                this.tabChange( null );
+                this.onTabChange( null );
         }
     },
 	template: `
@@ -66,7 +93,7 @@ Vue.component('panel-edit-ship', {
       center>
         <div id="vue-panel-editor-ship">
             <div class="brush-panel fk-inverse-tabs fk-dark-tabs">
-                <el-tabs tab-position="bottom" type="border-card" @tab-click="tabChange($event.label)">
+                <el-tabs tab-position="bottom" type="border-card" @tab-click="onTabChange($event.label)">
                     <el-tab-pane :label="tab.title" v-for="tab in ui.dataTabs" :key="tab.title">
                         <div class="fk-row">
                             <h2 class="fk-row no-user-select">{{ tab.title }}</h2>
@@ -95,11 +122,11 @@ Vue.component('panel-edit-ship', {
                         <div class="fk-tab-content" v-if="tab.title == TAB_ADD_ON">
                             <div class="fk-row">
                                 <el-radio-group
-                                    name="brushType"
+                                    name="stampType"
                                     vertical
                                     :options="ui.dataRadioGroup2"
-                                    :value="brushType" 
-                                    @input="$emit('update:brushType', $event)">
+                                    :value="stampType" 
+                                    @input="onToolChange('update:stampType', $event)">
                                     <el-radio v-for="rb in ui.dataRadioGroup2" :key="rb.title" :label="rb.value">{{rb.title}}</el-radio>
                                 </el-radio-group>
                             </div>

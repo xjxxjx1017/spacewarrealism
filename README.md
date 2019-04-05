@@ -12,7 +12,6 @@ Current progress:
 ![Progress](/assets/spec/2019-03-29.20-44-35.png "Progress")
 
 TODO:
-* Turret when click, cursor change
 * Turret Placement
 * Turret Damage & Fire Interval
 * 1 vs 1
