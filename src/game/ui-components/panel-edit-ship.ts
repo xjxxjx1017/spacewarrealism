@@ -39,6 +39,7 @@ export class PanelEditShip {
         var self = this;
         this.dataGame.input.on( "pointerdown", function( _p ) {
             self.eventDraw( _p );
+            self.eventStamp( _p );
         })
         this.dataGame.input.on( "pointermove", function( _p ) {
             if ( self.dataGame.input.mousePointer.isDown ) {
@@ -54,5 +55,13 @@ export class PanelEditShip {
             this.dataVue.out.dataBrushType,
             this.dataVue.out.dataBrushSize ); 
         EventShipBrush.Manager.notify( evt );
+    }
+
+    private eventStamp( p ) {
+        if ( !this.dataVue.out.dataStampEnabled )
+            return;
+        var evt = new EventStampType( p, 
+            this.dataVue.out.dataStampType ); 
+        EventStampType.Manager.notify( evt );
     }
 }

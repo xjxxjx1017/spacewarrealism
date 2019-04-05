@@ -35,6 +35,7 @@ export class FkWithMouse{
 				}
 			}
 			this.dataSprite = this.dataGame.make.sprite( cfg, true );
+			this.dataSprite.setAlpha( 0.7 );
 		}
 		else {
 			this.dataSprite.setVisible( true );
