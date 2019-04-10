@@ -1,4 +1,6 @@
 import "phaser";
+import {Laser} from "./laser";
+import {Ship} from "./ship";
 
 export class Gun {
 	public static IMAGE_RED_TURRET : string = "red_turret";
@@ -6,6 +8,7 @@ export class Gun {
 	private dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
 	private dataSprite : Phaser.GameObjects.Sprite;
+	private dataWeapon : Laser;
 
 	public constructor( _game : Phaser.Scene, _pos : Phaser.Geom.Point ) {
 		this.dataGame = _game;
@@ -20,5 +23,10 @@ export class Gun {
 			}
 		}
 		this.dataSprite = this.dataGame.make.sprite( cfg, true );
+		this.dataWeapon = new Laser();
+	}
+
+	public attack( _target : Ship ) {
+		this.dataWeapon.attack( this.dataPos, _target ) ;
 	}
 }

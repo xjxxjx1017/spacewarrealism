@@ -8,7 +8,7 @@ import {FkWithMouse} from "../ui-components/fkwithmouse";
 
 export class GameData {
 	private dataGame : Phaser.Scene;
-    private dataShipList : Ship[];
+    public dataShipList : Ship[];
     private uiEditorShip : PanelEditShip;
     public uiWithMouse : FkWithMouse;
 

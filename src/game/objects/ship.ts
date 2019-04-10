@@ -9,7 +9,7 @@ import {EventStampType, EStampType} from "../events/eventplacestamp";
 export class Ship {
     public dataRect : Phaser.Geom.Rectangle;
 	private dataGame : Phaser.Scene;
-    private dataShipEntity : FkDestructibleObject;
+    public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
 
 	public constructor( _game : Phaser.Scene, _rect : Phaser.Geom.Rectangle ) {
@@ -27,6 +27,13 @@ export class Ship {
         // Init guns on ship
         this.dataGunList = [];
         EventStampType.Manager.attach( this, (evt)=> { self.onPlaceStamp( evt ); } );
+
+        // Auto attack every seconds
+        var timedEvent = this.dataGame.time.addEvent({ delay: 1000, callback: ()=> {
+            _.forEach( self.dataGunList, function(g) {
+                g.attack( self );
+            } )
+        }, repeat: 400 });
 	}
 
     private onPlaceStamp( _evt : EventStampType ) {
@@ -34,7 +41,7 @@ export class Ship {
             return;
         switch ( _evt.type ) {
             case EStampType.STAMP_TURRET_RED:
-                var g = new Gun( this.dataGame, _evt.pos );
+                var g = new Gun( this.dataGame, new Phaser.Geom.Point( _evt.pos.x, _evt.pos.y ) );
                 this.dataGunList.push( g );
                 break;
             default:
