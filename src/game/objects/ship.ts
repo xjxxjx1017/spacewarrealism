@@ -27,14 +27,14 @@ export class Ship {
         // Init guns on ship
         this.dataGunList = [];
         EventStampType.Manager.attach( this, (evt)=> { self.onPlaceStamp( evt ); } );
-
-        // Auto attack every seconds
-        var timedEvent = this.dataGame.time.addEvent({ delay: 1000, callback: ()=> {
-            _.forEach( self.dataGunList, function(g) {
-                g.attack( self );
-            } )
-        }, repeat: 400 });
 	}
+
+    public attack( _target : Ship ) {
+        var self = this;
+        _.forEach( self.dataGunList, function(g) {
+            g.attack( _target, 20 );
+        });
+    }
 
     private onPlaceStamp( _evt : EventStampType ) {
         if ( !this.dataShipEntity.collisionWithPoint( _evt.pos, FkDstrGridData.getStateVisible() ) )
@@ -68,5 +68,12 @@ export class Ship {
     			console.log( "Brush not found." );
     			break;
     	}
+    }
+
+    public getTargetPoint( _source : Phaser.Geom.Point ) : Phaser.Geom.Point {
+        var MULTI = 10; 
+        var x = ( Math.random() * this.dataRect.width + this.dataRect.x - _source.x ) * MULTI;
+        var y = ( Math.random() * this.dataRect.height + this.dataRect.y - _source.y ) * MULTI;
+        return new Phaser.Geom.Point( _source.x + x, _source.y + y );
     }
 }

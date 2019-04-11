@@ -29,6 +29,12 @@ export class GameData {
             self.dataShipList.push( ship );
         })
 
+        // Auto attack every seconds
+        var timedEvent = this.dataGame.time.addEvent({ delay: 1000, callback: ()=> {
+            self.dataShipList[0].attack( self.dataShipList[1] );
+            self.dataShipList[1].attack( self.dataShipList[0] );
+        }, repeat: 40 });
+
         this.uiEditorShip = new PanelEditShip( this.dataGame );
         this.uiWithMouse = new FkWithMouse( this.dataGame );
 	}

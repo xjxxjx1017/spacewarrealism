@@ -1,6 +1,6 @@
 import "phaser";
-import {Laser} from "./laser";
 import {Ship} from "./ship";
+import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 
 export class Gun {
 	public static IMAGE_RED_TURRET : string = "red_turret";
@@ -8,8 +8,6 @@ export class Gun {
 	private dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
 	private dataSprite : Phaser.GameObjects.Sprite;
-	private dataWeapon : Laser;
-
 	public constructor( _game : Phaser.Scene, _pos : Phaser.Geom.Point ) {
 		this.dataGame = _game;
 		this.dataPos = _pos;
@@ -23,10 +21,13 @@ export class Gun {
 			}
 		}
 		this.dataSprite = this.dataGame.make.sprite( cfg, true );
-		this.dataWeapon = new Laser();
 	}
 
-	public attack( _target : Ship ) {
-		this.dataWeapon.attack( this.dataPos, _target ) ;
+	public attack( _target : Ship, strength: number ) {
+		var targetP = _target.getTargetPoint( this.dataPos );
+		_target.dataShipEntity.modifyByLine( this.dataPos.x, this.dataPos.y, 
+			targetP.x, targetP.y, strength,
+			FkDstrGridData.getStateHide() );
+        _target.dataShipEntity.drawDstrObject();
 	}
 }
