@@ -12,7 +12,6 @@ Current progress:
 ![Progress](/assets/spec/2019-03-29.20-44-35.png "Progress")
 
 TODO:
-* Laser特效
 * HP Bar / Calculation
 * Battle Start Button, Reset BUtton
 * Deploy to google drive
