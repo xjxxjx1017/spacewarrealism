@@ -26,54 +26,34 @@ export class Gun {
 
 	public createShootEffect( _p1 : Phaser.Geom.Point, _p2 : Phaser.Geom.Point ) {
 		var self = this;
-		var captionStyle = {
-		    fill: '#7fdbff',
-		    fontFamily: 'monospace',
-		    lineSpacing: 4
-		};
-
-		var captionTextFormat = (
-		    'Total:    %1\n' +
-		    'Max:      %2\n' +
-		    'Active:   %3\n' +
-		    'Inactive: %4\n' +
-		    'Used:     %5\n' +
-		    'Free:     %6\n' +
-		    'Full:     %7\n'
-		);
-
-		var caption = this.dataGame.add.text(16, 16, '', captionStyle);
 		if ( Gun.effectManagerGun == null ) {
 			Gun.effectManagerGun = this.dataGame.add.group(<GroupConfig>{ 
 				defaultKey: "red_laser", 
-				maxSize: 3
+				maxSize: 10
 			});
 		}
 
 		var group = Gun.effectManagerGun;
-
-	    caption.setText(Phaser.Utils.String.Format(captionTextFormat, [
-	        group.getLength(),
-	        group.maxSize,
-	        group.countActive(true),
-	        group.countActive(false),
-	        group.getTotalUsed(),
-	        group.getTotalFree(),
-	        group.isFull()
-	    ]));
-		var alien = group.get();
-		if (!alien) 
-			return; // None free
-		alien.setActive(true).setVisible(true)
+		var eff : Phaser.GameObjects.Sprite = group.get();
+		if (!eff) 
+			return;
+		var angle = Math.atan( (_p2.y - _p1.y) / (_p2.x - _p1.x) );
+		if ( _p2.x - _p1.x < 0 )
+			angle += Math.PI;
+		var dx = Math.cos(angle) * eff.height / 2;
+		var dy = Math.sin(angle) * eff.height / 2;
+		eff.setActive(true).setVisible(true).setAlpha(1).setRotation( angle + Math.PI/2 ).setX( _p1.x + dx ).setY( _p1.y + dy );
 		self.dataGame.tweens.add({
-            targets: alien,
+            targets: eff,
 			alpha : 0,
 			duration : 1000,
 			ease : "Power3",
-    		angle: 180,
-			yoyo : true,
-			repleat: 10
-		})
+			onComplete: function(t) {
+				if ( t && t.targets && t.targets[0] )
+					group.killAndHide( t.targets[0] );
+			},
+			onCompleteScope: this
+		});
 	}
 
 	public attack( _target : Ship, strength: number ) {
