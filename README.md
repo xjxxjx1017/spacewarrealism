@@ -9,7 +9,7 @@ Working on item No.1 - No.3 of the spec:
 
 Current progress:
 
-![Progress](/assets/spec/2019-04-13.16-08-34.png "Progress")
+![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
 * HP Bar / Calculation
