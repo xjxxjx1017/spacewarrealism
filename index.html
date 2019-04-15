@@ -7,6 +7,14 @@
     </head>
     <body>
         <div id="phaser-example"></div>
+        <div class="fk-main-container" id="vue-top-container">
+            <panel-information v-for="ui in uiGroup"
+                :pos-x="ui.statePosX"
+                :pos-y="ui.statePosY"
+                :hp="ui.stateHp"
+                :width="ui.stateWidth"
+                :height="ui.stateHeight" />
+        </div>
         <div class="fk-main-container" id="vue-main-container">
             <div class="fk-left-placeholder-panel"></div>
             <div class="fk-main-panel">
@@ -18,7 +26,6 @@
                     :brush-size.sync="out.dataBrushSize" 
                     :stamp-enabled.sync="out.dataStampEnabled"
                     :stamp-type.sync="out.dataStampType" />
-                }),
             </div>
         </div>
     </body>

@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 import {PanelEditShip} from "../ui-components/panel-edit-ship";
 import "../ui-components/panel-edit-ship-vue";
+import {PanelInformation, PanelInformationUnit} from "../ui-components/panel-information";
+import "../ui-components/panel-information-vue";
 import {Ship} from "./ship";
 import {FkWithMouse} from "../ui-components/fkwithmouse";
 
@@ -10,6 +12,7 @@ export class GameData {
 	private dataGame : Phaser.Scene;
     public dataShipList : Ship[];
     private uiEditorShip : PanelEditShip;
+    private uiInformation : PanelInformation;
     public uiWithMouse : FkWithMouse;
 
 	public constructor( _game : Phaser.Scene ){
@@ -35,7 +38,20 @@ export class GameData {
             self.dataShipList[1].attack( self.dataShipList[0] );
         }, repeat: 40 });
 
-        this.uiEditorShip = new PanelEditShip( this.dataGame );
         this.uiWithMouse = new FkWithMouse( this.dataGame );
+        this.uiEditorShip = new PanelEditShip( this.dataGame );
+
+        var uiGroup = [];
+        _.forEach( self.dataShipList, function(s){
+            var margin = 20;
+            uiGroup.push( <PanelInformationUnit>{
+                stateHp: Math.floor(Math.random() * 100),
+                stateWidth: s.dataRect.width,
+                statePosX: s.dataRect.x,
+                statePosY: s.dataRect.y - margin,
+                stateHeight: 18,
+            })
+        })
+        this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
 	}
 }
