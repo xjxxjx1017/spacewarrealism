@@ -10,7 +10,7 @@ export interface PanelInformationUnit {
 }
 
 export class PanelInformation {
-    private dataVue : Vue;
+    public dataVue : Vue;
     private dataGame : Phaser.Scene;
 
     constructor( _game : Phaser.Scene, _uiGroup : PanelInformationUnit[] ) {

@@ -7,6 +7,7 @@ import {PanelInformation, PanelInformationUnit} from "../ui-components/panel-inf
 import "../ui-components/panel-information-vue";
 import {Ship} from "./ship";
 import {FkWithMouse} from "../ui-components/fkwithmouse";
+import {EventHpChanged} from "../events/eventhpchanged";
 
 export class GameData {
 	private dataGame : Phaser.Scene;
@@ -42,16 +43,24 @@ export class GameData {
         this.uiEditorShip = new PanelEditShip( this.dataGame );
 
         var uiGroup = [];
+        var count = 0;
         _.forEach( self.dataShipList, function(s){
-            var margin = 20;
-            uiGroup.push( <PanelInformationUnit>{
-                stateHp: Math.floor(Math.random() * 100),
+            var infor = <PanelInformationUnit>{
+                stateHp: s.getHp(),
                 stateWidth: s.dataRect.width,
                 statePosX: s.dataRect.x,
-                statePosY: s.dataRect.y - margin,
+                statePosY: s.dataRect.y - 20,
                 stateHeight: 18,
+            };
+            uiGroup.push( infor );
+            // Use event to pass ship HP updates to UI
+            EventHpChanged.Manager.attach( "hpupdate" + count, ( evt : EventHpChanged ) => {
+                if ( s == evt.ship )
+                    infor.stateHp = evt.hp;
             })
+            count++;
         })
         this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
+        // this.uiInformation.dataVue.
 	}
 }

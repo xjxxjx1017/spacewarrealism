@@ -28,14 +28,16 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private dataRenderTexture : string = null; 
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
+    public onUpdate : ( obj : FkDestructibleObject ) =>void;
     private debugDrawCounter : number = 0;
 
 	constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+		_maxWidth : number, _maxHeight : number, _renderTexture : string = null, _onUpdate : ( obj : FkDestructibleObject ) =>void = null ) {
     	super( _game, _posX, _posY, _maxWidth, _maxHeight,
 	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
 	    	FkDstrGridData.getStateVisible()  );
         this.dataRenderTexture = _renderTexture;
+        this.onUpdate = _onUpdate;
         if ( this.dataRenderTexture != null ) {
             this.layerGridEdge = _game.make.graphics( {} );
             this.layerGridEdge.setX( _posX );
@@ -54,6 +56,8 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
         this.layerGridEdge.clear();
         this.debugDrawCounter = 0;
         this.draw( ( _rect, _data ) => { this.render( _rect, _data ); } );
+        if ( this.onUpdate )
+            this.onUpdate( this );
         // console.log( "Draw: " + this.debugDrawCounter + " rects" );
     }
 

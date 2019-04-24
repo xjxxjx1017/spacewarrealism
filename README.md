@@ -12,8 +12,7 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* HP Calculation
-* Battle Start Button, Reset BUtton
+* Battle Start Button, Reset Button
 * Deploy to google drive
 
 ## Environment
