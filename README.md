@@ -12,7 +12,13 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* Battle Start Button, Reset Button
+* Battle Start Button
+	* Move the attack logic so that it only triggered after start.
+	* Disable start button, when clicked.
+	* Re-enable start button if the winning condition has been met.
+* Reset Button
+* Inactive turret when destroyed.
+* Save/load game data in cache
 * Deploy to google drive
 
 ## Environment

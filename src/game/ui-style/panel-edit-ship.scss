@@ -1,5 +1,6 @@
 
-.panel-edit-ship {    
+.panel-edit-ship {  
+    position: fixed;
     transform: scale(0.7);
     transform-origin: 0 0;
     width: 100%; 
@@ -17,4 +18,16 @@
     .v-modal {
         width: 0;
     }
+}
+
+.panel-game-control {
+    position: fixed;
+    top: 235px;
+    left: 100px;
+    z-index: -1;
+    
+    transform: scale(0.7);
+    transform-origin: 0 0;
+    width: 100%; 
+    pointer-events: auto;
 }
