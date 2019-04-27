@@ -6,7 +6,6 @@
         <script src="/dist/app.bundle.js"></script>
     </head>
     <body>
-        <div id="phaser-example"></div>
         <div class="fk-main-container" id="vue-top-container">
             <panel-information v-for="ui in uiGroup"
                 :pos-x="ui.statePosX"
@@ -14,6 +13,15 @@
                 :hp="ui.stateHp"
                 :width="ui.stateWidth"
                 :height="ui.stateHeight" />
+        </div>
+        <div class="fk-main-container" id="vue-game-state-container">
+            <div class="fk-left-placeholder-panel"></div>
+            <div class="fk-main-panel">
+                <div class="panel-game-state">
+                    <el-button type="primary" @click="battle()">Battle</el-button>
+                    <el-button type="primary" @click="reset()">Reset</el-button>
+                </div>
+            </div>
         </div>
         <div class="fk-main-container" id="vue-main-container">
             <div class="fk-left-placeholder-panel"></div>
@@ -26,12 +34,6 @@
                     :brush-size.sync="out.dataBrushSize" 
                     :stamp-enabled.sync="out.dataStampEnabled"
                     :stamp-type.sync="out.dataStampType" />
-            </div>
-            <div class="fk-main-panel">
-                <div class="panel-game-control">
-                    <el-button type="primary">Battle</el-button>
-                    <el-button type="primary">Reset</el-button>
-                </div>
             </div>
         </div>
     </body>

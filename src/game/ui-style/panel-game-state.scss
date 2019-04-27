@@ -1,0 +1,13 @@
+
+#vue-game-state-container {
+	.panel-game-state {
+    	pointer-events: auto;
+	    position: fixed;
+	    top: 235px;
+	    left: 100px;
+	    
+	    transform: scale(0.7);
+	    transform-origin: 0 0;
+	    width: 100%; 
+	}
+}

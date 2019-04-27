@@ -13,11 +13,10 @@ Current progress:
 
 TODO:
 * Battle Start Button
-	* Move the attack logic so that it only triggered after start.
-	* Disable start button, when clicked.
-	* Re-enable start button if the winning condition has been met.
+	* Inactive turret when destroyed.
+	* Stop the game cicle, if the winning condition has been met.
+	* Disable/enable button according to game state.
 * Reset Button
-* Inactive turret when destroyed.
 * Save/load game data in cache
 * Deploy to google drive
 

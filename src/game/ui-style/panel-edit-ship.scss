@@ -4,7 +4,10 @@
     transform: scale(0.7);
     transform-origin: 0 0;
     width: 100%; 
-    pointer-events: auto;
+    pointer-events: none;
+    button, .el-dialog__wrapper {
+        pointer-events: auto;
+    }
     .el-dialog__wrapper {
         top: initial;
         right: initial;
@@ -18,16 +21,4 @@
     .v-modal {
         width: 0;
     }
-}
-
-.panel-game-control {
-    position: fixed;
-    top: 235px;
-    left: 100px;
-    z-index: -1;
-    
-    transform: scale(0.7);
-    transform-origin: 0 0;
-    width: 100%; 
-    pointer-events: auto;
 }
