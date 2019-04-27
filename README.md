@@ -13,10 +13,10 @@ Current progress:
 
 TODO:
 * Battle Start Button
-	* Inactive turret when destroyed.
 	* Stop the game cicle, if the winning condition has been met.
 	* Disable/enable button according to game state.
 * Reset Button
+* The algorithm to find a random point on the entity.
 * Save/load game data in cache
 * Deploy to google drive
 

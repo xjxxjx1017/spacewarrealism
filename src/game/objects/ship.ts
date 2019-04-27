@@ -49,6 +49,21 @@ export class Ship {
         });
     }
 
+    public attackedByLine( _srcPoint : Phaser.Geom.Point, _targetPoint : Phaser.Geom.Point, _strength : number ) {
+        var self = this;
+        self.dataShipEntity.modifyByLine( _srcPoint.x, _srcPoint.y, 
+            _targetPoint.x, _targetPoint.y, _strength,
+            FkDstrGridData.getStateHide() );
+        self.dataShipEntity.drawDstrObject();
+        _.forEach( self.dataGunList, function(g) {
+            var b = self.dataShipEntity.collisionWithPoint( g.dataPos, FkDstrGridData.getStateVisible() );
+            if ( !b ) {
+                g.destroy();
+                _.remove( self.dataGunList, g );
+            }
+        });
+    }
+
     private onPlaceStamp( _evt : EventStampType ) {
         if ( !this.dataShipEntity.collisionWithPoint( _evt.pos, FkDstrGridData.getStateVisible() ) )
             return;

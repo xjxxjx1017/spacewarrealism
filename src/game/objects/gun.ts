@@ -6,7 +6,7 @@ import {Effect} from "../effect/Effect";
 export class Gun {
 	public static IMAGE_RED_TURRET : string = "red_turret";
 	private dataGame : Phaser.Scene;
-	private dataPos : Phaser.Geom.Point;
+	public dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
 	private dataSprite : Phaser.GameObjects.Sprite;
 	public constructor( _game : Phaser.Scene, _pos : Phaser.Geom.Point ) {
@@ -24,13 +24,14 @@ export class Gun {
 		this.dataSprite = this.dataGame.make.sprite( cfg, true );
 	}
 
-	public attack( _target : Ship, strength: number ) {
-		var targetP = _target.getTargetPoint( this.dataPos );
-		_target.dataShipEntity.modifyByLine( this.dataPos.x, this.dataPos.y, 
-			targetP.x, targetP.y, strength,
-			FkDstrGridData.getStateHide() );
-        _target.dataShipEntity.drawDstrObject();
+	public destroy() {
+		this.dataSprite.destroy();
+		this.dataSprite = null;
+	}
 
+	public attack( _target : Ship, _strength: number ) {
+        var targetP = _target.getTargetPoint( this.dataPos );
+		_target.attackedByLine( this.dataPos, targetP, _strength )
         Effect.createShootEffect( this.dataGame, this.dataPos, targetP );
 	}
 }
