@@ -9,6 +9,7 @@ import "../ui-components/panel-information-vue";
 import {Ship} from "./ship";
 import {FkWithMouse} from "../ui-components/fkwithmouse";
 import {EventHpChanged} from "../events/eventhpchanged";
+import {EventCheckCondition, EnumCheckCondition} from "../events/eventcheckcondition";
 
 enum GameState {
     STATE_BATTLE,
@@ -57,7 +58,7 @@ export class GameData {
             };
             uiGroup.push( infor );
             // Use event to pass ship HP updates to UI
-            EventHpChanged.Manager.attach( "hpupdate" + count, ( evt : EventHpChanged ) => {
+            EventHpChanged.Manager.attach( "hpupdate" + count, ( id, evt : EventHpChanged ) => {
                 if ( s == evt.ship )
                     infor.stateHp = evt.hp;
             })
@@ -65,7 +66,19 @@ export class GameData {
         })
         this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
         this.uiGameState = new PanelGameState( this );
+        EventCheckCondition.Manager.attach( EnumCheckCondition.CONDITION_GAME_WIN, 
+        (_id, _event)=>{ self.checkWiningCondition(); } );
 	}
+
+    public checkWiningCondition() {
+        var gameEnd = false;
+        _.forEach( this.dataShipList, function( s:Ship ) {
+            if ( !s.getIsAlive() )
+                gameEnd = true; 
+        })
+        if ( gameEnd )
+            this.changeStateToIdle();
+    }
 
     public changeStateToBattle() {
         var self = this;
@@ -77,6 +90,7 @@ export class GameData {
         this.tmpAttackTimer = this.dataGame.time.addEvent({ delay: 1000, callback: ()=> {
             self.dataShipList[0].attack( self.dataShipList[1] );
             self.dataShipList[1].attack( self.dataShipList[0] );
+            EventCheckCondition.Manager.notify( EnumCheckCondition.CONDITION_GAME_WIN );
         }, repeat: 40 });
     }
 

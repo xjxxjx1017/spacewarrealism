@@ -18,7 +18,7 @@ export class FkWithMouse{
 			}
 		} );
 		
-        EventWithMouse.Manager.attach( this, ( _evt : EventWithMouse ) => { 
+        EventWithMouse.Manager.attach( this, ( id, _evt : EventWithMouse ) => { 
             _evt.isActive ? 
             self.LoadImage( _evt.src ) : self.UnloadImage(); 
         } );

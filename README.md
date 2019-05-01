@@ -12,13 +12,11 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* Battle Start Button
-	* Stop the game cicle, if the winning condition has been met.
-	* Disable/enable button according to game state.
-* Reset Button
-* The algorithm to find a random point on the entity.
 * Save/load game data in cache
+* Reset Button
 * Deploy to google drive
+* Event import optimize
+* Code Naming
 
 ## Environment
 

@@ -25,8 +25,8 @@ export class Ship {
         // Init guns on ship
         this.dataGunList = [];
         // Init events
-        EventShipBrush.Manager.attach( this, (evt)=> { self.onBrushDraw( evt ); } );
-        EventStampType.Manager.attach( this, (evt)=> { self.onPlaceStamp( evt ); } );
+        EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
+        EventStampType.Manager.attach( this, (id,evt)=> { self.onPlaceStamp( evt ); } );
         // Show Object
         this.dataShipEntity.drawDstrObject();
 	}
@@ -55,12 +55,15 @@ export class Ship {
             _targetPoint.x, _targetPoint.y, _strength,
             FkDstrGridData.getStateHide() );
         self.dataShipEntity.drawDstrObject();
+        var toRemove = [];
         _.forEach( self.dataGunList, function(g) {
             var b = self.dataShipEntity.collisionWithPoint( g.dataPos, FkDstrGridData.getStateVisible() );
-            if ( !b ) {
-                g.destroy();
-                _.remove( self.dataGunList, g );
-            }
+            if ( !b )
+                toRemove.push( g );
+        });
+        _.forEach( toRemove, function(g) {
+            g.destroy();
+            _.pull( self.dataGunList, g );
         });
     }
 
@@ -96,6 +99,10 @@ export class Ship {
     			console.log( "Brush not found." );
     			break;
     	}
+    }
+
+    public getIsAlive() : boolean {
+        return this.dataGunList.length > 0;
     }
 
     public getTargetPoint( _source : Phaser.Geom.Point ) : Phaser.Geom.Point {
