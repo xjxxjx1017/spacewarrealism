@@ -17,7 +17,9 @@ export class PanelGameState {
             },
             methods: {
                 battle: function() { self.dataGameCore.changeStateToBattle(); },
-                reset: function() { self.dataGameCore.reset(); }
+                reset: function() { self.dataGameCore.reset(); },
+                save: function() { self.dataGameCore.save(); },
+                load: function() { self.dataGameCore.load(); }
             }
         });
     }

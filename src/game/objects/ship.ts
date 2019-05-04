@@ -13,6 +13,17 @@ export class Ship {
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
 
+    public save() {
+        var tmp = JSON.stringify( this.dataShipEntity );
+        return tmp;
+    }
+
+    public load( s : string ) {
+        var tmp = JSON.parse( s );
+        this.dataShipEntity = tmp;
+        this.dataShipEntity.drawDstrObject();
+    }
+
 	public constructor( _game : Phaser.Scene, _rect : Phaser.Geom.Rectangle ) {
         var self = this;
 

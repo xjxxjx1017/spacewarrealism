@@ -6,7 +6,6 @@ export class FkBaseDstrGridData {
 }
 
 export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
-    private dataGame : Phaser.Scene;
 	private dataBody : FkQuadTree<T>;
 	private dataPos : Phaser.Geom.Point;
 
@@ -19,7 +18,6 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 
 		var depthW = Math.ceil( Math.log2( _maxWidth ) + 1 );
 		var depthH = Math.ceil( Math.log2( _maxHeight ) + 1 );
-		this.dataGame = _game;
 		this.dataPos = new Phaser.Geom.Point( _posX, _posY );
 		this.dataBody = new FkQuadTree<T>( 0, 0,
 			_maxWidth, _maxHeight, Math.max( depthH, depthW ), 

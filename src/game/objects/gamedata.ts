@@ -30,6 +30,16 @@ export class GameData {
 		this.dataGame = _game;
 	}
 
+    public save() {
+        var tmpShipList = this.dataShipList[0].save();
+        localStorage.setItem( "testSave", tmpShipList );
+    }
+
+    public load() {
+        var tmp = localStorage.getItem( "testSave" );
+        this.dataShipList[0].load( tmp );
+    }
+
 	public run() {
         var self = this;
 
