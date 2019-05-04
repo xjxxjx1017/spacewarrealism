@@ -2,12 +2,42 @@ import "phaser";
 import * as _ from 'lodash';
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
 
-export class FkDstrGridData extends FkBaseDstrGridData {
+export class FkDstrGridData implements FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
     protected constructor( _isVisible : boolean ) {
-    	super();
         this.dataIsVisible = _isVisible;
+    }
+    // constructor(){
+    // }
+
+    public unserialize( s : string ) {
+        var obj = JSON.parse( s );
+        var keyList = [ "dataIsVisible" ];
+        this.dataIsVisible = ( obj.dataIsVisible.boolean ) == "true";
+    }
+
+    public serialize() : string {
+        var keyList = [ "dataIsVisible" ];
+        var saveObj = {};
+        for ( var i = 0; i < keyList.length; i++ ) {
+            var k = keyList[i];
+            var v = this[k];
+            var toSave = this.serializeWithType( v );
+            toSave.CLASS_TYPE = typeof this; // This is important, we need class information
+            saveObj[k] = toSave;
+        }
+        return JSON.stringify( saveObj );
+    }
+
+    public serializeWithType( obj : any ) {
+        // In case of Boolean
+        if ( obj === false || obj === true )
+            return {
+                boolean: obj,    // A special entry for Booleans
+                CLASS_TYPE: "boolean"
+            };
+        return obj;
     }
 
     public static getStateVisible() : FkDstrGridData {

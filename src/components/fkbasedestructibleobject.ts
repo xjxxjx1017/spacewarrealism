@@ -1,8 +1,9 @@
 import "phaser";
 import * as _ from 'lodash';
+import {FkSerializable} from './fkserializable';
 import { FkQuadTree } from "./fkquadtree";
 
-export class FkBaseDstrGridData {
+export interface FkBaseDstrGridData extends FkSerializable {
 }
 
 export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
