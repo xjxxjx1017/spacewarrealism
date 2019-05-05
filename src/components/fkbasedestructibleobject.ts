@@ -20,7 +20,7 @@ export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
 		var depthW = Math.ceil( Math.log2( _maxWidth ) + 1 );
 		var depthH = Math.ceil( Math.log2( _maxHeight ) + 1 );
 		this.dataPos = new Phaser.Geom.Point( _posX, _posY );
-		this.dataBody = new FkQuadTree<T>( 0, 0,
+		this.dataBody = new FkQuadTree<T>().init( 0, 0,
 			_maxWidth, _maxHeight, Math.max( depthH, depthW ), 
 			_initState );
 	}

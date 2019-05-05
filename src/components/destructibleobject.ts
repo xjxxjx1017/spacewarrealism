@@ -5,16 +5,17 @@ import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructib
 export class FkDstrGridData implements FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
-    protected constructor( _isVisible : boolean ) {
+    constructor(){}
+
+    protected init( _isVisible : boolean ) : FkDstrGridData {
         this.dataIsVisible = _isVisible;
+        return this;
     }
-    // constructor(){
-    // }
 
     public unserialize( s : string ) {
         var obj = JSON.parse( s );
         var keyList = [ "dataIsVisible" ];
-        this.dataIsVisible = ( obj.dataIsVisible.boolean ) == "true";
+        this.dataIsVisible = ( obj.dataIsVisible.boolean ) == true;
     }
 
     public serialize() : string {
@@ -24,7 +25,6 @@ export class FkDstrGridData implements FkBaseDstrGridData {
             var k = keyList[i];
             var v = this[k];
             var toSave = this.serializeWithType( v );
-            toSave.CLASS_TYPE = typeof this; // This is important, we need class information
             saveObj[k] = toSave;
         }
         return JSON.stringify( saveObj );
@@ -41,11 +41,11 @@ export class FkDstrGridData implements FkBaseDstrGridData {
     }
 
     public static getStateVisible() : FkDstrGridData {
-    	return new FkDstrGridData( true );
+    	return new FkDstrGridData().init( true );
     }
 
     public static getStateHide() : FkDstrGridData {
-    	return new FkDstrGridData( false );
+        return new FkDstrGridData().init( false );
     }
 }
 

@@ -2,6 +2,7 @@
 import 'phaser';
 import * as _ from 'lodash';
 import {FkSerializable} from './fkserializable';
+import { FkDstrGridData } from "./destructibleobject";
 
 export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 
@@ -10,14 +11,7 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 	public dataRect : Phaser.Geom.Rectangle;
 	public dataSubTree : FkQuadTree<T>[];
 
-	constructor( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
-		this.resDepth = _depth;
-		this.dataNode = _data;
-		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
-		this.dataSubTree = null;
-	}
-	// constructor(){
-	// }
+	constructor(){}
 
 	public init( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
 		this.resDepth = _depth;
@@ -25,27 +19,40 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
 
-		console.log( "### TEST ###");
-		var testA = this.serialize();
-		console.log( testA );
-		var testB = this.unserialize( testA );
-		console.log( testB );
+		// console.log( "### TEST ###");
+		// console.log( this );
+		// var testA = this.serialize();
+		// console.log( testA );
+		// var testB = this.unserialize( testA );
+		// console.log( this );
+
+		return this;
 	}
 
 	public unserialize( s : string ) {
 		var obj = JSON.parse( s );
 		var keyList = [ "resDepth", "dataRect", "dataNode", "dataSubTree" ];
 		this.resDepth = parseInt( obj.resDepth.num );
-		this.dataNode = new obj.dataNode.CLASS_TYPE();
-		var tmp : any = this.dataNode;
-		tmp.unserialize( obj.dataNode );
-		this.dataRect = new obj.dataRect.CLASS_TYPE( obj.dataRect.x, obj.dataRect.y, obj.dataRect.width, obj.dataRect.height );
-		this.dataSubTree = [];
-		for ( var i = 0; i < obj.dataSubTree.length; i++ ){
-			var v = obj.dataSubTree[i];
-			var t = new v.CLASS_TYPE();
-			t.unserialize( v );
-			this.dataSubTree.push( t );
+		var tmp : any = this.factory( obj.dataNode.CLASS_TYPE );
+		tmp.unserialize( JSON.stringify( obj.dataNode ) );
+		this.dataNode = tmp;
+		this.dataRect = this.factory( obj.dataRect.CLASS_TYPE, obj.dataRect.x, obj.dataRect.y, obj.dataRect.width, obj.dataRect.height );
+		if ( obj.dataSubTree != null ) {
+			this.dataSubTree = [];
+			for ( var i = 0; i < obj.dataSubTree.length; i++ ){
+				var v = obj.dataSubTree[i];
+				var t = new v.CLASS_TYPE();
+				t.unserialize( v );
+				this.dataSubTree.push( t );
+			}
+		}
+	}
+
+	private factory( className: string, ...arg ) : any{
+		switch( className ){
+			case "Rectangle": return new Phaser.Geom.Rectangle( arg[0], arg[1], arg[2], arg[3]);
+			case "FkDstrGridData": return new FkDstrGridData();
+			default: return null;
 		}
 	}
 
@@ -56,13 +63,16 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 			var k = keyList[i];
 			var v = this[k];
 			var toSave = this.serializeWithType( v );
-			toSave.CLASS_TYPE = typeof this; // This is important, we need class information
+            if ( toSave != null && v != null && v.constructor != null )
+                toSave.CLASS_TYPE = v.constructor.name; // This is important, we need class 
 			saveObj[k] = toSave;
 		}
 		return JSON.stringify( saveObj );
 	}
 
 	public serializeWithType( obj : any ) {
+		if ( obj == null )
+			return null;
 		// In case of Array
 		if ( obj.length > 0 ) {
 			var rlt = [];
@@ -80,14 +90,12 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 				x: obj.x,
 				y: obj.y,
 				width: obj.width,
-				height: obj.height,
-				CLASS_TYPE: Phaser.Geom.Rectangle,
+				height: obj.height
 			};
 		// In case of Number
-		if ( isNaN( obj ) )
+		if ( !isNaN( obj ) )
 			return {
 				num: obj,	// A special entry for numbers
-				CLASS_TYPE: "number"
 			};
 		return obj;
 	}
@@ -304,7 +312,7 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 		this.dataSubTree = [];
 		for( var i = 0; i < wh.length; i++ ) {
 			var o = wh[i];
-			this.dataSubTree.push( new FkQuadTree( 
+			this.dataSubTree.push( new FkQuadTree<T>().init( 
 				this.dataRect.x + ( this.dataRect.width/2 * o.w ), 
 				this.dataRect.y + ( this.dataRect.height/2 * o.h ), 
 				this.dataRect.width/2, this.dataRect.height/2, 
