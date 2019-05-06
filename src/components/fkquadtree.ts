@@ -19,12 +19,12 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
         
-  //       console.log( "### TEST ###");
-		// console.log( this );
-		// var testA = this.serialize();
-		// console.log( testA );
-		// var testB = this.unserialize( testA );
-		// console.log( this );
+        console.log( "### TEST ###");
+		console.log( this );
+		var testA = this.serialize();
+		console.log( testA );
+		var testB = this.unserialize( testA );
+		console.log( this );
 		return this;
 	}
 

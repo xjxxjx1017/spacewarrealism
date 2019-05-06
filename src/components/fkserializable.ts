@@ -17,25 +17,14 @@ export class FkSerialize {
             var k = keyList[i];
             if ( src[k] == null )
             	continue;
-            if ( src[k].CLASS_TYPE == 'Boolean' )
-        		target[k] = src[k].boolean == true;
-        	else if ( src[k].CLASS_TYPE == 'Number' )
-				target[k] = parseInt( src[k].num );
-			else if ( src[k].CLASS_TYPE == 'Rectangle')
-				target[k] = FkSerialize.factory( src[k].CLASS_TYPE, src[k].x, src[k].y, src[k].width, src[k].height );
-			else if ( src[k].length >= 0 ){
+            if ( src[k].length >= 0 ){
 				target[k] = [];
 				for ( var i = 0; i < src[k].length; i++ ){
-					var tmp = FkSerialize.factory( src[k][i].CLASS_TYPE );
-					tmp.unserialize( JSON.stringify( src[k][i] ) );
+					var tmp = FkSerialize.factory( src[k][i].CLASS_TYPE, src[k][i] );
 					target[k].push( tmp );
 				}
 			}
-			else {
-				var tmp = FkSerialize.factory( src[k].CLASS_TYPE );
-				tmp.unserialize( JSON.stringify( src[k] ) );
-				target[k] = tmp;
-			}
+			else target[k] = FkSerialize.factory( src[k].CLASS_TYPE, src[k] );
         }
     }
 
@@ -45,53 +34,57 @@ export class FkSerialize {
             var k = keyList[i];
             var v = src[k];
             var toSave = FkSerialize.serializeWithType( v );
-            if ( toSave != null && v != null && v.constructor != null )
-                toSave.CLASS_TYPE = v.constructor.name; // This is important, we need class 
             saveObj[k] = toSave;
         }
         return JSON.stringify( saveObj );
     }
 
+	private static factory( className: string, param: any ) : any{
+		var tmp;
+		switch( className ){
+			case "Boolean": return param.boolean == true;
+			case "Number": return parseInt( param.num );
+			case "Rectangle": return new Phaser.Geom.Rectangle( param.x, param.y, param.width, param.height);
+			case "FkDstrGridData": 
+				tmp = new FkDstrGridData();
+				tmp.unserialize( JSON.stringify( param ) );
+				return tmp;
+			case "FkQuadTree": 
+				tmp = new FkQuadTree();
+				tmp.unserialize( JSON.stringify( param ) );
+				return tmp;
+			default: return null;
+		}
+	}
+
     public static serializeWithType( obj : any ) {
-        // In case of Boolean
-        if ( obj === false || obj === true )
-            return {
-                boolean: obj,    // A special entry for Booleans
-            };
 		if ( obj == null )
 			return null;
 		// In case of Array
 		if ( obj.length > 0 ) {
-			var rlt = [];
+			var rltArr = [];
 			for( var i = 0; i < obj.lenth; i++ ) {
-				rlt.push( this.serializeWithType( obj[i] ) )
+				rltArr.push( this.serializeWithType( obj[i] ) )
 			}
-			return rlt;
+			return rltArr;
 		}
-		// In case of Serializable Object
-		if ( obj.serialize != null )
-			return JSON.parse( obj.serialize() );
-		// In case of Phaser.Geom.Rectangle
-		if ( obj.width > 0 && obj.height > 0 )
-			return {
-				x: obj.x,
-				y: obj.y,
-				width: obj.width,
-				height: obj.height
-			};
-		// In case of Number
-		if ( !isNaN( obj ) )
-			return {
-				num: obj,	// A special entry for numbers
-			};
-    }
-
-	private static factory( className: string, ...arg ) : any{
+		var rlt: any = {};
+		var className = obj.constructor.name;
 		switch( className ){
-			case "Rectangle": return new Phaser.Geom.Rectangle( arg[0], arg[1], arg[2], arg[3]);
-			case "FkDstrGridData": return new FkDstrGridData();
-			case "FkQuadTree": return new FkQuadTree();
-			default: return null;
+			case "Boolean": rlt.boolean = obj; break;
+			case "Number": rlt.num = obj; break;
+			case "Rectangle": 
+				rlt.x = obj.x;
+				rlt.y = obj.y;
+				rlt.width = obj.width;
+				rlt.height = obj.height;
+				break;
+			case "FkDstrGridData":
+			case "FkQuadTree": 
+				rlt = JSON.parse( obj.serialize() );
+				break;
 		}
-	}
+		rlt.CLASS_TYPE = className;
+		return rlt;
+    }
 }
