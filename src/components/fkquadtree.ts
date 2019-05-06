@@ -1,7 +1,7 @@
 
 import 'phaser';
 import * as _ from 'lodash';
-import {FkSerializable} from './fkserializable';
+import {FkSerializable, FkSerialize} from './fkserializable';
 import { FkDstrGridData } from "./destructibleobject";
 
 export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
@@ -18,86 +18,24 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 		this.dataNode = _data;
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
-
-		// console.log( "### TEST ###");
+        
+  //       console.log( "### TEST ###");
 		// console.log( this );
 		// var testA = this.serialize();
 		// console.log( testA );
 		// var testB = this.unserialize( testA );
 		// console.log( this );
-
 		return this;
 	}
 
 	public unserialize( s : string ) {
-		var obj = JSON.parse( s );
 		var keyList = [ "resDepth", "dataRect", "dataNode", "dataSubTree" ];
-		this.resDepth = parseInt( obj.resDepth.num );
-		var tmp : any = this.factory( obj.dataNode.CLASS_TYPE );
-		tmp.unserialize( JSON.stringify( obj.dataNode ) );
-		this.dataNode = tmp;
-		this.dataRect = this.factory( obj.dataRect.CLASS_TYPE, obj.dataRect.x, obj.dataRect.y, obj.dataRect.width, obj.dataRect.height );
-		if ( obj.dataSubTree != null ) {
-			this.dataSubTree = [];
-			for ( var i = 0; i < obj.dataSubTree.length; i++ ){
-				var v = obj.dataSubTree[i];
-				var t = new v.CLASS_TYPE();
-				t.unserialize( v );
-				this.dataSubTree.push( t );
-			}
-		}
-	}
-
-	private factory( className: string, ...arg ) : any{
-		switch( className ){
-			case "Rectangle": return new Phaser.Geom.Rectangle( arg[0], arg[1], arg[2], arg[3]);
-			case "FkDstrGridData": return new FkDstrGridData();
-			default: return null;
-		}
+        FkSerialize.unserialize( this, s, keyList );
 	}
 
 	public serialize() : string {
 		var keyList = [ "resDepth", "dataRect", "dataNode", "dataSubTree" ];
-		var saveObj = {};
-		for ( var i = 0; i < keyList.length; i++ ) {
-			var k = keyList[i];
-			var v = this[k];
-			var toSave = this.serializeWithType( v );
-            if ( toSave != null && v != null && v.constructor != null )
-                toSave.CLASS_TYPE = v.constructor.name; // This is important, we need class 
-			saveObj[k] = toSave;
-		}
-		return JSON.stringify( saveObj );
-	}
-
-	public serializeWithType( obj : any ) {
-		if ( obj == null )
-			return null;
-		// In case of Array
-		if ( obj.length > 0 ) {
-			var rlt = [];
-			for( var i = 0; i < obj.lenth; i++ ) {
-				rlt.push( this.serializeWithType( obj[i] ) )
-			}
-			return rlt;
-		}
-		// In case of Serializable Object
-		if ( obj.serialize != null )
-			return JSON.parse( obj.serialize() );
-		// In case of Phaser.Geom.Rectangle
-		if ( obj.width > 0 && obj.height > 0 )
-			return {
-				x: obj.x,
-				y: obj.y,
-				width: obj.width,
-				height: obj.height
-			};
-		// In case of Number
-		if ( !isNaN( obj ) )
-			return {
-				num: obj,	// A special entry for numbers
-			};
-		return obj;
+        return FkSerialize.serialize( this, keyList );
 	}
 
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {

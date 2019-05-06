@@ -1,5 +1,6 @@
 import "phaser";
 import * as _ from 'lodash';
+import { FkSerialize } from "./fkserializable";
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
 
 export class FkDstrGridData implements FkBaseDstrGridData {
@@ -13,31 +14,13 @@ export class FkDstrGridData implements FkBaseDstrGridData {
     }
 
     public unserialize( s : string ) {
-        var obj = JSON.parse( s );
         var keyList = [ "dataIsVisible" ];
-        this.dataIsVisible = ( obj.dataIsVisible.boolean ) == true;
+        FkSerialize.unserialize( this, s, keyList );
     }
 
     public serialize() : string {
         var keyList = [ "dataIsVisible" ];
-        var saveObj = {};
-        for ( var i = 0; i < keyList.length; i++ ) {
-            var k = keyList[i];
-            var v = this[k];
-            var toSave = this.serializeWithType( v );
-            saveObj[k] = toSave;
-        }
-        return JSON.stringify( saveObj );
-    }
-
-    public serializeWithType( obj : any ) {
-        // In case of Boolean
-        if ( obj === false || obj === true )
-            return {
-                boolean: obj,    // A special entry for Booleans
-                CLASS_TYPE: "boolean"
-            };
-        return obj;
+        return FkSerialize.serialize( this, keyList );
     }
 
     public static getStateVisible() : FkDstrGridData {
