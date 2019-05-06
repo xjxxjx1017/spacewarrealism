@@ -53,7 +53,9 @@ export class FkSerialize {
 				tmp = new FkQuadTree();
 				tmp.unserialize( JSON.stringify( param ) );
 				return tmp;
-			default: return null;
+			default: 
+				alert( "Class not defined in factory: " + className ); 
+				return null;
 		}
 	}
 
@@ -82,6 +84,9 @@ export class FkSerialize {
 			case "FkDstrGridData":
 			case "FkQuadTree": 
 				rlt = JSON.parse( obj.serialize() );
+				break;
+			default:
+				alert( "Class not defined in serializeWithType: " + className ); 
 				break;
 		}
 		rlt.CLASS_TYPE = className;
