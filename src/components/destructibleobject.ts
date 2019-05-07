@@ -1,26 +1,17 @@
 import "phaser";
 import * as _ from 'lodash';
-import { FkSerialize } from "./fkserializable";
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
 
-export class FkDstrGridData implements FkBaseDstrGridData {
+export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
-    constructor(){}
+    constructor(){
+        super( FkDstrGridData, "FkDstrGridData", [ "dataIsVisible" ] );
+    }
 
     protected init( _isVisible : boolean ) : FkDstrGridData {
         this.dataIsVisible = _isVisible;
         return this;
-    }
-
-    public unserialize( s : string ) {
-        var keyList = [ "dataIsVisible" ];
-        FkSerialize.unserialize( this, s, keyList );
-    }
-
-    public serialize() : string {
-        var keyList = [ "dataIsVisible" ];
-        return FkSerialize.serialize( this, keyList );
     }
 
     public static getStateVisible() : FkDstrGridData {

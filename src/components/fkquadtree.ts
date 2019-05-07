@@ -1,17 +1,19 @@
 
 import 'phaser';
 import * as _ from 'lodash';
-import {FkSerializable, FkSerialize} from './fkserializable';
+import { FkSerializable } from './fkserializable';
 import { FkDstrGridData } from "./destructibleobject";
 
-export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
+export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 
 	public resDepth : number;
 	public dataNode : T;
 	public dataRect : Phaser.Geom.Rectangle;
 	public dataSubTree : FkQuadTree<T>[];
 
-	constructor(){}
+	constructor(){
+		super( FkQuadTree, "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ] );
+	}
 
 	public init( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
 		this.resDepth = _depth;
@@ -19,23 +21,13 @@ export class FkQuadTree<T extends FkSerializable> implements FkSerializable{
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
         
-        console.log( "### TEST ###");
-		console.log( this );
-		var testA = this.serialize();
-		console.log( testA );
-		var testB = this.unserialize( testA );
-		console.log( this );
+  //       console.log( "### TEST ###");
+		// console.log( this );
+		// var testA = this.serialize();
+		// console.log( testA );
+		// var testB = this.unserialize( testA );
+		// console.log( this );
 		return this;
-	}
-
-	public unserialize( s : string ) {
-		var keyList = [ "resDepth", "dataRect", "dataNode", "dataSubTree" ];
-        FkSerialize.unserialize( this, s, keyList );
-	}
-
-	public serialize() : string {
-		var keyList = [ "resDepth", "dataRect", "dataNode", "dataSubTree" ];
-        return FkSerialize.serialize( this, keyList );
 	}
 
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {

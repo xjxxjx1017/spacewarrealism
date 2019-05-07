@@ -2,14 +2,37 @@ import * as _ from 'lodash';
 import {FkDestructibleObject,FkDstrGridData} from './destructibleobject';
 import {FkQuadTree} from './fkquadtree';
 
-export interface FkSerializable {
-	// Each savable item need to implement this
-	serialize() : string;
-	unserialize( s : string );
-	// new();
+export class FkSerializable {
+	private dataKeyList = [];
+
+	public constructor( _classDef: Class, _classType: string, _keyList: string[] ){
+		this.dataKeyList = _keyList;
+		if ( FkSerialize.registeredClass[_classType] == null )
+				FkSerialize.registeredClass[_classType] = _classDef;
+	}
+
+	public serialize() : string {
+        return FkSerialize.serialize( this, this.dataKeyList );
+	}
+
+	public unserialize( s : string ) {
+        FkSerialize.unserialize( this, s, this.dataKeyList );
+	}
 }
 
-export class FkSerialize {
+class FkSerialize {
+	public static registeredClass: Map<string, Class> = new Map<string, Class>();
+
+    public static serialize( src: any, keyList : string[] ) : string {
+        var saveObj = {};
+        for ( var i = 0; i < keyList.length; i++ ) {
+            var k = keyList[i];
+            var v = src[k];
+            var toSave = FkSerialize.serializeWithType( v );
+            saveObj[k] = toSave;
+        }
+        return JSON.stringify( saveObj );
+    }
 
     public static unserialize( target : any, s : string, keyList : string[] ) {
         var src = JSON.parse( s );
@@ -28,38 +51,24 @@ export class FkSerialize {
         }
     }
 
-    public static serialize( src: any, keyList : string[] ) : string {
-        var saveObj = {};
-        for ( var i = 0; i < keyList.length; i++ ) {
-            var k = keyList[i];
-            var v = src[k];
-            var toSave = FkSerialize.serializeWithType( v );
-            saveObj[k] = toSave;
-        }
-        return JSON.stringify( saveObj );
-    }
-
 	private static factory( className: string, param: any ) : any{
 		var tmp;
 		switch( className ){
 			case "Boolean": return param.boolean == true;
 			case "Number": return parseInt( param.num );
 			case "Rectangle": return new Phaser.Geom.Rectangle( param.x, param.y, param.width, param.height);
-			case "FkDstrGridData": 
-				tmp = new FkDstrGridData();
-				tmp.unserialize( JSON.stringify( param ) );
-				return tmp;
-			case "FkQuadTree": 
-				tmp = new FkQuadTree();
-				tmp.unserialize( JSON.stringify( param ) );
-				return tmp;
 			default: 
+				if ( FkSerialize.registeredClass[className] != null ){
+					tmp = new FkSerialize.registeredClass[className]();
+					tmp.unserialize( JSON.stringify( param ) );
+					return tmp;
+				}
 				alert( "Class not defined in factory: " + className ); 
 				return null;
 		}
 	}
 
-    public static serializeWithType( obj : any ) {
+    private static serializeWithType( obj : any ) {
 		if ( obj == null )
 			return null;
 		// In case of Array
@@ -81,11 +90,11 @@ export class FkSerialize {
 				rlt.width = obj.width;
 				rlt.height = obj.height;
 				break;
-			case "FkDstrGridData":
-			case "FkQuadTree": 
-				rlt = JSON.parse( obj.serialize() );
-				break;
 			default:
+				if ( FkSerialize.registeredClass[className] != null ) {
+					rlt = JSON.parse( obj.serialize() );
+					break;
+				}
 				alert( "Class not defined in serializeWithType: " + className ); 
 				break;
 		}

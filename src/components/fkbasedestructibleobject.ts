@@ -3,7 +3,10 @@ import * as _ from 'lodash';
 import {FkSerializable} from './fkserializable';
 import { FkQuadTree } from "./fkquadtree";
 
-export interface FkBaseDstrGridData extends FkSerializable {
+export class FkBaseDstrGridData extends FkSerializable {
+	constructor( _classDef: Class, _classType: string, _keyList: string[] ){
+		super( _classDef, _classType, _keyList );
+	}
 }
 
 export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
