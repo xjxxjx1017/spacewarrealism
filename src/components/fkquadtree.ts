@@ -29,6 +29,8 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 		// console.log( this );
 		return this;
 	}
+	
+	public AfterUnserializeInit(){}
 
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {
 		if ( _matchFunc == null )

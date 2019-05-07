@@ -2,14 +2,16 @@ import * as _ from 'lodash';
 import {FkDestructibleObject,FkDstrGridData} from './destructibleobject';
 import {FkQuadTree} from './fkquadtree';
 
-export class FkSerializable {
-	private dataKeyList = [];
+export abstract class FkSerializable {
+	protected dataKeyList = [];
 
 	public constructor( _classDef: Class, _classType: string, _keyList: string[] ){
 		this.dataKeyList = _keyList;
 		if ( FkSerialize.registeredClass[_classType] == null )
-				FkSerialize.registeredClass[_classType] = _classDef;
+			FkSerialize.registeredClass[_classType] = _classDef;
 	}
+
+	public abstract AfterUnserializeInit();
 
 	public serialize() : string {
         return FkSerialize.serialize( this, this.dataKeyList );
@@ -17,6 +19,7 @@ export class FkSerializable {
 
 	public unserialize( s : string ) {
         FkSerialize.unserialize( this, s, this.dataKeyList );
+        this.AfterUnserializeInit();
 	}
 }
 
@@ -57,6 +60,7 @@ class FkSerialize {
 			case "Boolean": return param.boolean == true;
 			case "Number": return parseInt( param.num );
 			case "Rectangle": return new Phaser.Geom.Rectangle( param.x, param.y, param.width, param.height);
+			case "Point": return new Phaser.Geom.Point( param.x, param.y );
 			default: 
 				if ( FkSerialize.registeredClass[className] != null ){
 					tmp = new FkSerialize.registeredClass[className]();
@@ -90,6 +94,9 @@ class FkSerialize {
 				rlt.width = obj.width;
 				rlt.height = obj.height;
 				break;
+			case "Point":
+				rlt.x = obj.x;
+				rlt.y = obj.y;
 			default:
 				if ( FkSerialize.registeredClass[className] != null ) {
 					rlt = JSON.parse( obj.serialize() );

@@ -1,19 +1,25 @@
 import "phaser";
 import * as _ from 'lodash';
-import {FkSerializable} from './fkserializable';
+import { FkSerializable } from './fkserializable';
 import { FkQuadTree } from "./fkquadtree";
 
 export class FkBaseDstrGridData extends FkSerializable {
 	constructor( _classDef: Class, _classType: string, _keyList: string[] ){
 		super( _classDef, _classType, _keyList );
 	}
+	public AfterUnserializeInit(){}
 }
 
-export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> {
-	private dataBody : FkQuadTree<T>;
-	private dataPos : Phaser.Geom.Point;
+export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> extends FkSerializable {
+	protected dataBody : FkQuadTree<T>;
+	protected dataPos : Phaser.Geom.Point;
 
-	constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
+	constructor( _classDef: Class, _classType: string, _keyList: string[] ){
+		super( _classDef, _classType, _keyList.concat( ["dataBody", "dataPos"] ));
+	}
+	public AfterUnserializeInit(){}
+
+	public baseInit( _posX : number, _posY : number, 
 		_maxWidth : number, _maxHeight : number,
 		_draw : ( _rect : Phaser.Geom.Rectangle, _data : T ) => void,
 		_initState : T  ) {

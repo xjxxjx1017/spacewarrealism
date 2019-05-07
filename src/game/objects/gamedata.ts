@@ -17,6 +17,7 @@ enum GameState {
 }
 
 export class GameData {
+    public static inst: Phaser.Scene;
 	private dataGame : Phaser.Scene;
     public dataShipList : Ship[];
     private uiEditorShip : PanelEditShip;
@@ -27,6 +28,7 @@ export class GameData {
     private tmpAttackTimer : Phaser.Time.TimerEvent;
 
 	public constructor( _game : Phaser.Scene ){
+        GameData.inst = _game;
 		this.dataGame = _game;
 	}
 

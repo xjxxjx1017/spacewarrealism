@@ -1,6 +1,8 @@
 import "phaser";
 import * as _ from 'lodash';
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
+import { GameData } from "../game/objects/gamedata";
+import { EventEntityUpdate } from "../game/events/evententityupdate";
 
 export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
@@ -32,36 +34,41 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private dataRenderTexture : string = null; 
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
-    public onUpdate : ( obj : FkDestructibleObject ) =>void;
     private debugDrawCounter : number = 0;
 
-	constructor( _game: Phaser.Scene, _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number, _renderTexture : string = null, _onUpdate : ( obj : FkDestructibleObject ) =>void = null ) {
-    	super( _game, _posX, _posY, _maxWidth, _maxHeight,
+    constructor(){
+        super( FkDestructibleObject, "FkDestructibleObject", ["dataRenderTexture"] );
+    }
+
+	public init( _posX : number, _posY : number, 
+		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+    	this.baseInit( _posX, _posY, _maxWidth, _maxHeight,
 	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
 	    	FkDstrGridData.getStateVisible()  );
-        this.dataRenderTexture = _renderTexture;
-        this.onUpdate = _onUpdate;
+        this.AfterUnserializeInit();
+        return this;
+	}
+
+    public AfterUnserializeInit() {
         if ( this.dataRenderTexture != null ) {
-            this.layerGridEdge = _game.make.graphics( {} );
-            this.layerGridEdge.setX( _posX );
-            this.layerGridEdge.setY( _posY );
-            this.layerTexture = _game.add.image( _posX, _posY, this.dataRenderTexture );
+            this.layerGridEdge = GameData.inst.make.graphics( {} );
+            this.layerGridEdge.setX( this.dataPos.x );
+            this.layerGridEdge.setY( this.dataPos.y );
+            this.layerTexture = GameData.inst.add.image( this.dataPos.x, this.dataPos.y, this.dataRenderTexture );
             this.layerTexture.setMask( this.layerGridEdge.createGeometryMask() );
         }
         else {
-            this.layerGridEdge = _game.add.graphics();
-            this.layerGridEdge.setX( _posX );
-            this.layerGridEdge.setY( _posY );
+            this.layerGridEdge = GameData.inst.add.graphics();
+            this.layerGridEdge.setX( this.dataPos.x );
+            this.layerGridEdge.setY( this.dataPos.y );
         }
-	}
+    }
 
     public drawDstrObject() {
         this.layerGridEdge.clear();
         this.debugDrawCounter = 0;
         this.draw( ( _rect, _data ) => { this.render( _rect, _data ); } );
-        if ( this.onUpdate )
-            this.onUpdate( this );
+        EventEntityUpdate.Manager.notify( new EventEntityUpdate() );
         // console.log( "Draw: " + this.debugDrawCounter + " rects" );
     }
 

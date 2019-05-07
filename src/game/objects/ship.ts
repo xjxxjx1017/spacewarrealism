@@ -6,6 +6,7 @@ import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
 import {Gun} from "../objects/gun";
 import {EventStampType, EStampType} from "../events/eventplacestamp";
 import {EventHpChanged} from "../events/eventhpchanged";
+import {EventEntityUpdate} from "../events/evententityupdate";
 
 export class Ship {
     public dataRect : Phaser.Geom.Rectangle;
@@ -31,13 +32,17 @@ export class Ship {
         this.dataRect = _rect;
 
         // Init ship body entity and events
-        this.dataShipEntity = new FkDestructibleObject( self.dataGame, _rect.x, _rect.y, 
-            _rect.width, _rect.height, null, (item) => { self.onEntityUpdate(item) } );
+        this.dataShipEntity = new FkDestructibleObject().init( _rect.x, _rect.y, 
+            _rect.width, _rect.height, null );
         // Init guns on ship
         this.dataGunList = [];
         // Init events
         EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
         EventStampType.Manager.attach( this, (id,evt)=> { self.onPlaceStamp( evt ); } );
+        EventEntityUpdate.Manager.attach( this, (id,evt)=> { 
+            if ( this == id ) 
+                self.onEntityUpdate( evt ); 
+        });
         // Show Object
         this.dataShipEntity.drawDstrObject();
 	}
@@ -48,7 +53,7 @@ export class Ship {
             }) * 100 );
     }
 
-    private onEntityUpdate( item : FkDestructibleObject ) {
+    private onEntityUpdate( evt ) {
         var hp = this.getHp();
         EventHpChanged.Manager.notify( new EventHpChanged( this, hp) );
     }
