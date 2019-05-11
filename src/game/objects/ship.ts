@@ -7,35 +7,49 @@ import {Gun} from "../objects/gun";
 import {EventStampType, EStampType} from "../events/eventplacestamp";
 import {EventHpChanged} from "../events/eventhpchanged";
 import {EventEntityUpdate} from "../events/evententityupdate";
+import {FkSerializable} from "../../components/fkserializable";
 
-export class Ship {
+export class Ship extends FkSerializable {
     public dataRect : Phaser.Geom.Rectangle;
-	private dataGame : Phaser.Scene;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
 
-    public save() {
-        var tmp = JSON.stringify( this.dataShipEntity );
-        return tmp;
+    public constructor(){
+        super( Ship, "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
     }
 
-    public load( s : string ) {
-        var tmp = JSON.parse( s );
-        this.dataShipEntity = tmp;
-        this.dataShipEntity.drawDstrObject();
-    }
-
-	public constructor( _game : Phaser.Scene, _rect : Phaser.Geom.Rectangle ) {
-        var self = this;
-
-		this.dataGame = _game;
+	public init( _rect : Phaser.Geom.Rectangle ) {
         this.dataRect = _rect;
-
         // Init ship body entity and events
         this.dataShipEntity = new FkDestructibleObject().init( _rect.x, _rect.y, 
             _rect.width, _rect.height, null );
         // Init guns on ship
         this.dataGunList = [];
+        this.afterUnserializeInit();
+
+        // console.log( "==== test start ====" );
+        // console.log( "Original: " );
+        // console.log( this );
+        // var tmpA = this.serialize();
+        // console.log( "Saved as: " );
+        // console.log( tmpA );
+        // this.unserialize( tmpA );
+        // console.log( "Loaded as: " );
+        // console.log( this );
+        // console.log( "==== test end ====" );
+
+        return this;
+	}
+
+    public kill(){
+        super.kill();
+        EventShipBrush.Manager.detach( this );
+        EventStampType.Manager.detach( this );
+        EventEntityUpdate.Manager.detach( this );
+    }
+
+    public afterUnserializeInit(){
+        var self = this;
         // Init events
         EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
         EventStampType.Manager.attach( this, (id,evt)=> { self.onPlaceStamp( evt ); } );
@@ -45,7 +59,7 @@ export class Ship {
         });
         // Show Object
         this.dataShipEntity.drawDstrObject();
-	}
+    }
 
     public getHp() : number {
         return Math.floor( this.dataShipEntity.area( function(node : FkDstrGridData) : boolean { 
@@ -88,7 +102,7 @@ export class Ship {
             return;
         switch ( _evt.type ) {
             case EStampType.STAMP_TURRET_RED:
-                var g = new Gun( this.dataGame, new Phaser.Geom.Point( _evt.pos.x, _evt.pos.y ) );
+                var g = new Gun().init( new Phaser.Geom.Point( _evt.pos.x, _evt.pos.y ) );
                 this.dataGunList.push( g );
                 break;
             default:

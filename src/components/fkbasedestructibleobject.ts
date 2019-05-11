@@ -4,20 +4,21 @@ import { FkSerializable } from './fkserializable';
 import { FkQuadTree } from "./fkquadtree";
 
 export class FkBaseDstrGridData extends FkSerializable {
-	constructor( _classDef: Class, _classType: string, _keyList: string[] ){
-		super( _classDef, _classType, _keyList );
+	constructor( _classDef: Class, _classType: string, _keyList: string[], _killKeyList: string[] ){
+		super( _classDef, _classType, _keyList, _killKeyList );
 	}
-	public AfterUnserializeInit(){}
+	public afterUnserializeInit(){}
 }
 
 export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> extends FkSerializable {
 	protected dataBody : FkQuadTree<T>;
 	protected dataPos : Phaser.Geom.Point;
 
-	constructor( _classDef: Class, _classType: string, _keyList: string[] ){
-		super( _classDef, _classType, _keyList.concat( ["dataBody", "dataPos"] ));
+	constructor( _classDef: Class, _classType: string, _keyList: string[], _killKeyList: string[] ){
+		super( _classDef, _classType, _keyList.concat( ["dataBody", "dataPos"] ), _killKeyList.concat(["dataBody"]) );
 	}
-	public AfterUnserializeInit(){}
+
+	public afterUnserializeInit(){}
 
 	public baseInit( _posX : number, _posY : number, 
 		_maxWidth : number, _maxHeight : number,

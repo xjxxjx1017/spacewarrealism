@@ -4,14 +4,46 @@ import {FkQuadTree} from './fkquadtree';
 
 export abstract class FkSerializable {
 	protected dataKeyList = [];
+	protected dataKillKeyList = [];
+	protected dataClassType;
 
-	public constructor( _classDef: Class, _classType: string, _keyList: string[] ){
+	public constructor( _classDef: Class, _classType: string, _keyList: string[], _killKeyList: string[] ){
 		this.dataKeyList = _keyList;
+		this.dataKillKeyList = _killKeyList;
+		this.dataClassType = _classType;
 		if ( FkSerialize.registeredClass[_classType] == null )
 			FkSerialize.registeredClass[_classType] = _classDef;
 	}
 
-	public abstract AfterUnserializeInit();
+	public abstract afterUnserializeInit();
+
+	public kill() {
+		if( this.dataKillKeyList == null )
+			return;
+		for( var i = 0; i < this.dataKillKeyList.length; i++ ){
+			var k = this.dataKillKeyList[i];
+			if ( this[k] ) {
+				if ( this[k].length != null ){
+		            for( var i = 0; i < this[k].length; i++ ){
+		                var item = this[k][i];
+		                if ( item.kill == null ){
+		                	alert( "Kill function not found on: " + this.dataClassType + "." + k );
+		                }
+		                item.kill();
+		                this[k][i] = null;
+		            }
+		            this[k] = null;
+				}
+				else {
+	                if ( this[k].kill == null ){
+	                	alert( "Kill function not found on: " + this.dataClassType + "." + k );
+	                }
+		            this[k].kill();
+		            this[k] = null;
+				}
+			}
+		}
+	}
 
 	public serialize() : string {
         return FkSerialize.serialize( this, this.dataKeyList );
@@ -19,7 +51,7 @@ export abstract class FkSerializable {
 
 	public unserialize( s : string ) {
         FkSerialize.unserialize( this, s, this.dataKeyList );
-        this.AfterUnserializeInit();
+        this.afterUnserializeInit();
 	}
 }
 
@@ -43,6 +75,7 @@ class FkSerialize {
             var k = keyList[i];
             if ( src[k] == null )
             	continue;
+            target.kill();
             if ( src[k].length >= 0 ){
 				target[k] = [];
 				for ( var i = 0; i < src[k].length; i++ ){
@@ -97,6 +130,7 @@ class FkSerialize {
 			case "Point":
 				rlt.x = obj.x;
 				rlt.y = obj.y;
+				break;
 			default:
 				if ( FkSerialize.registeredClass[className] != null ) {
 					rlt = JSON.parse( obj.serialize() );

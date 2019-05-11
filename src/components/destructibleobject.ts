@@ -8,7 +8,7 @@ export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
     constructor(){
-        super( FkDstrGridData, "FkDstrGridData", [ "dataIsVisible" ] );
+        super( FkDstrGridData, "FkDstrGridData", [ "dataIsVisible" ], [] );
     }
 
     protected init( _isVisible : boolean ) : FkDstrGridData {
@@ -37,7 +37,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private debugDrawCounter : number = 0;
 
     constructor(){
-        super( FkDestructibleObject, "FkDestructibleObject", ["dataRenderTexture"] );
+        super( FkDestructibleObject, "FkDestructibleObject", ["dataRenderTexture"], [] );
     }
 
 	public init( _posX : number, _posY : number, 
@@ -45,11 +45,23 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     	this.baseInit( _posX, _posY, _maxWidth, _maxHeight,
 	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
 	    	FkDstrGridData.getStateVisible()  );
-        this.AfterUnserializeInit();
+        this.afterUnserializeInit();
         return this;
 	}
 
-    public AfterUnserializeInit() {
+    public kill(){
+        super.kill();
+        if ( this.layerGridEdge ) {
+            this.layerGridEdge.destroy();
+            this.layerGridEdge = null;
+        }
+        if ( this.layerTexture ) {
+            this.layerTexture.destroy();
+            this.layerTexture = null;
+        }
+    }
+
+    public afterUnserializeInit() {
         if ( this.dataRenderTexture != null ) {
             this.layerGridEdge = GameData.inst.make.graphics( {} );
             this.layerGridEdge.setX( this.dataPos.x );

@@ -33,13 +33,9 @@ export class GameData {
 	}
 
     public save() {
-        var tmpShipList = this.dataShipList[0].save();
-        localStorage.setItem( "testSave", tmpShipList );
     }
 
     public load() {
-        var tmp = localStorage.getItem( "testSave" );
-        this.dataShipList[0].load( tmp );
     }
 
 	public run() {
@@ -51,7 +47,7 @@ export class GameData {
 
         this.dataShipList = [];
         _.forEach( shipData, function(d){
-            var ship = new Ship( self.dataGame, d );
+            var ship = new Ship().init( d );
             self.dataShipList.push( ship );
         })
 

@@ -12,7 +12,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	public dataSubTree : FkQuadTree<T>[];
 
 	constructor(){
-		super( FkQuadTree, "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ] );
+		super( FkQuadTree, "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ], ["dataNode", "dataSubTree"] );
 	}
 
 	public init( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
@@ -20,17 +20,10 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 		this.dataNode = _data;
 		this.dataRect = new Phaser.Geom.Rectangle( _x, _y, _w, _h );
 		this.dataSubTree = null;
-        
-  //       console.log( "### TEST ###");
-		// console.log( this );
-		// var testA = this.serialize();
-		// console.log( testA );
-		// var testB = this.unserialize( testA );
-		// console.log( this );
 		return this;
 	}
 	
-	public AfterUnserializeInit(){}
+	public afterUnserializeInit(){}
 
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {
 		if ( _matchFunc == null )

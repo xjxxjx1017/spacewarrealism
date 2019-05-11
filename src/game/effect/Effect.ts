@@ -1,11 +1,12 @@
-import "phaser"
+import "phaser";
+import {GameData} from "../objects/gamedata";
 
 export class Effect{
 	private static effectManagerGun : Phaser.GameObjects.Group = null;
 
-	public static createShootEffect( _game : Phaser.Scene, _p1 : Phaser.Geom.Point, _p2 : Phaser.Geom.Point ) {
+	public static createShootEffect( _p1 : Phaser.Geom.Point, _p2 : Phaser.Geom.Point ) {
 		if ( Effect.effectManagerGun == null ) {
-			Effect.effectManagerGun = _game.add.group(<GroupConfig>{ 
+			Effect.effectManagerGun = GameData.inst.add.group(<GroupConfig>{ 
 				defaultKey: "red_laser", 
 				maxSize: 10
 			});
@@ -21,7 +22,7 @@ export class Effect{
 		var dx = Math.cos(angle) * eff.height / 2;
 		var dy = Math.sin(angle) * eff.height / 2;
 		eff.setActive(true).setVisible(true).setAlpha(1).setRotation( angle + Math.PI/2 ).setX( _p1.x + dx ).setY( _p1.y + dy );
-		_game.tweens.add({
+		GameData.inst.tweens.add({
             targets: eff,
 			alpha : 0,
 			duration : 1000,
