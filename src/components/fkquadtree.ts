@@ -12,7 +12,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	public dataSubTree : FkQuadTree<T>[];
 
 	constructor(){
-		super( FkQuadTree, "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ], ["dataNode", "dataSubTree"] );
+		super( "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ], ["dataNode", "dataSubTree"] );
 	}
 
 	public init( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {

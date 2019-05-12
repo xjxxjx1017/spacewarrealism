@@ -1,18 +1,17 @@
 import * as _ from 'lodash';
 import {FkDestructibleObject,FkDstrGridData} from './destructibleobject';
 import {FkQuadTree} from './fkquadtree';
+import {FkFactory} from './fkfactory';
 
 export abstract class FkSerializable {
 	protected dataKeyList = [];
 	protected dataKillKeyList = [];
 	protected dataClassType;
 
-	public constructor( _classDef: Class, _classType: string, _keyList: string[], _killKeyList: string[] ){
+	public constructor( _classType: string, _keyList: string[], _killKeyList: string[] ){
 		this.dataKeyList = _keyList;
 		this.dataKillKeyList = _killKeyList;
 		this.dataClassType = _classType;
-		if ( FkSerialize.registeredClass[_classType] == null )
-			FkSerialize.registeredClass[_classType] = _classDef;
 	}
 
 	public abstract afterUnserializeInit();
@@ -23,7 +22,7 @@ export abstract class FkSerializable {
 		for( var i = 0; i < this.dataKillKeyList.length; i++ ){
 			var k = this.dataKillKeyList[i];
 			if ( this[k] ) {
-				if ( this[k].length != null ){
+				if ( Array.isArray( this[k] ) ){
 		            for( var i = 0; i < this[k].length; i++ ){
 		                var item = this[k][i];
 		                if ( item.kill == null ){
@@ -55,7 +54,7 @@ export abstract class FkSerializable {
 	}
 }
 
-class FkSerialize {
+export class FkSerialize {
 	public static registeredClass: Map<string, Class> = new Map<string, Class>();
 
     public static serialize( src: any, keyList : string[] ) : string {
@@ -71,47 +70,29 @@ class FkSerialize {
 
     public static unserialize( target : any, s : string, keyList : string[] ) {
         var src = JSON.parse( s );
+        target.kill();
         for ( var i = 0; i < keyList.length; i++ ){
             var k = keyList[i];
             if ( src[k] == null )
             	continue;
-            target.kill();
-            if ( src[k].length >= 0 ){
+            if ( Array.isArray( src[k] ) ){
 				target[k] = [];
-				for ( var i = 0; i < src[k].length; i++ ){
-					var tmp = FkSerialize.factory( src[k][i].CLASS_TYPE, src[k][i] );
+				for ( var j = 0; j < src[k].length; j++ ){
+					var tmp = FkFactory.factory( src[k][j].CLASS_TYPE, src[k][j] );
 					target[k].push( tmp );
 				}
 			}
-			else target[k] = FkSerialize.factory( src[k].CLASS_TYPE, src[k] );
+			else target[k] = FkFactory.factory( src[k].CLASS_TYPE, src[k] );
         }
     }
-
-	private static factory( className: string, param: any ) : any{
-		var tmp;
-		switch( className ){
-			case "Boolean": return param.boolean == true;
-			case "Number": return parseInt( param.num );
-			case "Rectangle": return new Phaser.Geom.Rectangle( param.x, param.y, param.width, param.height);
-			case "Point": return new Phaser.Geom.Point( param.x, param.y );
-			default: 
-				if ( FkSerialize.registeredClass[className] != null ){
-					tmp = new FkSerialize.registeredClass[className]();
-					tmp.unserialize( JSON.stringify( param ) );
-					return tmp;
-				}
-				alert( "Class not defined in factory: " + className ); 
-				return null;
-		}
-	}
 
     private static serializeWithType( obj : any ) {
 		if ( obj == null )
 			return null;
 		// In case of Array
-		if ( obj.length > 0 ) {
+		if ( Array.isArray( obj ) ) {
 			var rltArr = [];
-			for( var i = 0; i < obj.lenth; i++ ) {
+			for( var i = 0; i < obj.length; i++ ) {
 				rltArr.push( this.serializeWithType( obj[i] ) )
 			}
 			return rltArr;

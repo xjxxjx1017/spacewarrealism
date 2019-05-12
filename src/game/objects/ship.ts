@@ -15,7 +15,7 @@ export class Ship extends FkSerializable {
     private dataGunList : Gun[];
 
     public constructor(){
-        super( Ship, "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
+        super( "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
     }
 
 	public init( _rect : Phaser.Geom.Rectangle ) {
@@ -26,17 +26,6 @@ export class Ship extends FkSerializable {
         // Init guns on ship
         this.dataGunList = [];
         this.afterUnserializeInit();
-
-        // console.log( "==== test start ====" );
-        // console.log( "Original: " );
-        // console.log( this );
-        // var tmpA = this.serialize();
-        // console.log( "Saved as: " );
-        // console.log( tmpA );
-        // this.unserialize( tmpA );
-        // console.log( "Loaded as: " );
-        // console.log( this );
-        // console.log( "==== test end ====" );
 
         return this;
 	}

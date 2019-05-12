@@ -13,7 +13,7 @@ export class Gun extends FkSerializable{
 	private stateImage: string;
 
 	public constructor() {
-		super( Gun, "Gun", ["dataPos", "dataIsAlive"], [] );
+		super( "Gun", ["dataPos", "dataIsAlive"], [] );
 	}
 
 	public init( _pos : Phaser.Geom.Point ) {

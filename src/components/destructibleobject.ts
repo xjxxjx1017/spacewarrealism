@@ -8,7 +8,7 @@ export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
     constructor(){
-        super( FkDstrGridData, "FkDstrGridData", [ "dataIsVisible" ], [] );
+        super( "FkDstrGridData", [ "dataIsVisible" ], [] );
     }
 
     protected init( _isVisible : boolean ) : FkDstrGridData {
@@ -37,7 +37,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private debugDrawCounter : number = 0;
 
     constructor(){
-        super( FkDestructibleObject, "FkDestructibleObject", ["dataRenderTexture"], [] );
+        super( "FkDestructibleObject", ["dataRenderTexture"], [] );
     }
 
 	public init( _posX : number, _posY : number, 

@@ -13,9 +13,6 @@ Current progress:
 
 TODO:
 * Save/load game data in cache, 好像比想象的要难很多
-	* 序列化ship, gun
-	* 存储与读取
-	* 提取序列化库
 * Reset Button
 * Deploy to google drive
 * Event import optimize

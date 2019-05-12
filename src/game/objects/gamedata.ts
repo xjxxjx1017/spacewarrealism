@@ -1,15 +1,18 @@
 import 'phaser';
 import * as _ from 'lodash';
-import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
 import {PanelEditShip} from "../ui-components/panel-edit-ship";
 import "../ui-components/panel-edit-ship-vue";
 import {PanelInformation, PanelInformationUnit} from "../ui-components/panel-information";
 import {PanelGameState} from "../ui-components/panel-game-state";
 import "../ui-components/panel-information-vue";
+import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
+import {FkQuadTree} from "../../components/fkquadtree";
 import {Ship} from "./ship";
+import {Gun} from "./gun";
 import {FkWithMouse} from "../ui-components/fkwithmouse";
 import {EventHpChanged} from "../events/eventhpchanged";
 import {EventCheckCondition, EnumCheckCondition} from "../events/eventcheckcondition";
+import {FkFactory} from "../../components/fkfactory";
 
 enum GameState {
     STATE_BATTLE,
@@ -30,12 +33,33 @@ export class GameData {
 	public constructor( _game : Phaser.Scene ){
         GameData.inst = _game;
 		this.dataGame = _game;
+        this.registClasses();
 	}
 
+    private registClasses() {
+        FkFactory.registClasses( "FkQuadTree", FkQuadTree );
+        FkFactory.registClasses( "FkDstrGridData", FkDstrGridData );
+        FkFactory.registClasses( "FkDestructibleObject", FkDestructibleObject );
+        FkFactory.registClasses( "Ship", Ship );
+        FkFactory.registClasses( "Gun", Gun );
+    }
+
     public save() {
+        console.log( "==== test start ====" );
+        console.log( "Original: " );
+        console.log( this );
+        var tmpA = this.dataShipList[0].serialize();
+        console.log( "Saved as: " );
+        console.log( tmpA );
+        localStorage.setItem( "ship", tmpA );
     }
 
     public load() {
+        var tmpA = localStorage.getItem( "ship" );
+        this.dataShipList[0].unserialize( tmpA );
+        console.log( "Loaded as: " );
+        console.log( this );
+        console.log( "==== test end ====" );
     }
 
 	public run() {
