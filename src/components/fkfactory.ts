@@ -9,6 +9,10 @@ export class FkFactory {
 		FkFactory.registeredClass[ className ] = classType;
 	}
 
+	public static getRegistClasses( className: string ) : Class {
+		return FkFactory.registeredClass[ className ];
+	}
+
 	public static factory( className: string, param: any ) : any{
 		switch( className ){
 			case "Boolean": return param.boolean == true;

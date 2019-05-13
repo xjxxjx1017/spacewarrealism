@@ -9,5 +9,9 @@
 	    transform: scale(0.7);
 	    transform-origin: 0 0;
 	    width: 100%; 
+	    .load-button {
+	    	display: inline-block;
+    		padding-left: 10px;
+	    }
 	}
 }

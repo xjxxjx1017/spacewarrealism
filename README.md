@@ -13,6 +13,7 @@ Current progress:
 
 TODO:
 * Save/load game data in cache, 好像比想象的要难很多
+	* save/load file to local disc
 * Reset Button
 * Deploy to google drive
 * Event import optimize

@@ -21,7 +21,9 @@
                     <el-button type="primary" @click="battle()">Battle</el-button>
                     <el-button type="primary" @click="reset()">Reset</el-button>
                     <el-button type="primary" @click="save()">Save</el-button>
-                    <el-button type="primary" @click="load()">Load</el-button>
+                    <el-upload class="load-button" :on-change="load" :limit="1" :file-list="fileLoad" action="" :auto-upload="false">
+                        <el-button type="primary">Load</el-button>
+                    </el-upload>
                 </div>
             </div>
         </div>

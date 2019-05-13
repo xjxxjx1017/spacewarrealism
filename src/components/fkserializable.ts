@@ -113,7 +113,7 @@ export class FkSerialize {
 				rlt.y = obj.y;
 				break;
 			default:
-				if ( FkSerialize.registeredClass[className] != null ) {
+				if ( FkFactory.getRegistClasses(className) != null ) {
 					rlt = JSON.parse( obj.serialize() );
 					break;
 				}

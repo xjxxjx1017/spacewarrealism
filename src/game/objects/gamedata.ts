@@ -45,21 +45,18 @@ export class GameData {
     }
 
     public save() {
-        console.log( "==== test start ====" );
-        console.log( "Original: " );
-        console.log( this );
-        var tmpA = this.dataShipList[0].serialize();
-        console.log( "Saved as: " );
-        console.log( tmpA );
-        localStorage.setItem( "ship", tmpA );
+        var saveString = {
+            ShipA: JSON.parse( this.dataShipList[0].serialize() ),
+            ShipB: JSON.parse( this.dataShipList[1].serialize() ),
+        };
+        return JSON.stringify( saveString );
     }
 
-    public load() {
-        var tmpA = localStorage.getItem( "ship" );
-        this.dataShipList[0].unserialize( tmpA );
-        console.log( "Loaded as: " );
-        console.log( this );
-        console.log( "==== test end ====" );
+    public load( file ) {
+        var saveObj = JSON.parse( file );
+
+        this.dataShipList[1].unserialize( JSON.stringify( saveObj.ShipA ) );
+        this.dataShipList[0].unserialize( JSON.stringify( saveObj.ShipB ) );
     }
 
 	public run() {
