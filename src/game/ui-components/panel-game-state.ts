@@ -22,18 +22,32 @@ export class PanelGameState {
                 save: function() { 
                     var saveString = self.dataGameCore.save(); 
 
+                    var blob = new Blob([saveString], {type: "text/plain;charset=utf-8"});
+                    var url = window.URL.createObjectURL(blob);
                     var element = document.createElement('a');
-                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent( saveString ));
                     element.setAttribute('target', '_blank');
-                    element.setAttribute('download', "save");
                     element.style.display = 'none';
+                    element.href = url;
+                    element.download = 'save';
                     document.body.appendChild(element);
                     element.click();
+                    window.URL.revokeObjectURL(url);
                     document.body.removeChild(element);
                 },
                 load: function( e ) { 
-                    var file = window.URL.createObjectURL( e );
-                    self.dataGameCore.load( file );
+                    var file = e.raw;
+                    var reader = new FileReader()
+                    var textFile = /text.*/;
+
+                    if (file.type.match(textFile)) {
+                        reader.onload = function (event) {
+                            console.log( event.target )
+                            var tmp: any = event.target;
+                            self.dataGameCore.load( tmp.result );
+                            self.dataVue.fileLoad = [];
+                        }
+                    }
+                    reader.readAsText(file);
                 }
             }
         });
