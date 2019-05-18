@@ -131,6 +131,7 @@ export class GameData {
     }
 
     public reset() {
-        console.log( "reset" );
+        var defaultConfig: string = `{"ShipA":{"dataRect":{"x":15,"y":15,"width":200,"height":200,"CLASS_TYPE":"Rectangle"},"dataShipEntity":{"dataRenderTexture":null,"dataBody":{"resDepth":{"num":9,"CLASS_TYPE":"Number"},"dataRect":{"x":0,"y":0,"width":200,"height":200,"CLASS_TYPE":"Rectangle"},"dataNode":{"dataIsVisible":{"boolean":true,"CLASS_TYPE":"Boolean"},"CLASS_TYPE":"FkDstrGridData"},"dataSubTree":null,"CLASS_TYPE":"FkQuadTree"},"dataPos":{"x":15,"y":15,"CLASS_TYPE":"Point"},"CLASS_TYPE":"FkDestructibleObject"},"dataGunList":[]},"ShipB":{"dataRect":{"x":415,"y":15,"width":200,"height":200,"CLASS_TYPE":"Rectangle"},"dataShipEntity":{"dataRenderTexture":null,"dataBody":{"resDepth":{"num":9,"CLASS_TYPE":"Number"},"dataRect":{"x":0,"y":0,"width":200,"height":200,"CLASS_TYPE":"Rectangle"},"dataNode":{"dataIsVisible":{"boolean":true,"CLASS_TYPE":"Boolean"},"CLASS_TYPE":"FkDstrGridData"},"dataSubTree":null,"CLASS_TYPE":"FkQuadTree"},"dataPos":{"x":415,"y":15,"CLASS_TYPE":"Point"},"CLASS_TYPE":"FkDestructibleObject"},"dataGunList":[]}}`;
+        this.load( defaultConfig );
     }
 }

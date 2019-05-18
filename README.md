@@ -12,9 +12,6 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* Save/load game data in cache, 好像比想象的要难很多
-	* save/load file to local disc
-* Reset Button
 * Deploy to google drive
 * Event import optimize
 * Code Naming
