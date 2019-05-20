@@ -1,5 +1,6 @@
 node_modules/
 build/
+/dist/
 spacewarrealism.sublime-workspace
 terminal.glue
 assets/ship.jpg
