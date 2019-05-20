@@ -3,7 +3,8 @@
   "version": "0.6.0",
   "description": "Phaser",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.js --port=8001 --open chrome"
+    "start": "webpack-dev-server --config webpack.config.js --port=8001 --open chrome",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
