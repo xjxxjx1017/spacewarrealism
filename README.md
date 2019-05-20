@@ -26,7 +26,10 @@ TODO:
 * Webpack 			
 * Lodash
 
-## How to run
+## Public Access
+https://xjxxjx1017.github.io/spacewarrealism/
+
+## How to run dev server
 
 * install nodejs
 * Open terminal, go to file directory
