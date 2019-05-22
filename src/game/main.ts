@@ -15,6 +15,9 @@ import "./ui-style/ui-theme.scss";
 import "./ui-style/panel-edit-ship.scss";
 import "./ui-style/panel-information.scss";
 import "./ui-style/panel-game-state.scss";
+import "./ui-style/panel-game-state.scss";
+import "../../assets/fonts/element-icons.ttf";
+import "../../assets/fonts/element-icons.woff";
 
 const config: GameConfig = {
 	width: 1200,

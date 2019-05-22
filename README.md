@@ -12,7 +12,6 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* Show others about my url
 * Event import optimize
 * Code Naming
 
