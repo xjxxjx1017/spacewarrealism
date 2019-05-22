@@ -17,3 +17,19 @@ h1,h2,h3,h4 {
 .el-dialog--center .el-dialog__body, .el-dialog__body {
 	padding: 0;
 }
+
+.el-icon-arrow-right:before {
+    content: ">";
+}
+
+.el-icon-arrow-left:before {
+    content: "<";
+}
+
+.el-icon-close:before {
+    content: "X";
+}
+
+.el-icon-edit:before {
+    content: "Edit";
+}
