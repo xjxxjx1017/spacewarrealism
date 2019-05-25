@@ -15,4 +15,8 @@ export class Core extends Phaser.Scene {
 		this.dataGame = new GameData( this );
 		this.dataGame.run();
 	}
+
+	public update(time: number, delta: number): void{
+		this.dataGame.update(time, delta);
+	}
 }

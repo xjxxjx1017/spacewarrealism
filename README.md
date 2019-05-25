@@ -12,8 +12,10 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* 镜头
+* 初始显示世界镜头
+* 点击编辑显示编辑器镜头
 * 飞船的移动
+* 镜头跟踪飞船
 * 物体设计的Scale变化
 * 城池,单位,地点Scale的兼容于共存
 * 各物体的编辑器,与载入
