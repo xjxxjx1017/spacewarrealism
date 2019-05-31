@@ -12,12 +12,9 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* 飞船的上下左右移动
-	* 飞船的save/load修复
+* 飞船的save/load修复
 * 小镜头表示世界镜头
-* 飞船的整体物理
 * 飞船的细致精确物理
-* 世界的物理
 * 物体设计的Scale变化
 * 城池,单位,地点Scale的兼容于共存
 * 各物体的编辑器,与载入
