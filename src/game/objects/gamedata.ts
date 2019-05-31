@@ -101,6 +101,9 @@ export class GameData {
 	}
 
     public update(time: number, delta: number): void{
+        _.forEach( this.dataShipList, function( s:Ship ) {
+            s.update( time, delta );
+        })
     }
 
     public checkWiningCondition() {

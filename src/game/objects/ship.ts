@@ -14,8 +14,9 @@ export class Ship extends FkSerializable {
     public dataRect : Phaser.Geom.Rectangle;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
-    public dataContainer : Phaser.GameObjects.Container;
+    public dataContainer : any;
     private dataPlayerControl: boolean;
+    public dataCursors: Phaser.Input.Keyboard.CursorKeys;
 
     public constructor(){
         super( "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
@@ -23,16 +24,20 @@ export class Ship extends FkSerializable {
 
 	public init( _rect : Phaser.Geom.Rectangle, _playerControl: boolean ) {
         this.dataRect = _rect;
-        this.dataContainer = GameData.inst.add.container( 0, 0 );
-        if ( _playerControl ){
-            // GameData.inst.matter.add.gameObject( this.dataContainer, null );
-            var aa = GameData.inst.matter.add.image(100, 100, 'red_turret');
-            GameData.inst.cameras.main.startFollow(aa, true, 0.05, 0.05, -aa.width/2, -aa.height/2);
-            //GameData.inst.cameras.main.startFollow(this.dataRect, true, 0.05, 0.05, -this.dataRect.width/2, -this.dataRect.height/2);
+        this.dataPlayerControl = _playerControl;
+        this.dataContainer = GameData.inst.add.container( _rect.x, _rect.y );
+        this.dataContainer.setSize( _rect.width, _rect.height );
+        GameData.inst.matter.add.gameObject(this.dataContainer, {});
+        if ( this.dataPlayerControl ){
+            GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
+            this.dataContainer.setFixedRotation();
+            this.dataContainer.setAngle(270);
+            this.dataContainer.setFrictionAir(0.05);
+            this.dataContainer.setMass(30);
+            this.dataCursors = GameData.inst.input.keyboard.createCursorKeys();
         }
         // Init ship body entity and events
-        this.dataShipEntity = new FkDestructibleObject().init( this.dataContainer, _rect.x, _rect.y, 
-            _rect.width, _rect.height, null );
+        this.dataShipEntity = new FkDestructibleObject().init( this.dataContainer, -_rect.width/2, -_rect.height/2, _rect.width, _rect.height, null );
         // Init guns on ship
         this.dataGunList = [];
         this.afterUnserializeInit();
@@ -59,6 +64,30 @@ export class Ship extends FkSerializable {
         // Show Object
         this.dataShipEntity.drawDstrObject();
     }
+
+    public update( time: number, delta: number )
+    {
+        if ( this.dataPlayerControl ) {
+            if (this.dataCursors.left.isDown)
+            {
+                this.dataContainer.thrustLeft(0.1);
+            }
+            else if (this.dataCursors.right.isDown)
+            {
+                this.dataContainer.thrustRight(0.1);
+            }
+
+            if (this.dataCursors.up.isDown)
+            {
+                this.dataContainer.thrust(0.1);
+            }
+            else if (this.dataCursors.down.isDown)
+            {
+                this.dataContainer.thrustBack(0.1);
+            }
+        }
+    }
+
 
     public getHp() : number {
         return Math.floor( this.dataShipEntity.area( function(node : FkDstrGridData) : boolean { 

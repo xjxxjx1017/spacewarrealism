@@ -28,7 +28,8 @@ const config: GameConfig = {
         matter: {
             debug: true,
             gravity: {
-                y: 0.1
+                x: 0,
+                y: 0
             },
         }
     },
