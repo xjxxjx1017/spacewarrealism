@@ -29,7 +29,6 @@ export class GameData {
     public uiWithMouse : FkWithMouse;
     private dataState : GameState = GameState.STATE_IDLE;
     private tmpAttackTimer : Phaser.Time.TimerEvent;
-    private camControls : Phaser.Cameras.Controls.SmoothedKeyControl;
 
 	public constructor( _game : Phaser.Scene ){
         GameData.inst = _game;
@@ -62,6 +61,7 @@ export class GameData {
 
 	public run() {
         var self = this;
+        this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
 
         var shipData = [
             new Phaser.Geom.Rectangle( 15, 15, 200, 200 ),
@@ -69,7 +69,7 @@ export class GameData {
 
         this.dataShipList = [];
         _.forEach( shipData, function(d){
-            var ship = new Ship().init( d );
+            var ship = new Ship().init( d, self.dataShipList.length == 0 );
             self.dataShipList.push( ship );
         })
 
@@ -98,29 +98,9 @@ export class GameData {
         this.uiGameState = new PanelGameState( this );
         EventCheckCondition.Manager.attach( EnumCheckCondition.CONDITION_GAME_WIN, 
         (_id, _event)=>{ self.checkWiningCondition(); } );
-
-
-
-        var cursors = self.dataGame.input.keyboard.createCursorKeys();
-
-        var controlConfig = {
-            camera: self.dataGame.cameras.main,
-            left: cursors.left,
-            right: cursors.right,
-            up: cursors.up,
-            down: cursors.down,
-            zoomIn: self.dataGame.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            zoomOut: self.dataGame.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            acceleration: 0.06,
-            drag: 0.0005,
-            maxSpeed: 1.0
-        };
-
-        this.camControls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
 	}
 
     public update(time: number, delta: number): void{
-        this.camControls.update(delta);
     }
 
     public checkWiningCondition() {

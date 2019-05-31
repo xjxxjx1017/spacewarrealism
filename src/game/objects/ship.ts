@@ -8,20 +8,30 @@ import {EventStampType, EStampType} from "../events/eventplacestamp";
 import {EventHpChanged} from "../events/eventhpchanged";
 import {EventEntityUpdate} from "../events/evententityupdate";
 import {FkSerializable} from "../../components/fkserializable";
+import { GameData } from "./gamedata";
 
 export class Ship extends FkSerializable {
     public dataRect : Phaser.Geom.Rectangle;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
+    public dataContainer : Phaser.GameObjects.Container;
+    private dataPlayerControl: boolean;
 
     public constructor(){
         super( "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
     }
 
-	public init( _rect : Phaser.Geom.Rectangle ) {
+	public init( _rect : Phaser.Geom.Rectangle, _playerControl: boolean ) {
         this.dataRect = _rect;
+        this.dataContainer = GameData.inst.add.container( 0, 0 );
+        if ( _playerControl ){
+            // GameData.inst.matter.add.gameObject( this.dataContainer, null );
+            var aa = GameData.inst.matter.add.image(100, 100, 'red_turret');
+            GameData.inst.cameras.main.startFollow(aa, true, 0.05, 0.05, -aa.width/2, -aa.height/2);
+            //GameData.inst.cameras.main.startFollow(this.dataRect, true, 0.05, 0.05, -this.dataRect.width/2, -this.dataRect.height/2);
+        }
         // Init ship body entity and events
-        this.dataShipEntity = new FkDestructibleObject().init( _rect.x, _rect.y, 
+        this.dataShipEntity = new FkDestructibleObject().init( this.dataContainer, _rect.x, _rect.y, 
             _rect.width, _rect.height, null );
         // Init guns on ship
         this.dataGunList = [];

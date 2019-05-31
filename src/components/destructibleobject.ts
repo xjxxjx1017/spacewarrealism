@@ -32,6 +32,7 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private FRAME_COLOR_HIDDEN : number = 0xff0000;
     private FRAME_WIDTH : number = 1;   
     private dataRenderTexture : string = null; 
+    private dataContainer: Phaser.GameObjects.Container;
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
     private debugDrawCounter : number = 0;
@@ -40,8 +41,9 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
         super( "FkDestructibleObject", ["dataRenderTexture"], [] );
     }
 
-	public init( _posX : number, _posY : number, 
+	public init( _container: Phaser.GameObjects.Container, _posX : number, _posY : number, 
 		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+        this.dataContainer = _container;
     	this.baseInit( _posX, _posY, _maxWidth, _maxHeight,
 	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
 	    	FkDstrGridData.getStateVisible()  );
@@ -63,16 +65,24 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
 
     public afterUnserializeInit() {
         if ( this.dataRenderTexture != null ) {
-            this.layerGridEdge = GameData.inst.make.graphics( {} );
-            this.layerGridEdge.setX( this.dataPos.x );
-            this.layerGridEdge.setY( this.dataPos.y );
-            this.layerTexture = GameData.inst.add.image( this.dataPos.x, this.dataPos.y, this.dataRenderTexture );
+            this.layerGridEdge = GameData.inst.make.graphics({
+                x: this.dataPos.x,
+                y: this.dataPos.y
+            });
+            this.layerTexture = GameData.inst.make.image({
+                x: this.dataPos.x, 
+                y: this.dataPos.y, 
+                texture: this.dataRenderTexture 
+            });
             this.layerTexture.setMask( this.layerGridEdge.createGeometryMask() );
+            this.dataContainer.add( this.layerTexture );
         }
         else {
-            this.layerGridEdge = GameData.inst.add.graphics();
-            this.layerGridEdge.setX( this.dataPos.x );
-            this.layerGridEdge.setY( this.dataPos.y );
+            this.layerGridEdge = GameData.inst.make.graphics({
+                x: this.dataPos.x,
+                y: this.dataPos.y
+            });
+            this.dataContainer.add( this.layerGridEdge );
         }
     }
 

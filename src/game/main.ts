@@ -18,11 +18,20 @@ import "./ui-style/panel-game-state.scss";
 import "./ui-style/panel-game-state.scss";
 
 const config: GameConfig = {
-	width: 1200,
-	height: 600,
+	width: 800,
+	height: 400,
 	type: Phaser.AUTO,
 	parent: "game",
 	scene: [Preload, Core],
+    physics: {
+        default: 'matter',
+        matter: {
+            debug: true,
+            gravity: {
+                y: 0.1
+            },
+        }
+    },
 	backgroundColor: "#cccccc",
 	render: { pixelArt: false, antialias: true, autoResize: false }
 };
