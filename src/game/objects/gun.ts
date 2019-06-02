@@ -10,15 +10,17 @@ export class Gun extends FkSerializable{
 	public dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
 	private dataSprite : Phaser.GameObjects.Sprite;
+    public dataContainer : any;
 	private stateImage: string;
 
 	public constructor() {
 		super( "Gun", ["dataPos", "dataIsAlive"], [] );
 	}
 
-	public init( _pos : Phaser.Geom.Point ) {
+	public init( _container : any, _pos : Phaser.Geom.Point ) {
 		this.dataPos = _pos;
 		this.dataIsAlive = true;
+		this.dataContainer = _container;
 		this.afterUnserializeInit();
 		return this;
 	}
@@ -39,7 +41,8 @@ export class Gun extends FkSerializable{
 				x: 0.5, y: 0.5
 			}
 		}
-		this.dataSprite = GameData.inst.make.sprite( cfg, true );
+		this.dataSprite = GameData.inst.make.sprite( cfg, false );
+		this.dataContainer.add( this.dataSprite );
 	}
 
 	public destroy() {
