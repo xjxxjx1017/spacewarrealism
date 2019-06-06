@@ -1,8 +1,4 @@
-import * as Vue from 'vue';
-import * as _ from 'lodash';
-import {Ship} from '../objects/ship';
-import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
-import {EventStampType, EStampType} from "../events/eventplacestamp";
+import {Lodash as _, Vue, EventShipBrush, EBrushType, EventStampType, EStampType, EventWithMouse, Ship} from "../importall";
 
 export class PanelEditShip {
     private dataVue : Vue;

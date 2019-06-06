@@ -1,5 +1,4 @@
-import "phaser";
-import {GameData} from "../objects/gamedata";
+import {GameData} from "../importall";
 
 export class Effect{
 	private static effectManagerGun : Phaser.GameObjects.Group = null;

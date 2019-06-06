@@ -1,6 +1,5 @@
-import "phaser";
+import {Ship} from "../importall";
 import {EventManager} from "./eventmanager";
-import {Ship} from "../objects/ship";
 
 export class EventHpChanged {
     public static Manager : EventManager<EventHpChanged> = new EventManager<EventHpChanged>();

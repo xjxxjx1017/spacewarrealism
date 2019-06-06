@@ -1,8 +1,4 @@
-
-import 'phaser';
-import * as _ from 'lodash';
-import { FkSerializable } from './fkserializable';
-import { FkDstrGridData } from "./destructibleobject";
+import { Lodash as _, FkSerializable, FkDstrGridData } from "../game/importall";
 
 export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 

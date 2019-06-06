@@ -1,6 +1,4 @@
-
-import 'phaser';
-import * as _ from 'lodash';
+import { Lodash as _ } from "../game/importall";
 
 export class FkFactory {
 	private static registeredClass: Map<string, Class> = new Map<string, Class>();

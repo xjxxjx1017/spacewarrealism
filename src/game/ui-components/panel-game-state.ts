@@ -1,6 +1,4 @@
-import * as Vue from 'vue';
-import * as _ from 'lodash';
-import {GameData} from '../objects/gamedata';
+import {Lodash as _, Vue, GameData} from "../importall";
 
 export class PanelGameState {
     public dataVue : Vue;

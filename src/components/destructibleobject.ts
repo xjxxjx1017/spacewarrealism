@@ -1,8 +1,5 @@
-import "phaser";
-import * as _ from 'lodash';
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
-import { GameData } from "../game/objects/gamedata";
-import { EventEntityUpdate } from "../game/events/evententityupdate";
+import { Lodash as _, EventEntityUpdate, GameData} from "../game/importall";
 
 export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;

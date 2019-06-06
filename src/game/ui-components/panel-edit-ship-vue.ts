@@ -1,9 +1,4 @@
-import * as Vue from 'vue';
-import * as _ from 'lodash';
-import {Ship} from '../objects/ship';
-import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
-import {EventStampType, EStampType} from "../events/eventplacestamp";
-import {EventWithMouse} from "../events/eventwithmouse";
+import {Lodash as _, Vue, EventShipBrush, EBrushType, EventStampType, EStampType, EventWithMouse, Ship} from "../importall";
 
 Vue.component('panel-edit-ship', {
 	props: {

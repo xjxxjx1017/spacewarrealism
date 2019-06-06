@@ -1,18 +1,4 @@
-import 'phaser';
-import * as _ from 'lodash';
-import {PanelEditShip} from "../ui-components/panel-edit-ship";
-import "../ui-components/panel-edit-ship-vue";
-import {PanelInformation, PanelInformationUnit} from "../ui-components/panel-information";
-import {PanelGameState} from "../ui-components/panel-game-state";
-import "../ui-components/panel-information-vue";
-import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
-import {FkQuadTree} from "../../components/fkquadtree";
-import {Ship} from "./ship";
-import {Gun} from "./gun";
-import {FkWithMouse} from "../ui-components/fkwithmouse";
-import {EventHpChanged} from "../events/eventhpchanged";
-import {EventCheckCondition, EnumCheckCondition} from "../events/eventcheckcondition";
-import {FkFactory} from "../../components/fkfactory";
+import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState} from "../importall";
 
 enum GameState {
     STATE_BATTLE,
@@ -33,10 +19,12 @@ export class GameData {
 	public constructor( _game : Phaser.Scene ){
         GameData.inst = _game;
 		this.dataGame = _game;
+        // Regist classes for all serializable classes
         this.registClasses();
 	}
 
     private registClasses() {
+        // Regist classes for all serializable classes
         FkFactory.registClasses( "FkQuadTree", FkQuadTree );
         FkFactory.registClasses( "FkDstrGridData", FkDstrGridData );
         FkFactory.registClasses( "FkDestructibleObject", FkDestructibleObject );
@@ -45,6 +33,7 @@ export class GameData {
     }
 
     public save() {
+        // Save game - serialize - ships
         var saveString = {
             ShipA: JSON.parse( this.dataShipList[0].serialize() ),
             ShipB: JSON.parse( this.dataShipList[1].serialize() ),
@@ -53,29 +42,32 @@ export class GameData {
     }
 
     public load( file ) {
+        // Load game - parse from file
         var saveObj = JSON.parse( file );
-
+        // Load game - create - ships
         this.dataShipList[1].unserialize( JSON.stringify( saveObj.ShipA ) );
         this.dataShipList[0].unserialize( JSON.stringify( saveObj.ShipB ) );
     }
 
 	public run() {
         var self = this;
+        // Initialize Physics
         this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
 
+        // Create - ships
         var shipData = [
             new Phaser.Geom.Rectangle( 15, 15, 200, 200 ),
             new Phaser.Geom.Rectangle( 100 + 15 + 300, 15, 200, 200 ) ];
-
         this.dataShipList = [];
         _.forEach( shipData, function(d){
             var ship = new Ship().init( d, self.dataShipList.length == 0 );
             self.dataShipList.push( ship );
         })
-
+        // Initialize UI - mouse tracker
         this.uiWithMouse = new FkWithMouse( this.dataGame );
+        // Initialize UI - editor
         this.uiEditorShip = new PanelEditShip( this.dataGame );
-
+        // Initialize UI - ship HP bars
         var uiGroup = [];
         var count = 0;
         _.forEach( self.dataShipList, function(s){
@@ -87,7 +79,7 @@ export class GameData {
                 stateHeight: 18,
             };
             uiGroup.push( infor );
-            // Use event to pass ship HP updates to UI
+            // Attach events - pass ship HP updates to UI
             EventHpChanged.Manager.attach( "hpupdate" + count, ( id, evt : EventHpChanged ) => {
                 if ( s == evt.ship )
                     infor.stateHp = evt.hp;
@@ -95,7 +87,9 @@ export class GameData {
             count++;
         })
         this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
+        // Initialize UI - game state
         this.uiGameState = new PanelGameState( this );
+        // Attach events - game win/lose
         EventCheckCondition.Manager.attach( EnumCheckCondition.CONDITION_GAME_WIN, 
         (_id, _event)=>{ self.checkWiningCondition(); } );
 	}

@@ -1,5 +1,4 @@
-import * as Vue from 'vue';
-import * as _ from 'lodash';
+import {Lodash as _, Vue} from "../importall";
 
 Vue.component('panel-information', {
 	props: {

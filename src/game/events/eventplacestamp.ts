@@ -1,4 +1,3 @@
-import "phaser";
 import {EventManager} from "./eventmanager";
 
 export enum EStampType { 

@@ -1,7 +1,4 @@
-import * as _ from 'lodash';
-import {FkDestructibleObject,FkDstrGridData} from './destructibleobject';
-import {FkQuadTree} from './fkquadtree';
-import {FkFactory} from './fkfactory';
+import { Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkFactory } from "../game/importall";
 
 export abstract class FkSerializable {
 	protected dataKeyList = [];

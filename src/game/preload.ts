@@ -1,6 +1,4 @@
-import 'phaser';
-
-import {FkCounter} from '../components/fkcounter';
+import {FkCounter} from "./importall";
 
 export class Preload extends Phaser.Scene {
 

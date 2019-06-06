@@ -1,4 +1,4 @@
-import 'phaser';
+import "../importall";
 
 export class FkUtil {
 	public static strokeRect( 

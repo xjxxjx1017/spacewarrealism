@@ -1,7 +1,5 @@
-import "phaser";
-import * as _ from 'lodash';
-import { FkSerializable } from './fkserializable';
-import { FkQuadTree } from "./fkquadtree";
+
+import { Lodash as _, FkSerializable, FkQuadTree } from "../game/importall";
 
 export class FkBaseDstrGridData extends FkSerializable {
 	constructor( _classType: string, _keyList: string[], _killKeyList: string[] ){

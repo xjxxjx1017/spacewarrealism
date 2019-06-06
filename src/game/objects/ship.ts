@@ -1,20 +1,10 @@
-import 'phaser';
-import * as _ from 'lodash';
-import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
-import {PanelEditShip} from "../ui-components/panel-edit-ship";
-import {EventShipBrush, EBrushType} from "../events/eventshipbrush";
-import {Gun} from "../objects/gun";
-import {EventStampType, EStampType} from "../events/eventplacestamp";
-import {EventHpChanged} from "../events/eventhpchanged";
-import {EventEntityUpdate} from "../events/evententityupdate";
-import {FkSerializable} from "../../components/fkserializable";
-import { GameData } from "./gamedata";
+import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData} from "../importall";
 
 export class Ship extends FkSerializable {
     public dataRect : Phaser.Geom.Rectangle;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
-    public dataContainer : Phaser.GameObjects.Container;
+    public dataContainer : any;
     private dataPlayerControl: boolean;
     public dataCursors: Phaser.Input.Keyboard.CursorKeys;
 

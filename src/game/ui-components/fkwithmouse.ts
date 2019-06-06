@@ -1,5 +1,4 @@
-import "phaser";
-import {EventWithMouse} from "../events/eventwithmouse";
+import {EventWithMouse} from "../importall"
 
 export class FkWithMouse{
 	private dataCurSrcName : string;

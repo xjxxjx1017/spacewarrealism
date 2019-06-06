@@ -1,9 +1,4 @@
-import "phaser";
-import {Ship} from "./ship";
-import {FkDestructibleObject, FkDstrGridData} from "../../components/destructibleobject";
-import {Effect} from "../effect/Effect";
-import {FkSerializable} from "../../components/fkserializable";
-import {GameData} from "./gamedata";
+import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, GameData} from "../importall";
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
