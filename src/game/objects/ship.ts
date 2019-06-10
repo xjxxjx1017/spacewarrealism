@@ -99,6 +99,10 @@ export class Ship extends FkSerializable {
 
     public attackedByLine( _srcPoint : Phaser.Geom.Point, _targetPoint : Phaser.Geom.Point, _strength : number ) {
         var self = this;
+        var locMat = this.dataContainer.getLocalTransformMatrix();
+        locMat.transformPoint( _srcPoint, _srcPoint );
+        locMat.transformPoint( _targetPoint, _targetPoint );
+
         self.dataShipEntity.modifyByLine( _srcPoint.x, _srcPoint.y, 
             _targetPoint.x, _targetPoint.y, _strength,
             FkDstrGridData.getStateHide() );
@@ -153,12 +157,5 @@ export class Ship extends FkSerializable {
 
     public getIsAlive() : boolean {
         return this.dataGunList.length > 0;
-    }
-
-    public getTargetPoint( _source : Phaser.Geom.Point ) : Phaser.Geom.Point {
-        var MULTI = 10; 
-        var x = ( Math.random() * this.dataRect.width + this.dataRect.x - _source.x ) * MULTI;
-        var y = ( Math.random() * this.dataRect.height + this.dataRect.y - _source.y ) * MULTI;
-        return new Phaser.Geom.Point( _source.x + x, _source.y + y );
     }
 }

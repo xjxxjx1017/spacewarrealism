@@ -46,8 +46,16 @@ export class Gun extends FkSerializable{
 	}
 
 	public attack( _target : Ship, _strength: number ) {
-        var targetP = _target.getTargetPoint( this.dataPos );
-		_target.attackedByLine( this.dataPos, targetP, _strength )
-        Effect.createShootEffect( this.dataPos, targetP );
+		var c1: Phaser.GameObjects.Container = this.dataContainer;
+		var c2: Phaser.GameObjects.Container = _target.dataContainer;
+		var p1 = new Phaser.Geom.Point();
+		c1.getWorldTransformMatrix().transformPoint( this.dataPos.x, this.dataPos.y, p1 );
+		// var p2: Phaser.Geom.Point = c2.getBounds().getRandomPoint();
+		var p2: Phaser.Geom.Point = new Phaser.Geom.Point( c2.x, c2.y );// new Phaser.Geom.Point( c2.getBounds().centerX, c2.getBounds().centerY );
+		// p2 = GameData.inst.cameras.main.getWorldPoint( p2.x, p2.y );
+		// c1.getWorldTransformMatrix().transformPoint( r1.x, r1.y, r1 );
+		// c2.getWorldTransformMatrix().transformPoint( r2.x, r2.y, r2 );
+		// _target.attackedByLine( p1, p2, _strength ); 
+		Effect.createShootEffect( p1, p2 );
 	}
 }
