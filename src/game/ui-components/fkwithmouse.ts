@@ -1,4 +1,4 @@
-import {EventWithMouse} from "../importall"
+import {EventWithMouse, GameData} from "../importall"
 
 export class FkWithMouse{
 	private dataCurSrcName : string;
@@ -11,9 +11,10 @@ export class FkWithMouse{
 		// create a hidden sprite to track mouse
 		this.dataGame = _game;
 		this.dataGame.input.on( "pointermove", function( _p : Phaser.Geom.Point ) {
+			var p = GameData.inst.cameras.main.getWorldPoint( _p.x, _p.y );
 			if ( self.dataIsActive && self.dataSprite != null ) {
-				self.dataSprite.setX( _p.x );
-				self.dataSprite.setY( _p.y );
+				self.dataSprite.setX( p.x );
+				self.dataSprite.setY( p.y );
 			}
 		} );
 		

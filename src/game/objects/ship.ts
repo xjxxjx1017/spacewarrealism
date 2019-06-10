@@ -118,7 +118,7 @@ export class Ship extends FkSerializable {
     private onPlaceStamp( _evt : EventStampType ) {
         var p = GameData.inst.cameras.main.getWorldPoint(_evt.pos.x, _evt.pos.y);
         var p2: any = this.dataContainer.pointToContainer( p );
-        if ( !this.dataShipEntity.collisionWithPoint( _evt.pos, FkDstrGridData.getStateVisible() ) )
+        if ( !this.dataShipEntity.collisionWithPoint( p2, FkDstrGridData.getStateVisible() ) )
             return;
         switch ( _evt.type ) {
             case EStampType.STAMP_TURRET_RED:
