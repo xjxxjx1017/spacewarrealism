@@ -13,8 +13,6 @@ Current progress:
 
 TODO:
 * 飞船的save/load修复
-	* world point to local, local point to world
-	* 有Container之后飞船间的攻击
 	* 怎么储存容器关系
 * 小镜头表示世界镜头
 * 飞船的细致精确物理

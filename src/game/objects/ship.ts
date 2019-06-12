@@ -97,11 +97,13 @@ export class Ship extends FkSerializable {
         });
     }
 
-    public attackedByLine( _srcPoint : Phaser.Geom.Point, _targetPoint : Phaser.Geom.Point, _strength : number ) {
+    public attackedByLine( _srcGlobal : Phaser.Geom.Point, _targetGlobal : Phaser.Geom.Point, _strength : number ) {
         var self = this;
-        var locMat = this.dataContainer.getLocalTransformMatrix();
-        locMat.transformPoint( _srcPoint, _srcPoint );
-        locMat.transformPoint( _targetPoint, _targetPoint );
+        var locMat: Phaser.GameObjects.Components.TransformMatrix = this.dataContainer.getLocalTransformMatrix();
+        var _srcPoint: any = new Phaser.Geom.Point();
+        var _targetPoint: any = new Phaser.Geom.Point();
+        locMat.applyInverse( _srcGlobal.x, _srcGlobal.y, _srcPoint );
+        locMat.applyInverse( _targetGlobal.x, _targetGlobal.y, _targetPoint );
 
         self.dataShipEntity.modifyByLine( _srcPoint.x, _srcPoint.y, 
             _targetPoint.x, _targetPoint.y, _strength,
@@ -136,16 +138,18 @@ export class Ship extends FkSerializable {
     }
 
     private onBrushDraw( _evt : EventShipBrush ) {
+        var p = GameData.inst.cameras.main.getWorldPoint(_evt.pos.x, _evt.pos.y);
+        var p2: any = this.dataContainer.pointToContainer( p );
     	switch ( _evt.brushType ) {
     		case EBrushType.BRUSH_NORMAL:
     			this.dataShipEntity.modifyByCircle( 
-    				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
+    				new Phaser.Geom.Circle( p2.x, p2.y, _evt.brushSize ),
     				FkDstrGridData.getStateVisible() );
 				this.dataShipEntity.drawDstrObject();
     			break;
     		case EBrushType.BRUSH_ERASE:
     			this.dataShipEntity.modifyByCircle( 
-    				new Phaser.Geom.Circle( _evt.pos.x, _evt.pos.y, _evt.brushSize ),
+    				new Phaser.Geom.Circle( p2.x, p2.y, _evt.brushSize ),
     				FkDstrGridData.getStateHide() );
 				this.dataShipEntity.drawDstrObject();
     			break;

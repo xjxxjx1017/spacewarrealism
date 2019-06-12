@@ -16,6 +16,7 @@ export {FkDestructibleObject, FkDstrGridData} from "../components/destructibleob
 export {FkQuadTree} from "../components/fkquadtree";
 export {FkFactory} from "../components/fkfactory";
 export {FkCounter} from '../components/fkcounter';
+export {FkUtil} from "../components/fkutil";
 // Events
 export {EventShipBrush, EBrushType} from "./events/eventshipbrush";
 export {EventStampType, EStampType} from "./events/eventplacestamp";

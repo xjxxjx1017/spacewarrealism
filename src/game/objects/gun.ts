@@ -1,4 +1,4 @@
-import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, GameData} from "../importall";
+import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, GameData, FkUtil} from "../importall";
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
@@ -50,12 +50,10 @@ export class Gun extends FkSerializable{
 		var c2: Phaser.GameObjects.Container = _target.dataContainer;
 		var p1 = new Phaser.Geom.Point();
 		c1.getWorldTransformMatrix().transformPoint( this.dataPos.x, this.dataPos.y, p1 );
-		// var p2: Phaser.Geom.Point = c2.getBounds().getRandomPoint();
-		var p2: Phaser.Geom.Point = new Phaser.Geom.Point( c2.x, c2.y );// new Phaser.Geom.Point( c2.getBounds().centerX, c2.getBounds().centerY );
-		// p2 = GameData.inst.cameras.main.getWorldPoint( p2.x, p2.y );
-		// c1.getWorldTransformMatrix().transformPoint( r1.x, r1.y, r1 );
-		// c2.getWorldTransformMatrix().transformPoint( r2.x, r2.y, r2 );
-		// _target.attackedByLine( p1, p2, _strength ); 
+		var p2: Phaser.Geom.Point = new Phaser.Geom.Point( c2.x, c2.y );
+		p2.x += ( Math.random() - 0.5 ) * 200;
+		p2.y += ( Math.random() - 0.5 ) * 200; 
+		_target.attackedByLine( p1, p2, _strength ); 
 		Effect.createShootEffect( p1, p2 );
 	}
 }
