@@ -1,6 +1,7 @@
 import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData} from "../importall";
 
-export class Ship extends FkSerializable {
+export class Ship extends FkSerializable{
+    // TODO: delete dataRect, no longer needed
     public dataRect : Phaser.Geom.Rectangle;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
@@ -8,8 +9,50 @@ export class Ship extends FkSerializable {
     private dataPlayerControl: boolean;
     public dataCursors: Phaser.Input.Keyboard.CursorKeys;
 
-    public constructor(){
-        super( "Ship", ["dataRect", "dataShipEntity", "dataGunList"], ["dataShipEntity", "dataGunList"] );
+    public constructor(){ 
+        super(); 
+    }
+
+    public kill() {
+        this.dataShipEntity.kill();
+        _.map( this.dataGunList, function(x){
+            x.kill();
+        });
+        this.dataGunList = [];
+        EventShipBrush.Manager.detach( this );
+        EventStampType.Manager.detach( this );
+        EventEntityUpdate.Manager.detach( this );
+        // TODO: remove container from game scene
+    }
+
+    public getObjectData( info: any, context: any ) : any {
+        var self = this;
+        info["dataPlayerControl"] = this.dataPlayerControl;
+        info["dataContainer"] = JSON.stringify( this.dataContainer );
+        info["dataRect"] = JSON.stringify( this.dataRect );
+        info["dataShipEntity"] = this.dataShipEntity.getObjectData( {}, this );
+        info["dataGunList"] = _.map( this.dataGunList, function(x){
+            return x.getObjectData( {}, self ) 
+        });
+        return info;
+    }
+
+    public constructFromObjectData( info: any, context: any ): any {
+        var self = this;
+        this.kill();
+        this.dataRect = new Phaser.Geom.Rectangle( 
+            info.dataRect.x, info.dataRect.y, 
+            info.dataRect.width, info.dataRect.height );
+        this.dataPlayerControl = info.dataPlayerControl;
+        this.dataContainer = GameData.inst.add.container( info.dataContainer.x, info.dataContainer.y );
+        this.dataContainer.setSize( info.dataContainer.width, info.dataContainer.height);
+        this.initMatter();
+        this.dataShipEntity = new FkDestructibleObject().constructFromObjectData( info.dataShipEntity, this );
+        this.dataGunList = _.map( info.dataGunList, function(x){
+            return new Gun().constructFromObjectData( x, self );
+        });
+        this.initAfter();
+        return this;
     }
 
 	public init( _rect : Phaser.Geom.Rectangle, _playerControl: boolean ) {
@@ -17,6 +60,17 @@ export class Ship extends FkSerializable {
         this.dataPlayerControl = _playerControl;
         this.dataContainer = GameData.inst.add.container( _rect.x, _rect.y );
         this.dataContainer.setSize( _rect.width, _rect.height );
+        this.initMatter();
+        // Init ship body entity and events
+        this.dataShipEntity = new FkDestructibleObject().init( this.dataContainer, -_rect.width/2, -_rect.height/2, _rect.width, _rect.height, null );
+        // Init guns on ship
+        this.dataGunList = [];
+        this.initAfter();
+
+        return this;
+	}
+
+    private initMatter(){
         GameData.inst.matter.add.gameObject(this.dataContainer, {});
         if ( this.dataPlayerControl ){
             GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
@@ -26,23 +80,9 @@ export class Ship extends FkSerializable {
             this.dataContainer.setMass(30);
             this.dataCursors = GameData.inst.input.keyboard.createCursorKeys();
         }
-        // Init ship body entity and events
-        this.dataShipEntity = new FkDestructibleObject().init( this.dataContainer, -_rect.width/2, -_rect.height/2, _rect.width, _rect.height, null );
-        // Init guns on ship
-        this.dataGunList = [];
-        this.afterUnserializeInit();
-
-        return this;
-	}
-
-    public kill(){
-        super.kill();
-        EventShipBrush.Manager.detach( this );
-        EventStampType.Manager.detach( this );
-        EventEntityUpdate.Manager.detach( this );
     }
 
-    public afterUnserializeInit(){
+    protected initAfter(){
         var self = this;
         // Init events
         EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
@@ -116,7 +156,7 @@ export class Ship extends FkSerializable {
                 toRemove.push( g );
         });
         _.forEach( toRemove, function(g) {
-            g.destroy();
+            g.kill();
             _.pull( self.dataGunList, g );
         });
     }

@@ -5,7 +5,19 @@ export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
 
     constructor(){
-        super( "FkDstrGridData", [ "dataIsVisible" ], [] );
+        super();
+    }
+
+    public kill() {}
+
+    public getObjectData( info: any, context: any ): any {
+        info["dataIsVisible"] = this.dataIsVisible;
+        return info
+    }
+
+    public constructFromObjectData( info: any, context: any ): any {
+        this.dataIsVisible = info.dataIsVisible;
+        return this;
     }
 
     protected init( _isVisible : boolean ) : FkDstrGridData {
@@ -35,18 +47,8 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     private debugDrawCounter : number = 0;
 
     constructor(){
-        super( "FkDestructibleObject", ["dataRenderTexture"], [] );
+        super( FkDstrGridData );
     }
-
-	public init( _container: Phaser.GameObjects.Container, _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
-        this.dataContainer = _container;
-    	this.baseInit( _posX, _posY, _maxWidth, _maxHeight,
-	    	( _rect, _data ) => { this.render( _rect, _data ); }, 
-	    	FkDstrGridData.getStateVisible()  );
-        this.afterUnserializeInit();
-        return this;
-	}
 
     public kill(){
         super.kill();
@@ -60,7 +62,28 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
         }
     }
 
-    public afterUnserializeInit() {
+    public getObjectData( info: any, context: any ): any  {
+        super.getObjectData( info, context );
+        info["dataRenderTexture"] = this.dataRenderTexture;
+        return info;
+    }
+
+    public constructFromObjectData( info: any, context: any ): any {
+        this.dataContainer = context.dataContainer;
+        super.constructFromObjectData( info, context );
+        this.initAfter();
+        return this;
+    }
+
+	public init( _container: Phaser.GameObjects.Container, _posX : number, _posY : number, 
+		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+        this.dataContainer = _container;
+    	super.baseInit( _posX, _posY, _maxWidth, _maxHeight, FkDstrGridData.getStateVisible() );
+        this.initAfter();
+        return this;
+	}
+
+    public initAfter() {
         if ( this.dataRenderTexture != null ) {
             this.layerGridEdge = GameData.inst.make.graphics({
                 x: this.dataPos.x,

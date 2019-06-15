@@ -13,7 +13,7 @@ Current progress:
 
 TODO:
 * 飞船的save/load修复
-	* 怎么储存容器关系
+* 小release
 * 小镜头表示世界镜头
 * 飞船的细致精确物理
 * 物体设计的Scale变化

@@ -5,10 +5,44 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	public resDepth : number;
 	public dataNode : T;
 	public dataRect : Phaser.Geom.Rectangle;
-	public dataSubTree : FkQuadTree<T>[];
+	public dataSubTree : FkQuadTree<T>[]; 
 
-	constructor(){
-		super( "FkQuadTree", [ "resDepth", "dataRect", "dataNode", "dataSubTree" ], ["dataNode", "dataSubTree"] );
+	public constructor( private dataNodeClass: new () => T ){
+		super();
+	}
+
+	public getNew() : T {
+        return new this.dataNodeClass();
+    }
+
+	public kill(){
+		this.dataNode.kill();
+		_.map( this.dataSubTree, function(s){
+			s.kill();
+		})
+	}
+
+	public getObjectData( info: any, context: any ): any {
+		var self = this;
+		info["resDepth"] = this.resDepth;
+		info["dataRect"] = JSON.stringify( this.dataRect );
+		info["dataNode"] = this.dataNode.getObjectData( {}, this );
+		info["dataSubTree"] = _.map( this.dataSubTree, function(s){
+			return s.getObjectData( {}, self );
+		})
+		return info;
+	}
+
+	public constructFromObjectData( info: any, context: any ): any {
+		this.resDepth = info.resDepth;
+		this.dataNode = this.getNew().constructFromObjectData( info.dataNode, this );
+        this.dataRect = new Phaser.Geom.Rectangle( 
+            info.dataRect.x, info.dataRect.y, 
+            info.dataRect.width, info.dataRect.height );
+        this.dataSubTree = _.map( this.dataSubTree, function(s){
+        	return new FkQuadTree<T>( this.dataNodeClass ).constructFromObjectData( s, self );
+        })
+        return this;
 	}
 
 	public init( _x : number, _y : number, _w : number, _h : number, _depth : number, _data : T ) {
@@ -18,8 +52,6 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 		this.dataSubTree = null;
 		return this;
 	}
-	
-	public afterUnserializeInit(){}
 
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {
 		if ( _matchFunc == null )
@@ -233,7 +265,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 		this.dataSubTree = [];
 		for( var i = 0; i < wh.length; i++ ) {
 			var o = wh[i];
-			this.dataSubTree.push( new FkQuadTree<T>().init( 
+			this.dataSubTree.push( new FkQuadTree<T>( this.dataNodeClass ).init( 
 				this.dataRect.x + ( this.dataRect.width/2 * o.w ), 
 				this.dataRect.y + ( this.dataRect.height/2 * o.h ), 
 				this.dataRect.width/2, this.dataRect.height/2, 

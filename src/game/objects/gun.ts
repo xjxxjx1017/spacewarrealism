@@ -9,26 +9,39 @@ export class Gun extends FkSerializable{
 	private stateImage: string;
 
 	public constructor() {
-		super( "Gun", ["dataPos", "dataIsAlive"], [] );
+		super();
 	}
 
-	public init( _container : any, _pos : Phaser.Geom.Point ) {
-		this.dataPos = _pos;
-		this.dataIsAlive = true;
-		this.dataContainer = _container;
-		this.afterUnserializeInit();
-		return this;
-	}
-
-	public kill(){
-		super.kill();
+	public kill() {
 		if ( this.dataSprite ){
 			this.dataSprite.destroy();
 			this.dataSprite = null;
 		}
 	}
 
-	public afterUnserializeInit(){
+	public getObjectData( info: any, context: any ): any {
+		info["dataPos"] = JSON.stringify( this.dataPos );
+		info["dataIsAlive"] = this.dataIsAlive;
+		return info;
+	}
+	public constructFromObjectData( info: any, context: any ): any {
+		this.dataPos = info.dataPos;
+		this.dataIsAlive = info.dataIsAlive;
+		// The context is expect to be "Ship" at the moment
+		this.dataContainer = context.dataContainer;	
+		this.initAfter();
+		return this;
+	}
+
+	public init( _container : any, _pos : Phaser.Geom.Point ) {
+		this.dataPos = _pos;
+		this.dataIsAlive = true;
+		this.dataContainer = _container;
+		this.initAfter();
+		return this;
+	}
+
+	public initAfter(){
 		var cfg : SpriteConfig = { 
 			key: Gun.IMAGE_RED_TURRET,
 			x: this.dataPos.x, y: this.dataPos.y,
@@ -38,11 +51,6 @@ export class Gun extends FkSerializable{
 		}
 		this.dataSprite = GameData.inst.make.sprite( cfg, false );
 		this.dataContainer.add( this.dataSprite );
-	}
-
-	public destroy() {
-		this.dataSprite.destroy();
-		this.dataSprite = null;
 	}
 
 	public attack( _target : Ship, _strength: number ) {

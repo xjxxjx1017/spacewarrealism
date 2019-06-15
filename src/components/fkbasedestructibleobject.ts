@@ -1,34 +1,44 @@
 
 import { Lodash as _, FkSerializable, FkQuadTree } from "../game/importall";
 
-export class FkBaseDstrGridData extends FkSerializable {
-	constructor( _classType: string, _keyList: string[], _killKeyList: string[] ){
-		super( _classType, _keyList, _killKeyList );
+export abstract class FkBaseDstrGridData extends FkSerializable {
+	constructor(){
+		super();
 	}
-	public afterUnserializeInit(){}
 }
 
-export class FkBaseDestructibleObject<T extends FkBaseDstrGridData> extends FkSerializable {
+export abstract class FkBaseDestructibleObject<T extends FkBaseDstrGridData> extends FkSerializable {
 	protected dataBody : FkQuadTree<T>;
 	protected dataPos : Phaser.Geom.Point;
 
-	constructor( _classType: string, _keyList: string[], _killKeyList: string[] ){
-		super( _classType, _keyList.concat( ["dataBody", "dataPos"] ), _killKeyList.concat(["dataBody"]) );
+	// constructor( _classType: string, _keyList: string[], _killKeyList: string[] ){
+	// 	super( _classType, _keyList.concat( ["dataBody", "dataPos"] ), _killKeyList.concat(["dataBody"]) );
+	// }
+	public constructor( private dataNodeClass: new () => T ){
+		super();
 	}
 
-	public afterUnserializeInit(){}
+	public kill() {}
 
-	public baseInit( _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number,
-		_draw : ( _rect : Phaser.Geom.Rectangle, _data : T ) => void,
+	public getObjectData( info: any, context: any ): any {
+		info["dataBody"] = this.dataBody.getObjectData( {}, this );
+		info["dataPos"] = this.dataPos;
+		return info;
+	}
+
+	public constructFromObjectData( info: any, context: any ): any {
+		this.dataPos = new Phaser.Geom.Point( info.dataPos.x, info.dataPos.y );
+		this.dataBody = new FkQuadTree<T>( this.dataNodeClass ).constructFromObjectData( info.dataBody, this );
+		return this;
+	}
+
+	public baseInit( _posX : number, _posY : number, _maxWidth : number, _maxHeight : number,
 		_initState : T  ) {
-
-        console.log( "Object size: " + _maxWidth + "x" + _maxHeight + ", pixels: " + _maxWidth * _maxHeight );
-
+        // console.log( "Object size: " + _maxWidth + "x" + _maxHeight + ", pixels: " + _maxWidth * _maxHeight );
 		var depthW = Math.ceil( Math.log2( _maxWidth ) + 1 );
 		var depthH = Math.ceil( Math.log2( _maxHeight ) + 1 );
 		this.dataPos = new Phaser.Geom.Point( _posX, _posY );
-		this.dataBody = new FkQuadTree<T>().init( 0, 0,
+		this.dataBody = new FkQuadTree<T>( this.dataNodeClass ).init( 0, 0,
 			_maxWidth, _maxHeight, Math.max( depthH, depthW ), 
 			_initState );
 	}

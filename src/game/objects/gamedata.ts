@@ -18,25 +18,14 @@ export class GameData {
 
 	public constructor( _game : Phaser.Scene ){
         GameData.inst = _game;
-		this.dataGame = _game;
-        // Regist classes for all serializable classes
-        this.registClasses();
-	}
-
-    private registClasses() {
-        // Regist classes for all serializable classes
-        FkFactory.registClasses( "FkQuadTree", FkQuadTree );
-        FkFactory.registClasses( "FkDstrGridData", FkDstrGridData );
-        FkFactory.registClasses( "FkDestructibleObject", FkDestructibleObject );
-        FkFactory.registClasses( "Ship", Ship );
-        FkFactory.registClasses( "Gun", Gun );
+		this.dataGame = _game;    
     }
 
     public save() {
         // Save game - serialize - ships
         var saveString = {
-            ShipA: JSON.parse( this.dataShipList[0].serialize() ),
-            ShipB: JSON.parse( this.dataShipList[1].serialize() ),
+            ShipA: this.dataShipList[0].getObjectData( {}, this ),
+            ShipB: this.dataShipList[1].getObjectData( {}, this ),
         };
         return JSON.stringify( saveString );
     }
@@ -45,8 +34,8 @@ export class GameData {
         // Load game - parse from file
         var saveObj = JSON.parse( file );
         // Load game - create - ships
-        this.dataShipList[1].unserialize( JSON.stringify( saveObj.ShipA ) );
-        this.dataShipList[0].unserialize( JSON.stringify( saveObj.ShipB ) );
+        this.dataShipList[0].constructFromObjectData( saveObj.ShipA, this );
+        this.dataShipList[1].constructFromObjectData( saveObj.ShipB, this );
     }
 
 	public run() {
