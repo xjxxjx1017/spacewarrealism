@@ -25,7 +25,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	public getObjectData( info: any, context: any ): any {
 		var self = this;
 		info["resDepth"] = this.resDepth;
-		info["dataRect"] = JSON.stringify( this.dataRect );
+		info["dataRect"] = { x: this.dataRect.x, y: this.dataRect.y, width: this.dataRect.width, height: this.dataRect.height };
 		info["dataNode"] = this.dataNode.getObjectData( {}, this );
 		info["dataSubTree"] = _.map( this.dataSubTree, function(s){
 			return s.getObjectData( {}, self );
@@ -56,7 +56,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	public area( _fraction : number, _matchFunc : (_data1:T)=>boolean ) : number {
 		if ( _matchFunc == null )
 			return 0;
-		if ( this.dataSubTree == null )
+		if ( this.dataSubTree == null || this.dataSubTree.length == 0 )
 			return _matchFunc(this.dataNode) ? _fraction : 0;
 		else {
 			var sum : number = 0;
@@ -134,7 +134,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	}
 
 	public updateWithQuadTree( _g : FkQuadTree<T>, _updateDataFunc: ( _data : T ) => T ) {
-		if ( _g.dataSubTree == null ) {
+		if ( _g.dataSubTree == null || this.dataSubTree.length == 0 ) {
 			var data = _updateDataFunc( _g.dataNode );
 			if ( data != null )
 				this.updateWithRectangle( _g.dataRect, data );
@@ -150,7 +150,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	private updateSubtrees( _dataToUpdate : T, 
 		_callback : ( _tree : FkQuadTree<T>, _data : T ) => void ) {
 		if ( this.resDepth > 0 ) {
-			if ( this.dataSubTree == null )
+			if ( this.dataSubTree == null || this.dataSubTree.length == 0 )
 				this.createAllSubTrees();
 			for( var i = 0; i < this.dataSubTree.length; i++ ) {
 				var t = this.dataSubTree[i];
@@ -167,7 +167,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 
 	public draw( _triggerDraw : ( rect : Phaser.Geom.Rectangle, data : T ) => void ) {
 		var self = this;
-		if ( this.dataSubTree != null ) {
+		if ( this.dataSubTree != null && this.dataSubTree.length > 0 ) {
 			this.dataSubTree.forEach( function(q) {
 				q.draw( _triggerDraw );
 			})
@@ -178,7 +178,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
     public collisionWithPoint( _g : Phaser.Geom.Point, _sData : T ) : boolean {
     	if ( !this.dataRect.contains( _g.x, _g.y ) )
     		return false;
-    	if ( this.dataSubTree != null ) {
+    	if ( this.dataSubTree != null && this.dataSubTree.length > 0 ) {
 			var b = false;
 			for ( var i = 0; i < this.dataSubTree.length; i++ ) {
 				b = b || this.dataSubTree[i].collisionWithPoint( _g, _sData );
@@ -197,7 +197,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
     	var p_min : Phaser.Geom.Point = null;
     	var len_min : number = Number.MAX_VALUE;
     	// only if it doesn't have sub tree
-    	if ( this.dataSubTree == null ) {
+    	if ( this.dataSubTree == null || this.dataSubTree.length == 0 ) {
     		if ( !_.isEqual( _sData, this.dataNode ) )
     			return null;
 	    	var lines = [];
@@ -277,7 +277,7 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 		var toCompare : T = null;
 		for( var i = 0; i < this.dataSubTree.length; i++ ) {
 			var t = this.dataSubTree[i];
-			if ( t.dataSubTree != null )
+			if ( t.dataSubTree != null && this.dataSubTree.length > 0 )
 				return;
 			if ( toCompare == null )
 				toCompare = t.dataNode;

@@ -19,6 +19,10 @@ export class Ship extends FkSerializable{
             x.kill();
         });
         this.dataGunList = [];
+        if ( this.dataContainer != null ){
+            this.dataContainer.destroy();
+            this.dataContainer = null;
+        }
         EventShipBrush.Manager.detach( this );
         EventStampType.Manager.detach( this );
         EventEntityUpdate.Manager.detach( this );
@@ -28,8 +32,8 @@ export class Ship extends FkSerializable{
     public getObjectData( info: any, context: any ) : any {
         var self = this;
         info["dataPlayerControl"] = this.dataPlayerControl;
-        info["dataContainer"] = JSON.stringify( this.dataContainer );
-        info["dataRect"] = JSON.stringify( this.dataRect );
+        info["dataContainer"] = this.dataContainer.toJSON();
+        info["dataRect"] = { x: this.dataRect.x, y: this.dataRect.y, width: this.dataRect.width, height: this.dataRect.height };
         info["dataShipEntity"] = this.dataShipEntity.getObjectData( {}, this );
         info["dataGunList"] = _.map( this.dataGunList, function(x){
             return x.getObjectData( {}, self ) 
@@ -45,7 +49,7 @@ export class Ship extends FkSerializable{
             info.dataRect.width, info.dataRect.height );
         this.dataPlayerControl = info.dataPlayerControl;
         this.dataContainer = GameData.inst.add.container( info.dataContainer.x, info.dataContainer.y );
-        this.dataContainer.setSize( info.dataContainer.width, info.dataContainer.height);
+        this.dataContainer.setSize( info.dataRect.width, info.dataRect.height);
         this.initMatter();
         this.dataShipEntity = new FkDestructibleObject().constructFromObjectData( info.dataShipEntity, this );
         this.dataGunList = _.map( info.dataGunList, function(x){

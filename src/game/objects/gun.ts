@@ -20,7 +20,7 @@ export class Gun extends FkSerializable{
 	}
 
 	public getObjectData( info: any, context: any ): any {
-		info["dataPos"] = JSON.stringify( this.dataPos );
+		info["dataPos"] = { x: this.dataPos.x, y: this.dataPos.y };
 		info["dataIsAlive"] = this.dataIsAlive;
 		return info;
 	}
