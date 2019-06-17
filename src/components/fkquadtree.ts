@@ -34,13 +34,14 @@ export class FkQuadTree<T extends FkSerializable> extends FkSerializable{
 	}
 
 	public constructFromObjectData( info: any, context: any ): any {
+		var self = this;
 		this.resDepth = info.resDepth;
 		this.dataNode = this.getNew().constructFromObjectData( info.dataNode, this );
         this.dataRect = new Phaser.Geom.Rectangle( 
             info.dataRect.x, info.dataRect.y, 
             info.dataRect.width, info.dataRect.height );
-        this.dataSubTree = _.map( this.dataSubTree, function(s){
-        	return new FkQuadTree<T>( this.dataNodeClass ).constructFromObjectData( s, self );
+        this.dataSubTree = _.map( info.dataSubTree, function(s){
+        	return new FkQuadTree<T>( self.dataNodeClass ).constructFromObjectData( s, self );
         })
         return this;
 	}

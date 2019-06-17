@@ -38,6 +38,8 @@ import "./ui-style/panel-edit-ship.scss";
 import "./ui-style/panel-information.scss";
 import "./ui-style/panel-game-state.scss";
 import "./ui-style/panel-game-state.scss";
+// Scenes
+export {FkScene} from "./scene/scene";
 // Effects
 export {Effect} from "./effect/Effect";
 // Objects
