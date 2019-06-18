@@ -1,4 +1,4 @@
-import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData} from "../importall";
+import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
 
 export class Ship extends FkSerializable{
     // TODO: delete dataRect, no longer needed
@@ -49,6 +49,7 @@ export class Ship extends FkSerializable{
             info.dataRect.width, info.dataRect.height );
         this.dataPlayerControl = info.dataPlayerControl;
         this.dataContainer = GameData.inst.add.container( info.dataContainer.x, info.dataContainer.y );
+        this.dataContainer.setAngle(info.dataContainer.angle);
         this.dataContainer.setSize( info.dataRect.width, info.dataRect.height);
         this.initMatter();
         this.dataShipEntity = new FkDestructibleObject().constructFromObjectData( info.dataShipEntity, this );
@@ -63,6 +64,7 @@ export class Ship extends FkSerializable{
         this.dataRect = _rect;
         this.dataPlayerControl = _playerControl;
         this.dataContainer = GameData.inst.add.container( _rect.x, _rect.y );
+        this.dataContainer.setAngle( 270 );
         this.dataContainer.setSize( _rect.width, _rect.height );
         this.initMatter();
         // Init ship body entity and events
@@ -75,14 +77,26 @@ export class Ship extends FkSerializable{
 	}
 
     private initMatter(){
+        var self = this;
         GameData.inst.matter.add.gameObject(this.dataContainer, {});
         if ( this.dataPlayerControl ){
             GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
             this.dataContainer.setFixedRotation();
-            this.dataContainer.setAngle(270);
             this.dataContainer.setFrictionAir(0.05);
             this.dataContainer.setMass(30);
-            this.dataCursors = GameData.inst.input.keyboard.createCursorKeys();
+            // this.dataCursors = GameData.inst.input.keyboard.createCursorKeys();
+            this.dataCursors = GameData.inst.input.keyboard.addKeys(
+                {up: Phaser.Input.Keyboard.KeyCodes.W,
+                down: Phaser.Input.Keyboard.KeyCodes.S,
+                left: Phaser.Input.Keyboard.KeyCodes.A,
+                right: Phaser.Input.Keyboard.KeyCodes.D});
+            GameData.inst.input.on( "pointermove", function(p){
+                var pp: any = new Phaser.Geom.Point();
+                GameData.inst.cameras.main.getWorldPoint( p.x, p.y, pp );
+                var a = FkUtil.getAngle( self.dataContainer.x, self.dataContainer.y, pp.x, pp.y ) - 90;
+                FkUtil.debugDrawLine( new Phaser.Geom.Point( self.dataContainer.x, self.dataContainer.y ), pp  );
+                self.dataContainer.setAngle( a );
+            })
         }
     }
 
@@ -104,20 +118,20 @@ export class Ship extends FkSerializable{
         if ( this.dataPlayerControl ) {
             if (this.dataCursors.left.isDown)
             {
-                this.dataContainer.thrustLeft(0.1);
+                this.dataContainer.applyForce( { x: -0.1, y: 0 } );
             }
             else if (this.dataCursors.right.isDown)
             {
-                this.dataContainer.thrustRight(0.1);
+                this.dataContainer.applyForce( { x: 0.1, y: 0 } );
             }
 
             if (this.dataCursors.up.isDown)
             {
-                this.dataContainer.thrust(0.1);
+                this.dataContainer.applyForce( { x: 0, y: -0.1 } );
             }
             else if (this.dataCursors.down.isDown)
             {
-                this.dataContainer.thrustBack(0.1);
+                this.dataContainer.applyForce( { x: 0, y: 0.1 } );
             }
         }
     }

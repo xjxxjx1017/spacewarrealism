@@ -12,7 +12,7 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* 飞船旋转
+* 攻击弹道方向修正(Bug)
 * 定向飞弹
 * 世界地图的多边形大环境物理
 * 世界地图的多边形环境物理物体

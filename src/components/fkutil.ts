@@ -23,6 +23,14 @@ export class FkUtil {
 		return Math.floor( a / m );
 	}
 
+	public static getAngle( x1, y1, x2, y2 ): number {
+		var angle = Math.atan( (y2 - y1) / (x2 - x1) ) / Math.PI * 180;
+		if ( x2 - x1 < 0 )
+			angle += 180;
+		console.log( Math.floor(x1) + "," + Math.floor(y1) + "|" + Math.floor(x2) + "," + Math.floor(y2) + "  " + angle );
+	    return angle;
+	}
+
 	public static debugDrawLine( _p1, _p2 ) {
 		var g = GameData.inst.add.graphics({x: 0, y: 0});
 		g.lineStyle(1, 0xffff00, 1);
