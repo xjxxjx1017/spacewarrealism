@@ -24,6 +24,7 @@ export {EventHpChanged} from "./events/eventhpchanged";
 export {EventWithMouse} from "./events/eventwithmouse";
 export {EventEntityUpdate} from "./events/evententityupdate";
 export {EventCheckCondition, EnumCheckCondition} from "./events/eventcheckcondition";
+export {EventAttack} from "./events/eventattack";
 // UI components
 import "./ui-components/panel-edit-ship-vue";
 import "./ui-components/panel-information-vue";

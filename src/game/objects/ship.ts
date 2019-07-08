@@ -1,4 +1,4 @@
-import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
+import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
 
 export class Ship extends FkSerializable{
     // TODO: delete dataRect, no longer needed
@@ -26,6 +26,7 @@ export class Ship extends FkSerializable{
         EventShipBrush.Manager.detach( this );
         EventStampType.Manager.detach( this );
         EventEntityUpdate.Manager.detach( this );
+        EventAttack.Manager.detach( this );
         // TODO: remove container from game scene
     }
 
@@ -109,6 +110,13 @@ export class Ship extends FkSerializable{
             if ( this == id ) 
                 self.onEntityUpdate( evt ); 
         });
+        EventAttack.Manager.attach( this, (id,evt)=> { 
+            var collide = self.dataShipEntity.collisionWithPoint( evt.p, FkDstrGridData.getStateVisible() );
+            if ( collide ) {
+                self.attackedByPoint( evt.p, evt.strength );
+                evt.onKill();
+            }
+        })
         // Show Object
         this.dataShipEntity.drawDstrObject();
     }
@@ -155,17 +163,8 @@ export class Ship extends FkSerializable{
         });
     }
 
-    public attackedByLine( _srcGlobal : Phaser.Geom.Point, _targetGlobal : Phaser.Geom.Point, _strength : number ) {
+    private afterAttacked() {
         var self = this;
-        var locMat: Phaser.GameObjects.Components.TransformMatrix = this.dataContainer.getLocalTransformMatrix();
-        var _srcPoint: any = new Phaser.Geom.Point();
-        var _targetPoint: any = new Phaser.Geom.Point();
-        locMat.applyInverse( _srcGlobal.x, _srcGlobal.y, _srcPoint );
-        locMat.applyInverse( _targetGlobal.x, _targetGlobal.y, _targetPoint );
-
-        self.dataShipEntity.modifyByLine( _srcPoint.x, _srcPoint.y, 
-            _targetPoint.x, _targetPoint.y, _strength,
-            FkDstrGridData.getStateHide() );
         self.dataShipEntity.drawDstrObject();
         var toRemove = [];
         _.forEach( self.dataGunList, function(g) {
@@ -177,6 +176,30 @@ export class Ship extends FkSerializable{
             g.kill();
             _.pull( self.dataGunList, g );
         });
+    }
+
+    public attackedByPoint( _srcGlobal : Phaser.Geom.Point, _strength : number ) {
+        var self = this;
+        var locMat: Phaser.GameObjects.Components.TransformMatrix = this.dataContainer.getLocalTransformMatrix();
+        var _srcPoint: any = new Phaser.Geom.Point();
+        locMat.applyInverse( _srcGlobal.x, _srcGlobal.y, _srcPoint );
+
+        self.dataShipEntity.modifyByCircle( new Phaser.Geom.Circle( _srcPoint.x, _srcPoint.y, _strength ), FkDstrGridData.getStateHide() );
+        self.afterAttacked();
+    }
+
+    public attackedByLine( _srcGlobal : Phaser.Geom.Point, _targetGlobal : Phaser.Geom.Point, _strength : number ) {
+        var self = this;
+        var locMat: Phaser.GameObjects.Components.TransformMatrix = this.dataContainer.getLocalTransformMatrix();
+        var _srcPoint: any = new Phaser.Geom.Point();
+        var _targetPoint: any = new Phaser.Geom.Point();
+        locMat.applyInverse( _srcGlobal.x, _srcGlobal.y, _srcPoint );
+        locMat.applyInverse( _targetGlobal.x, _targetGlobal.y, _targetPoint );
+
+        self.dataShipEntity.modifyByLine( _srcPoint.x, _srcPoint.y, 
+            _targetPoint.x, _targetPoint.y, _strength,
+            FkDstrGridData.getStateHide() );
+        self.afterAttacked();
     }
 
     private onPlaceStamp( _evt : EventStampType ) {
