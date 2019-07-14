@@ -1,4 +1,5 @@
 import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
+import { Bullet } from "./bullet";
 
 export class Ship extends FkSerializable{
     // TODO: delete dataRect, no longer needed
@@ -98,6 +99,9 @@ export class Ship extends FkSerializable{
                 FkUtil.debugDrawLine( new Phaser.Geom.Point( self.dataContainer.x, self.dataContainer.y ), pp  );
                 self.dataContainer.setAngle( a );
             })
+            GameData.inst.input.on('pointerdown', function() {
+                self.fire();
+            })
         }
     }
 
@@ -123,6 +127,7 @@ export class Ship extends FkSerializable{
 
     public update( time: number, delta: number )
     {
+        var self = this;
         if ( this.dataPlayerControl ) {
             if (this.dataCursors.left.isDown)
             {
@@ -144,11 +149,21 @@ export class Ship extends FkSerializable{
         }
     }
 
+    public fire() {
+        var self = this;
+        _.forEach(self.dataGunList, function(g) {
+            g.fire( FkUtil.getAngleV( self.getDirection() ) );
+        })
+    }
 
     public getHp() : number {
         return Math.floor( this.dataShipEntity.area( function(node : FkDstrGridData) : boolean { 
                 return node.dataIsVisible;
             }) * 100 );
+    }
+
+    public getDirection(){
+        return this.dataContainer.angle;
     }
 
     private onEntityUpdate( evt ) {

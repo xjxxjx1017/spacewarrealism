@@ -46,6 +46,7 @@ export {Effect} from "./effect/Effect";
 // Objects
 export {Ship} from "./objects/ship";
 export {Gun} from "./objects/gun";
+export {Bullet} from "./objects/bullet";
 export {GameData} from "./objects/gamedata";
 // Game
 export {Preload} from './preload';

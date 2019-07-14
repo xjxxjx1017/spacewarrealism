@@ -27,8 +27,12 @@ export class FkUtil {
 		var angle = Math.atan( (y2 - y1) / (x2 - x1) ) / Math.PI * 180;
 		if ( x2 - x1 < 0 )
 			angle += 180;
-		console.log( Math.floor(x1) + "," + Math.floor(y1) + "|" + Math.floor(x2) + "," + Math.floor(y2) + "  " + angle );
+		// console.log( Math.floor(x1) + "," + Math.floor(y1) + "|" + Math.floor(x2) + "," + Math.floor(y2) + "  " + angle );
 	    return angle;
+	}
+	
+	public static getAngleV( a : number, str : number = 1 ): Phaser.Geom.Point {
+		return new Phaser.Geom.Point( str * Math.sin( a ), str * Math.cos( a ) );
 	}
 
 	public static debugDrawPoint( _p1, _str = 1 ) {

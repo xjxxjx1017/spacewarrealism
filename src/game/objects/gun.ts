@@ -1,4 +1,4 @@
-import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, GameData, FkUtil} from "../importall";
+import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, Bullet, GameData, FkUtil} from "../importall";
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
@@ -17,6 +17,13 @@ export class Gun extends FkSerializable{
 			this.dataSprite.destroy();
 			this.dataSprite = null;
 		}
+	}
+
+	public getWorldPoint() : Phaser.Geom.Point{
+		var c1: Phaser.GameObjects.Container = this.dataContainer;
+		var p1 = new Phaser.Geom.Point();
+		c1.getWorldTransformMatrix().transformPoint( this.dataPos.x, this.dataPos.y, p1 );
+		return p1;
 	}
 
 	public getObjectData( info: any, context: any ): any {
@@ -53,11 +60,16 @@ export class Gun extends FkSerializable{
 		this.dataContainer.add( this.dataSprite );
 	}
 
+    public fire( dirV : Phaser.Geom.Point ) {
+        var self = this;
+		var bullet = new Bullet();
+        bullet.init( self.getWorldPoint(), dirV );
+    }
+
 	public attack( _target : Ship, _strength: number ) {
 		var c1: Phaser.GameObjects.Container = this.dataContainer;
 		var c2: Phaser.GameObjects.Container = _target.dataContainer;
-		var p1 = new Phaser.Geom.Point();
-		c1.getWorldTransformMatrix().transformPoint( this.dataPos.x, this.dataPos.y, p1 );
+		var p1 = this.getWorldPoint();
 		var p2: Phaser.Geom.Point = new Phaser.Geom.Point( c2.x, c2.y );
 		p2.x += ( Math.random() - 0.5 ) * 200;
 		p2.y += ( Math.random() - 0.5 ) * 200; 

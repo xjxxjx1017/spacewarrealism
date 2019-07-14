@@ -10,7 +10,7 @@ export class EventAttack {
     public p : Phaser.Geom.Point;
     public strength : number;
 
-    public constructor( _onKill: Phaser.Geom.Point, _p : Phaser.Geom.Point, _strength : number ) {
+    public constructor( _onKill: () => void, _p : Phaser.Geom.Point, _strength : number ) {
     	this.onKill = _onKill;
         this.p = _p;
         this.strength = _strength;
