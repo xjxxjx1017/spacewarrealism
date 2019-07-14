@@ -6,6 +6,9 @@ enum GameState {
 }
 
 export class GameData {
+    public static COLLIDE_SHIP : any;
+    public static COLLIDE_BULLETS : any;
+    public static COLLIDE_NEVER : any = 0;
     public static inst: Phaser.Scene;
 	private dataGame : Phaser.Scene;
     public dataShipList : Ship[];
@@ -42,6 +45,8 @@ export class GameData {
         var self = this;
         // Initialize Physics
         this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
+        GameData.COLLIDE_SHIP = this.dataGame.matter.world.nextCategory();
+        GameData.COLLIDE_BULLETS = this.dataGame.matter.world.nextCategory();
 
         // Create - ships
         var shipData = [

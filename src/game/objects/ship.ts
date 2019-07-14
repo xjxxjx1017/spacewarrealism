@@ -86,7 +86,8 @@ export class Ship extends FkSerializable{
             this.dataContainer.setFixedRotation();
             this.dataContainer.setFrictionAir(0.05);
             this.dataContainer.setMass(30);
-            // this.dataCursors = GameData.inst.input.keyboard.createCursorKeys();
+            this.dataContainer.setCollisionCategory( GameData.COLLIDE_SHIP );
+            console.log( GameData.COLLIDE_SHIP );
             this.dataCursors = GameData.inst.input.keyboard.addKeys(
                 {up: Phaser.Input.Keyboard.KeyCodes.W,
                 down: Phaser.Input.Keyboard.KeyCodes.S,

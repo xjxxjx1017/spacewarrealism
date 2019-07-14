@@ -21,8 +21,9 @@ export class Bullet {
         this.dataContainer.setAngle( 270 );
         this.dataContainer.setSize( 10, 10 );
         GameData.inst.matter.add.gameObject(this.dataContainer, {});
+        this.dataContainer.setCollisionCategory( GameData.COLLIDE_NEVER );
 		this.dataContainer.setFixedRotation();
-		this.dataContainer.setFrictionAir(0.05);
+		this.dataContainer.setFrictionAir(0);
 		this.dataContainer.setMass(30);
 		this.dataContainer.applyForce( { x: dirV.x, y: dirV.y } );
 		FkUtil.debugDrawPoint( this.getPos() );

@@ -32,7 +32,8 @@ export class FkUtil {
 	}
 	
 	public static getAngleV( a : number, str : number = 1 ): Phaser.Geom.Point {
-		return new Phaser.Geom.Point( str * Math.sin( a ), str * Math.cos( a ) );
+		a = a / 180 * Math.PI;
+		return new Phaser.Geom.Point( - str * Math.sin( a ), str * Math.cos( a ) );
 	}
 
 	public static debugDrawPoint( _p1, _str = 1 ) {
