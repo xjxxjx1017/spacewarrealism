@@ -3,6 +3,10 @@ import {GameData} from "../game/importall";
 export class FkUtil {
 	public static debug: boolean = true;
 
+	public static generateId(){
+		return Math.random().toString(36).substr(2, 9);
+	}
+
 	public static strokeRect( 
 		_graphics : Phaser.GameObjects.Graphics,
 		_x : number, _y : number,

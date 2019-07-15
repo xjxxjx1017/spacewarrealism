@@ -1,12 +1,15 @@
 import {EventWithMouse, GameData} from "../importall"
+import { FkUtil } from "../../components/fkutil";
 
 export class FkWithMouse{
+	private id : string;
 	private dataCurSrcName : string;
 	private dataSprite : Phaser.GameObjects.Sprite = null;
 	private dataGame : Phaser.Scene;
 	private dataIsActive : boolean = false;
 
 	constructor( _game : Phaser.Scene ) {
+		this.id = FkUtil.generateId();
 		var self = this;
 		// create a hidden sprite to track mouse
 		this.dataGame = _game;
@@ -18,7 +21,7 @@ export class FkWithMouse{
 			}
 		} );
 		
-        EventWithMouse.Manager.attach( this, ( id, _evt : EventWithMouse ) => { 
+        EventWithMouse.Manager.attach( this.id, ( id, _evt : EventWithMouse ) => { 
             _evt.isActive ? 
             self.LoadImage( _evt.src ) : self.UnloadImage(); 
         } );

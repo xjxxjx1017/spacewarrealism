@@ -2,6 +2,7 @@ import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, Bull
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
+	private groupId : number;
 	public dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
 	private dataSprite : Phaser.GameObjects.Sprite;
@@ -27,11 +28,13 @@ export class Gun extends FkSerializable{
 	}
 
 	public getObjectData( info: any, context: any ): any {
+		info["groupId"] = this.groupId;
 		info["dataPos"] = { x: this.dataPos.x, y: this.dataPos.y };
 		info["dataIsAlive"] = this.dataIsAlive;
 		return info;
 	}
 	public constructFromObjectData( info: any, context: any ): any {
+		this.groupId = info.groupId;
 		this.dataPos = info.dataPos;
 		this.dataIsAlive = info.dataIsAlive;
 		// The context is expect to be "Ship" at the moment
@@ -40,7 +43,8 @@ export class Gun extends FkSerializable{
 		return this;
 	}
 
-	public init( _container : any, _pos : Phaser.Geom.Point ) {
+	public init( groupId : number, _container : any, _pos : Phaser.Geom.Point ) {
+		this.groupId = groupId;
 		this.dataPos = _pos;
 		this.dataIsAlive = true;
 		this.dataContainer = _container;
@@ -63,7 +67,7 @@ export class Gun extends FkSerializable{
     public fire( dirV : Phaser.Geom.Point ) {
         var self = this;
 		var bullet = new Bullet();
-        bullet.init( self.getWorldPoint(), dirV );
+        bullet.init( this.groupId, self.getWorldPoint(), dirV );
     }
 
 	public attack( _target : Ship, _strength: number ) {

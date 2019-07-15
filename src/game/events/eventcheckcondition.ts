@@ -1,7 +1,7 @@
 import {EventManager} from "./eventmanager";
 
-export enum EnumCheckCondition {
-	CONDITION_GAME_WIN,
+export class EnumCheckCondition {
+	public static CONDITION_GAME_WIN : string = "CONDITION_GAME_WIN";
 }
 
 export class EventCheckCondition {

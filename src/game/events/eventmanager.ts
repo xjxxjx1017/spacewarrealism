@@ -1,23 +1,23 @@
 
 export class EventManager<TEvent> {
-	private observerList : Map<any, ((_id:any,_event:TEvent)=>void)>;
+	private observerList : Map<any, ((id:string,event:TEvent)=>void)>;
 
 	public constructor() {
-		this.observerList = new Map<any, ((_id:any,_event:TEvent)=>void)>();
+		this.observerList = new Map<any, ((id:string,event:TEvent)=>void)>();
 	}
 
-    public attach( _id : any, _eventFunc : (_id:any,_event:TEvent)=>void ) : void {
-        this.observerList.set( _id, _eventFunc );
+    public attach( id : string, eventFunc : (id:string,event:TEvent)=>void ) : void {
+        this.observerList.set( id, eventFunc );
     }
 
-    public detach( _id : any ) {
-    	delete this.observerList[ _id ];
+    public detach( id : string ) {
+		this.observerList.delete( id );
     }
 
-    public notify( _evt : TEvent ) : void {
-    	this.observerList.forEach( function( value : (_id:any,_event:TEvent)=>void, key, map ){
+    public notify( evt : TEvent ) : void {
+    	this.observerList.forEach( function( value : (id:string,event:TEvent)=>void, key ){
     		if ( value != null ) 
-    			value( key, _evt );
+    			value( key, evt );
     	})
     }
 }

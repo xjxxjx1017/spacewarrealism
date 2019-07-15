@@ -1,4 +1,5 @@
 import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate} from "../importall";
+import { FkUtil } from "../../components/fkutil";
 
 enum GameState {
     STATE_BATTLE,
@@ -10,6 +11,7 @@ export class GameData {
     public static COLLIDE_BULLETS : any;
     public static COLLIDE_NEVER : any = 0;
     public static inst: Phaser.Scene;
+    private id : string;
 	private dataGame : Phaser.Scene;
     public dataShipList : Ship[];
     private uiEditorShip : PanelEditShip;
@@ -20,6 +22,7 @@ export class GameData {
     private tmpAttackTimer : Phaser.Time.TimerEvent;
 
 	public constructor( _game : Phaser.Scene ){
+        this.id = FkUtil.generateId();
         GameData.inst = _game;
 		this.dataGame = _game;    
     }
@@ -53,8 +56,9 @@ export class GameData {
             new Phaser.Geom.Rectangle( 15, 15, 200, 200 ),
             new Phaser.Geom.Rectangle( 100 + 15 + 300, 15, 200, 200 ) ];
         this.dataShipList = [];
+        var groupId = 1;
         _.forEach( shipData, function(d){
-            var ship = new Ship().init( d, self.dataShipList.length == 0 );
+            var ship = new Ship().init( groupId++, d, self.dataShipList.length == 0 );
             self.dataShipList.push( ship );
         })
         // Initialize UI - mouse tracker

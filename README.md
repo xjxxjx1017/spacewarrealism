@@ -13,8 +13,7 @@ Current progress:
 
 TODO:
 * 定向飞弹
-	* 新建UpdateEvent. 每个子弹注册UpdateEvent.
-	* 在子弹的UpdateEvent做碰撞检测, 执行爆炸, killself
+	* > Bug double attacked
 * 简单目标与关卡
 	* 躲避/击碎飞来的陨石
 	* 关卡进步, 陨石更多

@@ -3,15 +3,18 @@ import { Bullet } from "./bullet";
 
 export class Ship extends FkSerializable{
     // TODO: delete dataRect, no longer needed
+    private id : string;
     public dataRect : Phaser.Geom.Rectangle;
     public dataShipEntity : FkDestructibleObject;
     private dataGunList : Gun[];
     public dataContainer : any;
     private dataPlayerControl: boolean;
     public dataCursors: Phaser.Input.Keyboard.CursorKeys;
+    private groupId: number;
 
     public constructor(){ 
         super(); 
+        this.id = FkUtil.generateId();
     }
 
     public kill() {
@@ -24,11 +27,11 @@ export class Ship extends FkSerializable{
             this.dataContainer.destroy();
             this.dataContainer = null;
         }
-        EventShipBrush.Manager.detach( this );
-        EventStampType.Manager.detach( this );
-        EventEntityUpdate.Manager.detach( this );
-        EventAttack.Manager.detach( this );
-        EventGameUpdate.Manager.detach( this );
+        EventShipBrush.Manager.detach( this.id );
+        EventStampType.Manager.detach( this.id );
+        EventEntityUpdate.Manager.detach( this.id );
+        EventAttack.Manager.detach( this.id );
+        EventGameUpdate.Manager.detach( this.id );
         // TODO: remove container from game scene
     }
 
@@ -41,12 +44,14 @@ export class Ship extends FkSerializable{
         info["dataGunList"] = _.map( this.dataGunList, function(x){
             return x.getObjectData( {}, self ) 
         });
+        info["groupId"] = this.groupId;
         return info;
     }
 
     public constructFromObjectData( info: any, context: any ): any {
         var self = this;
         this.kill();
+        this.groupId = info.groupId;
         this.dataRect = new Phaser.Geom.Rectangle( 
             info.dataRect.x, info.dataRect.y, 
             info.dataRect.width, info.dataRect.height );
@@ -63,7 +68,8 @@ export class Ship extends FkSerializable{
         return this;
     }
 
-	public init( _rect : Phaser.Geom.Rectangle, _playerControl: boolean ) {
+	public init( groupId: number, _rect : Phaser.Geom.Rectangle, _playerControl: boolean ) {
+        this.groupId = groupId;
         this.dataRect = _rect;
         this.dataPlayerControl = _playerControl;
         this.dataContainer = GameData.inst.add.container( _rect.x, _rect.y );
@@ -110,17 +116,21 @@ export class Ship extends FkSerializable{
     protected initAfter(){
         var self = this;
         // Init events
-        EventGameUpdate.Manager.attach( this, (id,evt)=>{ self.update( evt.time, evt.delta ); } );
-        EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
-        EventStampType.Manager.attach( this, (id,evt)=> { self.onPlaceStamp( evt ); } );
-        EventEntityUpdate.Manager.attach( this, (id,evt)=> { 
-            if ( this == id ) 
+        EventGameUpdate.Manager.attach( this.id, (id,evt)=>{ self.update( evt.time, evt.delta ); } );
+        EventShipBrush.Manager.attach( this.id, (id,evt)=> { self.onBrushDraw( evt ); } );
+        EventStampType.Manager.attach( this.id, (id,evt)=> { self.onPlaceStamp( evt ); } );
+        EventEntityUpdate.Manager.attach( this.id, (id,evt)=> { 
+            if ( this.id == id ) 
                 self.onEntityUpdate( evt ); 
         });
-        EventAttack.Manager.attach( this, (id,evt)=> { 
-            var collide = self.dataShipEntity.collisionWithPoint( evt.p, FkDstrGridData.getStateVisible() );
+        EventAttack.Manager.attach( this.id, (id,evt)=> {
+            if ( evt.groupId == self.groupId )
+                return; 
+            var p = new Phaser.Geom.Point();
+            this.dataContainer.getLocalTransformMatrix().applyInverse( evt.p.x, evt.p.y, p );
+            var collide = self.dataShipEntity.collisionWithPoint( p, FkDstrGridData.getStateVisible() );
             if ( collide ) {
-                self.attackedByPoint( evt.p, evt.strength );
+                self.attackedByPoint( p, evt.strength );
                 evt.onKill();
             }
         })
@@ -196,13 +206,9 @@ export class Ship extends FkSerializable{
         });
     }
 
-    public attackedByPoint( _srcGlobal : Phaser.Geom.Point, _strength : number ) {
+    public attackedByPoint( _srcLocal : Phaser.Geom.Point, _strength : number ) {
         var self = this;
-        var locMat: Phaser.GameObjects.Components.TransformMatrix = this.dataContainer.getLocalTransformMatrix();
-        var _srcPoint: any = new Phaser.Geom.Point();
-        locMat.applyInverse( _srcGlobal.x, _srcGlobal.y, _srcPoint );
-
-        self.dataShipEntity.modifyByCircle( new Phaser.Geom.Circle( _srcPoint.x, _srcPoint.y, _strength ), FkDstrGridData.getStateHide() );
+        self.dataShipEntity.modifyByCircle( new Phaser.Geom.Circle( _srcLocal.x, _srcLocal.y, _strength ), FkDstrGridData.getStateHide() );
         self.afterAttacked();
     }
 
@@ -227,7 +233,7 @@ export class Ship extends FkSerializable{
             return;
         switch ( _evt.type ) {
             case EStampType.STAMP_TURRET_RED:
-                var g = new Gun().init( this.dataContainer, p2 );
+                var g = new Gun().init( this.groupId, this.dataContainer, p2 );
                 this.dataGunList.push( g );
                 break;
             default:
