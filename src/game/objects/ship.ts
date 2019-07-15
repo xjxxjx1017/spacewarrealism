@@ -1,4 +1,4 @@
-import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
+import {Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil} from "../importall";
 import { Bullet } from "./bullet";
 
 export class Ship extends FkSerializable{
@@ -28,6 +28,7 @@ export class Ship extends FkSerializable{
         EventStampType.Manager.detach( this );
         EventEntityUpdate.Manager.detach( this );
         EventAttack.Manager.detach( this );
+        EventGameUpdate.Manager.detach( this );
         // TODO: remove container from game scene
     }
 
@@ -109,6 +110,7 @@ export class Ship extends FkSerializable{
     protected initAfter(){
         var self = this;
         // Init events
+        EventGameUpdate.Manager.attach( this, (id,evt)=>{ self.update( evt.time, evt.delta ); } );
         EventShipBrush.Manager.attach( this, (id,evt)=> { self.onBrushDraw( evt ); } );
         EventStampType.Manager.attach( this, (id,evt)=> { self.onPlaceStamp( evt ); } );
         EventEntityUpdate.Manager.attach( this, (id,evt)=> { 

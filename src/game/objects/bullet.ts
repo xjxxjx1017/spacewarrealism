@@ -1,4 +1,4 @@
-import {FkUtil, Ship, FkDstrGridData, EventAttack, GameData} from "../importall";
+import {FkUtil, Ship, FkDstrGridData, EventAttack, GameData, EventGameUpdate} from "../importall";
 
 export class Bullet {
 	private dataIsAlive : Boolean;
@@ -10,7 +10,8 @@ export class Bullet {
 		this.dataIsAlive = false;
         if ( this.dataContainer != null ){
             this.dataContainer.destroy();
-            this.dataContainer = null;
+			this.dataContainer = null;
+			EventGameUpdate.Manager.detach( this );
         }
 	}
 
@@ -27,6 +28,7 @@ export class Bullet {
 		this.dataContainer.setMass(30);
 		this.dataContainer.applyForce( { x: dirV.x, y: dirV.y } );
 		FkUtil.debugDrawPoint( this.getPos() );
+        EventGameUpdate.Manager.attach( this, (id,evt)=>{ self.update( evt.time, evt.delta ); } );
 		return this;
 	}
 	
@@ -34,7 +36,7 @@ export class Bullet {
 		return Phaser.Geom.Rectangle.GetCenter( this.dataContainer.getBounds() );
 	}
 
-	public update() {
+	public update( time : number, delta : number ) {
 		if ( this.dataIsAlive )
 			FkUtil.debugDrawPoint( this.getPos(), 5 );
 	}

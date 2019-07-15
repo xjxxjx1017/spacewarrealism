@@ -1,4 +1,4 @@
-import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState} from "../importall";
+import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate} from "../importall";
 
 enum GameState {
     STATE_BATTLE,
@@ -91,9 +91,7 @@ export class GameData {
 	}
 
     public update(time: number, delta: number): void{
-        _.forEach( this.dataShipList, function( s:Ship ) {
-            s.update( time, delta );
-        })
+        EventGameUpdate.Manager.notify( new EventGameUpdate( time, delta ) );
     }
 
     public checkWiningCondition() {

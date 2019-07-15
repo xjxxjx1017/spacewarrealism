@@ -23,6 +23,7 @@ export {EventStampType, EStampType} from "./events/eventplacestamp";
 export {EventHpChanged} from "./events/eventhpchanged";
 export {EventWithMouse} from "./events/eventwithmouse";
 export {EventEntityUpdate} from "./events/evententityupdate";
+export {EventGameUpdate} from "./events/eventgameupdate";
 export {EventCheckCondition, EnumCheckCondition} from "./events/eventcheckcondition";
 export {EventAttack} from "./events/eventattack";
 // UI components
