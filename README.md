@@ -12,8 +12,9 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* 定向飞弹
-	* > Bug double attacked
+* 编辑系统与战斗系统的切换
+	* 进入编辑系统, 停止战斗系统操作
+	* 关闭编辑系统, 恢复战斗系统操作
 * 简单目标与关卡
 	* 躲避/击碎飞来的陨石
 	* 关卡进步, 陨石更多

@@ -40,12 +40,11 @@ export class FkUtil {
 		return new Phaser.Geom.Point( - str * Math.sin( a ), str * Math.cos( a ) );
 	}
 
-	public static debugDrawPoint( _p1, _str = 1 ) {
+	public static debugDrawPoint( p1, str = 1 ) {
 		var g = GameData.inst.add.graphics({x: 0, y: 0});
-		g.lineStyle(_str, 0xffff00, 1);
-	    g.moveTo(_p1.x, _p1.y);
-	    g.lineTo(_p1.x, _p1.y);
-    	g.strokePath();
+		g.lineStyle(3, 0xffff00, 1);
+		var circle = new Phaser.Geom.Circle(p1.x, p1.y, str);
+		g.strokeCircleShape(circle);
     	GameData.inst.tweens.add({
             targets: g,
 			alpha : 0,
