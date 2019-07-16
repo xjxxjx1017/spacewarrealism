@@ -2,6 +2,7 @@ import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, Bull
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
+    private id : string;
 	private groupId : number;
 	public dataPos : Phaser.Geom.Point;
 	private dataIsAlive : Boolean;
@@ -11,6 +12,7 @@ export class Gun extends FkSerializable{
 
 	public constructor() {
 		super();
+		this.id = FkUtil.generateId();
 	}
 
 	public kill() {
