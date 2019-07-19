@@ -1,4 +1,5 @@
-import {Lodash as _, Vue, EventShipBrush, EBrushType, EventStampType, EStampType, EventWithMouse, Ship} from "../importall";
+import {Lodash as _, Vue, EventShipBrush, EBrushType, EventStampType, 
+    EventGameModeChanged, EGameModeChanged, EStampType, EventWithMouse, Ship} from "../importall";
 
 Vue.component('panel-edit-ship', {
 	props: {
@@ -71,6 +72,8 @@ Vue.component('panel-edit-ship', {
     },
     watch: {
         'ui.dataEditPanelVsb' : function( vNew, vOld ) {
+            EventGameModeChanged.Manager.notify( new EventGameModeChanged( 
+                vNew ? EGameModeChanged.MODE_EDIT : EGameModeChanged.MODE_BATTLE ) );
             if ( vNew )
                 this.onTabChange( this.TAB_DEFAULT );
             else

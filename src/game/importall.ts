@@ -26,6 +26,7 @@ export {EventEntityUpdate} from "./events/evententityupdate";
 export {EventGameUpdate} from "./events/eventgameupdate";
 export {EventCheckCondition, EnumCheckCondition} from "./events/eventcheckcondition";
 export {EventAttack} from "./events/eventattack";
+export {EventGameModeChanged, EGameModeChanged} from "./events/eventgamemodechanged";
 // UI components
 import "./ui-components/panel-edit-ship-vue";
 import "./ui-components/panel-information-vue";

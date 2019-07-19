@@ -1,4 +1,4 @@
-import { Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil } from "../importall";
+import { Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil } from "../importall";
 import { Bullet } from "./bullet";
 
 export class Ship extends FkSerializable {
@@ -9,6 +9,7 @@ export class Ship extends FkSerializable {
     private dataGunList: Gun[];
     public dataContainer: any;
     private dataPlayerControl: boolean;
+    private isPlayerControlActive: boolean;
     public dataCursors: Phaser.Input.Keyboard.CursorKeys;
     private groupId: number;
 
@@ -34,8 +35,9 @@ export class Ship extends FkSerializable {
         EventGameUpdate.Manager.detach(this.id);
 
         if (this.dataPlayerControl) {
-            GameData.inst.input.off( "pointermove", null, this, false );
-            GameData.inst.input.off( "pointerdown", null, this, false );
+            GameData.inst.input.off( "pointermove", this.rotate, this, false );
+            GameData.inst.input.off( "pointerdown", this.fire, this, false );
+            EventGameModeChanged.Manager.detach( this.id );
         }
 
         // TODO: remove container from game scene
@@ -93,6 +95,7 @@ export class Ship extends FkSerializable {
 
     private initMatter() {
         var self = this;
+        this.isPlayerControlActive = true;
         GameData.inst.matter.add.gameObject(this.dataContainer, {});
         if (this.dataPlayerControl) {
             GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
@@ -108,16 +111,9 @@ export class Ship extends FkSerializable {
                     left: Phaser.Input.Keyboard.KeyCodes.A,
                     right: Phaser.Input.Keyboard.KeyCodes.D
                 });
-            GameData.inst.input.on("pointermove", function (p) {
-                var pp: any = new Phaser.Geom.Point();
-                GameData.inst.cameras.main.getWorldPoint(p.x, p.y, pp);
-                var a = FkUtil.getAngle(self.dataContainer.x, self.dataContainer.y, pp.x, pp.y) - 90;
-                FkUtil.debugDrawLine(new Phaser.Geom.Point(self.dataContainer.x, self.dataContainer.y), pp);
-                self.dataContainer.setAngle(a);
-            }, this)
-            GameData.inst.input.on('pointerdown', function () {
-                self.fire();
-            }, this)
+            GameData.inst.input.on("pointermove", this.rotate, this)
+            GameData.inst.input.on('pointerdown', this.fire, this)
+            EventGameModeChanged.Manager.attach( this.id, (id,evt)=>{ self.onGameModeChanged( evt.mode ); })
         }
     }
 
@@ -146,6 +142,13 @@ export class Ship extends FkSerializable {
         this.dataShipEntity.drawDstrObject();
     }
 
+    public onGameModeChanged( mode ){
+        if ( mode == EGameModeChanged.MODE_BATTLE )
+            this.isPlayerControlActive = true;
+        else
+            this.isPlayerControlActive = false;
+    }
+
     public update(time: number, delta: number) {
         var self = this;
         if (this.dataPlayerControl) {
@@ -166,11 +169,24 @@ export class Ship extends FkSerializable {
     }
 
     public fire() {
+        if ( !this.isPlayerControlActive )
+            return;
 		console.log( "ship fire... " + this.id );
         var self = this;
         _.forEach(self.dataGunList, function (g) {
             g.fire(FkUtil.getAngleV(self.getDirection()));
         })
+    }
+
+    public rotate(p){
+        if ( !this.isPlayerControlActive )
+            return;
+        var self = this;
+        var pp: any = new Phaser.Geom.Point();
+        GameData.inst.cameras.main.getWorldPoint(p.x, p.y, pp);
+        var a = FkUtil.getAngle(self.dataContainer.x, self.dataContainer.y, pp.x, pp.y) - 90;
+        FkUtil.debugDrawLine(new Phaser.Geom.Point(self.dataContainer.x, self.dataContainer.y), pp);
+        self.dataContainer.setAngle(a);
     }
 
     public getHp(): number {

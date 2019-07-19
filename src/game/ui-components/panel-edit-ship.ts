@@ -36,12 +36,12 @@ export class PanelEditShip {
         this.dataGame.input.on( "pointerdown", function( _p ) {
             self.eventDraw( _p );
             self.eventStamp( _p );
-        })
+        }, this)
         this.dataGame.input.on( "pointermove", function( _p ) {
             if ( self.dataGame.input.mousePointer.isDown ) {
                 self.eventDraw( _p );
             }
-        })
+        }, this)
     }
 
     private eventDraw( p ) {
