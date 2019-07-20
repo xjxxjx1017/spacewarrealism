@@ -1,9 +1,9 @@
-import {Vue, Preload, Core} from "./importall";
+import {Vue, Preload, Core, Setting} from "./importall";
 declare var ElementUI : any;
 
 const config: GameConfig = {
-	width: 800,
-	height: 400,
+	width: Setting.GAME_WIDTH,
+	height: Setting.GAME_HEIGHT,
 	type: Phaser.AUTO,
 	parent: "game",
 	scene: [Preload, Core],

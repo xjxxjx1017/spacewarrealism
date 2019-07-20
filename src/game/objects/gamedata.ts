@@ -1,4 +1,4 @@
-import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate} from "../importall";
+import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate, Setting} from "../importall";
 import { FkUtil } from "../../components/fkutil";
 
 enum GameState {
@@ -50,6 +50,10 @@ export class GameData {
         this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
         GameData.COLLIDE_SHIP = this.dataGame.matter.world.nextCategory();
         GameData.COLLIDE_BULLETS = this.dataGame.matter.world.nextCategory();
+
+        GameData.inst.cameras.main.pan( Setting.GAME_WIDTH/2, Setting.GAME_HEIGHT/2, 0 );
+        GameData.inst.cameras.main.setZoom( 1 );
+        GameData.inst.cameras.main.setAngle( 0 );
 
         // Create - ships
         var shipData = [

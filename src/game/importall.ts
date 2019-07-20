@@ -17,6 +17,7 @@ export {FkQuadTree} from "../components/fkquadtree";
 export {FkFactory} from "../components/fkfactory";
 export {FkCounter} from '../components/fkcounter';
 export {FkUtil} from "../components/fkutil";
+export {Setting} from "../game/setting";
 // Events
 export {EventShipBrush, EBrushType} from "./events/eventshipbrush";
 export {EventStampType, EStampType} from "./events/eventplacestamp";

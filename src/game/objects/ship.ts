@@ -1,5 +1,4 @@
-import { Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil } from "../importall";
-import { Bullet } from "./bullet";
+import { Lodash as _, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil, Setting } from "../importall";
 
 export class Ship extends FkSerializable {
     // TODO: delete dataRect, no longer needed
@@ -98,7 +97,7 @@ export class Ship extends FkSerializable {
         this.isPlayerControlActive = true;
         GameData.inst.matter.add.gameObject(this.dataContainer, {});
         if (this.dataPlayerControl) {
-            GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
+            // GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
             this.dataContainer.setFixedRotation();
             this.dataContainer.setFrictionAir(0.05);
             this.dataContainer.setMass(30);
@@ -143,10 +142,17 @@ export class Ship extends FkSerializable {
     }
 
     public onGameModeChanged( mode ){
-        if ( mode == EGameModeChanged.MODE_BATTLE )
+        if ( mode == EGameModeChanged.MODE_BATTLE ) {
             this.isPlayerControlActive = true;
-        else
+            GameData.inst.cameras.main.pan( Setting.GAME_WIDTH/2, Setting.GAME_HEIGHT/2, 300 );
+            GameData.inst.cameras.main.zoomTo( 1, 300 );
+        }
+        else {
+            var zoom: number = 1.5;
             this.isPlayerControlActive = false;
+            GameData.inst.cameras.main.pan( this.dataContainer.x - Setting.GAME_EDIT_CENTER_OFFSET/zoom, this.dataContainer.y, 300 );
+            GameData.inst.cameras.main.zoomTo( zoom, 300 );
+        }
     }
 
     public update(time: number, delta: number) {
