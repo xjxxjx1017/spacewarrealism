@@ -12,7 +12,9 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
-* 更精细的物理判定? 探索一下
+* 更精细的物理判定? 
+	* 如何让container有个自定义的body
+	* 用描边多边形做精确物理
 * 简单目标与关卡
 	* 飞来的陨石
 	* 躲避/击碎陨石

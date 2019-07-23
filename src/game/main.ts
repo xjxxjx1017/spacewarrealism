@@ -11,6 +11,8 @@ const config: GameConfig = {
         default: 'matter',
         matter: {
             debug: true,
+            debugShowInternalEdges: true,
+            debugShowConvexHulls: true,
             gravity: {
                 x: 0,
                 y: 0

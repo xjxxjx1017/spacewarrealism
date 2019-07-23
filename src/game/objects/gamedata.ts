@@ -88,6 +88,18 @@ export class GameData {
             })
             count++;
         })
+
+        // ### TODO: test
+        var star = '50 0 63 38 100 38 69 59 82 100 50 75 18 100 31 59 0 38 37 38';
+        var poly: any = this.dataGame.add.polygon(400, 300, star, 0x0000ff, 0.2);
+        this.dataGame.matter.add.gameObject(poly, { shape: { type: 'fromVerts', verts: star, flagInternal: true } });
+        poly.setVelocity(0, 0);
+        poly.setAngularVelocity(0.01);
+        poly.setBounce(1);
+        poly.setFriction(0, 0, 0);
+        poly.setMass( 100 );
+
+        
         this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
         // Initialize UI - game state
         this.uiGameState = new PanelGameState( this );
