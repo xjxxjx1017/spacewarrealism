@@ -8,7 +8,7 @@ enum GameState {
 
 export class GameData {
     public static COLLIDE_SHIP : any;
-    public static COLLIDE_BULLETS : any;
+    public static COLLIDE_SHIP_PLAYER : any;
     public static COLLIDE_NEVER : any = 0;
     public static inst: Phaser.Scene;
     private id : string;
@@ -49,7 +49,7 @@ export class GameData {
         // Initialize Physics
         this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
         GameData.COLLIDE_SHIP = this.dataGame.matter.world.nextCategory();
-        GameData.COLLIDE_BULLETS = this.dataGame.matter.world.nextCategory();
+        GameData.COLLIDE_SHIP_PLAYER = this.dataGame.matter.world.nextCategory();
 
         GameData.inst.cameras.main.pan( Setting.GAME_WIDTH/2, Setting.GAME_HEIGHT/2, 0 );
         GameData.inst.cameras.main.setZoom( 1 );
@@ -88,17 +88,6 @@ export class GameData {
             })
             count++;
         })
-
-        // ### TODO: test
-        var star = '50 0 63 38 100 38 69 59 82 100 50 75 18 100 31 59 0 38 37 38';
-        var poly: any = this.dataGame.add.polygon(400, 300, star, 0x0000ff, 0.2);
-        this.dataGame.matter.add.gameObject(poly, { shape: { type: 'fromVerts', verts: star, flagInternal: true } });
-        poly.setVelocity(0, 0);
-        poly.setAngularVelocity(0.01);
-        poly.setBounce(1);
-        poly.setFriction(0, 0, 0);
-        poly.setMass( 100 );
-
         
         this.uiInformation = new PanelInformation( this.dataGame, uiGroup );
         // Initialize UI - game state

@@ -95,14 +95,14 @@ export class Ship extends FkSerializable {
     private initMatter() {
         var self = this;
         this.isPlayerControlActive = true;
-        GameData.inst.matter.add.gameObject(this.dataContainer, {});
+        GameData.inst.matter.add.gameObject(this.dataContainer, { shape: { type: 'circle', radius: 10 } });
         if (this.dataPlayerControl) {
             // GameData.inst.cameras.main.startFollow(this.dataContainer, true, 0.05, 0.05, 0, 0);
             this.dataContainer.setFixedRotation();
             this.dataContainer.setFrictionAir(0.05);
             this.dataContainer.setMass(30);
-            this.dataContainer.setCollisionCategory(GameData.COLLIDE_SHIP);
-            console.log(GameData.COLLIDE_SHIP);
+            this.dataContainer.setCollisionCategory( GameData.COLLIDE_SHIP_PLAYER );
+            this.dataContainer.setCollidesWith( [1] );
             this.dataCursors = GameData.inst.input.keyboard.addKeys(
                 {
                     up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -113,6 +113,10 @@ export class Ship extends FkSerializable {
             GameData.inst.input.on("pointermove", this.rotate, this)
             GameData.inst.input.on('pointerdown', this.fire, this)
             EventGameModeChanged.Manager.attach( this.id, (id,evt)=>{ self.onGameModeChanged( evt.mode ); })
+        }
+        else {
+            this.dataContainer.setCollisionCategory( GameData.COLLIDE_SHIP );
+            this.dataContainer.setCollidesWith( [1] );
         }
     }
 
