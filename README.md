@@ -12,6 +12,9 @@ Current progress:
 ![Progress](/assets/spec/2019-04-13.16-12-52.png "Progress")
 
 TODO:
+* 初始飞船位置
+* 陨石的被攻击判定有bug
+* attacked 函数可以被统一
 * 简单目标与关卡
 	* 飞来的陨石
 	* 躲避/击碎陨石

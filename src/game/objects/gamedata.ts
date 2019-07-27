@@ -1,4 +1,4 @@
-import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate, Setting} from "../importall";
+import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Meteorite, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate, Setting} from "../importall";
 import { FkUtil } from "../../components/fkutil";
 
 enum GameState {
@@ -14,6 +14,7 @@ export class GameData {
     private id : string;
 	private dataGame : Phaser.Scene;
     public dataShipList : Ship[];
+    public meteroList : Meteorite[];
     private uiEditorShip : PanelEditShip;
     private uiInformation : PanelInformation;
     private uiGameState : PanelGameState;
@@ -31,7 +32,6 @@ export class GameData {
         // Save game - serialize - ships
         var saveString = {
             ShipA: this.dataShipList[0].getObjectData( {}, this ),
-            ShipB: this.dataShipList[1].getObjectData( {}, this ),
         };
         return JSON.stringify( saveString );
     }
@@ -41,7 +41,6 @@ export class GameData {
         var saveObj = JSON.parse( file );
         // Load game - create - ships
         this.dataShipList[0].constructFromObjectData( saveObj.ShipA, this );
-        this.dataShipList[1].constructFromObjectData( saveObj.ShipB, this );
     }
 
 	public run() {
@@ -57,13 +56,21 @@ export class GameData {
 
         // Create - ships
         var shipData = [
-            new Phaser.Geom.Rectangle( 15, 15, 200, 200 ),
-            new Phaser.Geom.Rectangle( 100 + 15 + 300, 15, 200, 200 ) ];
+            new Phaser.Geom.Rectangle( 15, 15, 200, 200 ) ];
         this.dataShipList = [];
         var groupId = 1;
         _.forEach( shipData, function(d){
             var ship = new Ship().init( groupId++, d, self.dataShipList.length == 0 );
             self.dataShipList.push( ship );
+        })
+        var meteroData = [
+            new Phaser.Geom.Rectangle( 615, 115, 50, 50 ),
+            new Phaser.Geom.Rectangle( 615, 315, 50, 50 ) ];
+        this.meteroList = [];
+        var groupId = 1000;
+        _.forEach( meteroData, function(d){
+            var metero = new Meteorite().init( groupId++, d );
+            self.meteroList.push( metero );
         })
         // Initialize UI - mouse tracker
         this.uiWithMouse = new FkWithMouse( this.dataGame );
@@ -121,8 +128,7 @@ export class GameData {
         }
         // Auto attack every seconds
         this.tmpAttackTimer = this.dataGame.time.addEvent({ delay: 1000, callback: ()=> {
-            self.dataShipList[0].attack( self.dataShipList[1] );
-            self.dataShipList[1].attack( self.dataShipList[0] );
+            // self.dataShipList[0].attack( self.dataShipList[1] );
             EventCheckCondition.Manager.notify( EnumCheckCondition.CONDITION_GAME_WIN );
         }, repeat: 40 });
     }
