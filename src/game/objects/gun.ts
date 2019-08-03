@@ -1,4 +1,5 @@
 import {FkSerializable, FkDestructibleObject, FkDstrGridData, Ship, Effect, Bullet, GameData, FkUtil} from "../importall";
+import { Attackable } from "../module/attackable";
 
 export class Gun extends FkSerializable{
 	public static IMAGE_RED_TURRET : string = "red_turret";
@@ -79,7 +80,8 @@ export class Gun extends FkSerializable{
 		var p2: Phaser.Geom.Point = new Phaser.Geom.Point( c2.x, c2.y );
 		p2.x += ( Math.random() - 0.5 ) * 200;
 		p2.y += ( Math.random() - 0.5 ) * 200; 
-		_target.attackedByLine( p1, p2, _strength ); 
+		Attackable.attackedByLine( _target.dataShipEntity, _target.afterAttacked, 
+			_target.dataContainer.getLocalTransformMatrix(), p1, p2, _strength ); 
 		Effect.createShootEffect( p1, p2 );
 	}
 }

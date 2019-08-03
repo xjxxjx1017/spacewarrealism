@@ -28,6 +28,8 @@ export {EventGameUpdate} from "./events/eventgameupdate";
 export {EventCheckCondition, EnumCheckCondition} from "./events/eventcheckcondition";
 export {EventAttack} from "./events/eventattack";
 export {EventGameModeChanged, EGameModeChanged} from "./events/eventgamemodechanged";
+// Utils
+export {Attackable} from "./module/attackable";
 // UI components
 import "./ui-components/panel-edit-ship-vue";
 import "./ui-components/panel-information-vue";
