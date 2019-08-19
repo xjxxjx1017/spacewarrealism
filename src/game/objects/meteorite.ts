@@ -1,4 +1,5 @@
 import { Lodash as _, Attackable, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil, Setting } from "../importall";
+import { ActionResolver, ActionMove, Action, eActionType, eActionDurationType } from "../actions/actionmanager";
 
 export class Meteorite {
     // TODO: delete dataRect, no longer needed
@@ -7,6 +8,7 @@ export class Meteorite {
     public entity: FkDestructibleObject;
     public dataContainer: any;
     private groupId: number;
+    private actionReolver: ActionResolver;
 
     public constructor() {
         this.id = FkUtil.generateId();
@@ -76,5 +78,24 @@ export class Meteorite {
 
     public getIsAlive(): boolean {
         return this.getHp() > 20;
+    }
+
+    public sample() {
+        this.actionReolver.register( eActionType.ACTION_MOVE, function(act){ this.move(act); } );
+
+        var actionStack: Action[] = [];
+        actionStack.push( <ActionMove>{
+            type: eActionType.ACTION_MOVE,
+            durType: eActionDurationType.SUSTAIN,
+            durTime: 5,
+        } );
+        this.actionReolver.resolveStack( actionStack );
+    }
+
+    /* update function, regist on GameData, call each frame for actions */
+
+    protected move( act: ActionMove ){
+        var clock = new Phaser.Time.Clock( GameData.inst );
+        this.dataContainer.applyForce( act.vec1 );
     }
 }
