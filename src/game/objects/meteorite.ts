@@ -8,10 +8,11 @@ export class Meteorite {
     public entity: FkDestructibleObject;
     public dataContainer: any;
     private groupId: number;
-    private actionReolver: ActionResolver;
+    public actionReolver: ActionResolver;
 
     public constructor() {
         this.id = FkUtil.generateId();
+        this.actionReolver = new ActionResolver();
     }
 
     public kill() {
@@ -43,6 +44,8 @@ export class Meteorite {
         var self = this;
         GameData.inst.matter.add.gameObject(this.dataContainer, { shape: { type: 'circle', radius: 10 } });
         
+        this.dataContainer.setFrictionAir(0.00);
+        this.dataContainer.setMass(30);
         this.dataContainer.setCollisionCategory( GameData.COLLIDE_SHIP );
         this.dataContainer.setCollidesWith( [1] );
     }
@@ -63,6 +66,12 @@ export class Meteorite {
         })
         // Show Object
         this.entity.drawDstrObject();
+        this.initAction();
+    }
+
+    private initAction() {
+        var self = this;
+        this.actionReolver.register( eActionType.ACTION_MOVE, function(act){ self.actionMove(act as ActionMove); } );
     }
 
     public getHp(): number {
@@ -80,21 +89,9 @@ export class Meteorite {
         return this.getHp() > 20;
     }
 
-    public sample() {
-        this.actionReolver.register( eActionType.ACTION_MOVE, function(act){ this.move(act); } );
-
-        var actionStack: Action[] = [];
-        actionStack.push( <ActionMove>{
-            type: eActionType.ACTION_MOVE,
-            durType: eActionDurationType.SUSTAIN,
-            durTime: 5,
-        } );
-        this.actionReolver.resolveStack( actionStack );
-    }
-
     /* update function, regist on GameData, call each frame for actions */
 
-    protected move( act: ActionMove ){
+    protected actionMove( act: ActionMove ){
         var clock = new Phaser.Time.Clock( GameData.inst );
         this.dataContainer.applyForce( act.vec1 );
     }

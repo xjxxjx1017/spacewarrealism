@@ -1,5 +1,6 @@
 import {Lodash as _, FkDestructibleObject, FkDstrGridData, FkQuadTree, FkScene, Ship, Meteorite, Gun, FkWithMouse, EventHpChanged, EventCheckCondition, EnumCheckCondition, FkFactory, PanelEditShip, PanelInformation, PanelInformationUnit, PanelGameState, EventGameUpdate, Setting} from "../importall";
 import { FkUtil } from "../../components/fkutil";
+import { ActionMove, eActionDurationType, eActionType } from "../actions/actionmanager";
 
 enum GameState {
     STATE_BATTLE,
@@ -64,13 +65,23 @@ export class GameData {
             self.dataShipList.push( ship );
         })
         var meteroData = [
-            new Phaser.Geom.Rectangle( 615, 115, 50, 50 ),
-            new Phaser.Geom.Rectangle( 615, 315, 50, 50 ) ];
+            new Phaser.Geom.Rectangle( 715, 115, 50, 50 ),
+            new Phaser.Geom.Rectangle( 715, 315, 50, 50 ),
+            new Phaser.Geom.Rectangle( 715, 365, 50, 50 ),
+            new Phaser.Geom.Rectangle( 715, 215, 50, 50 ),
+            new Phaser.Geom.Rectangle( 715, 65, 50, 50 ) ];
         this.meteroList = [];
         var groupId = 1000;
         _.forEach( meteroData, function(d){
             var metero = new Meteorite().init( groupId++, d );
             self.meteroList.push( metero );
+            
+            metero.actionReolver.act( <ActionMove>{
+                type: eActionType.ACTION_MOVE,
+                durType: eActionDurationType.SUSTAIN,
+                durTime: 5,
+                vec1: {x: -0.1, y: 0}
+            } );
         })
         // Initialize UI - mouse tracker
         this.uiWithMouse = new FkWithMouse( this.dataGame );
