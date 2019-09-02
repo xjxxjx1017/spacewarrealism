@@ -9,7 +9,7 @@ export class Ship extends FkSerializable {
     public dataContainer: any;
     private dataPlayerControl: boolean;
     private isPlayerControlActive: boolean;
-    public dataCursors: Phaser.Input.Keyboard.CursorKeys;
+    public dataCursors: any;
     private groupId: number;
 
     public constructor() {

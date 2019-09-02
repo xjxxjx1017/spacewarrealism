@@ -30,7 +30,7 @@ export class FkWithMouse{
 	public LoadImage( _srcName : string ) {
 		this.dataIsActive = true;
 		if ( this.dataSprite == null ) {
-			var cfg : SpriteConfig = { 
+			var cfg : Phaser.Types.GameObjects.Sprite.SpriteConfig = { 
 				key: _srcName,
 				x: 100, y: 100,
 				scale: {

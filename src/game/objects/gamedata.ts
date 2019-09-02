@@ -47,7 +47,9 @@ export class GameData {
 	public run() {
         var self = this;
         // Initialize Physics
-        this.dataGame.matter.world.setBounds( 0, 0, 800, 400 );
+        this.dataGame.add.sprite(Setting.GAME_WIDTH/2, Setting.GAME_HEIGHT/2, 'background').setScale(0.5, 0.5);
+        this.dataGame.add.sprite(Setting.GAME_WIDTH/2, Setting.GAME_HEIGHT/2, 'sample_overlay').setScale(0.5, 0.5);
+        this.dataGame.matter.world.setBounds( 0, 0, 800, 600 );
         GameData.COLLIDE_SHIP = this.dataGame.matter.world.nextCategory();
         GameData.COLLIDE_SHIP_PLAYER = this.dataGame.matter.world.nextCategory();
 
@@ -134,7 +136,7 @@ export class GameData {
     public changeStateToBattle() {
         var self = this;
         if ( this.tmpAttackTimer ) {
-            this.tmpAttackTimer.remove(()=>{});
+            this.tmpAttackTimer.remove();
             this.tmpAttackTimer = null;
         }
         // Auto attack every seconds
@@ -146,7 +148,7 @@ export class GameData {
 
     public changeStateToIdle() {
         if ( this.tmpAttackTimer ) {
-            this.tmpAttackTimer.remove(()=>{});
+            this.tmpAttackTimer.remove();
             this.tmpAttackTimer = null;
         }
     }

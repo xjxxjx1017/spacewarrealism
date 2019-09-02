@@ -7,7 +7,7 @@ export class Effect{
 		if (FkUtil.debug)
 			FkUtil.debugDrawLine( _p1, _p2, 3 );
 		if ( Effect.effectManagerGun == null ) {
-			Effect.effectManagerGun = GameData.inst.add.group(<GroupConfig>{ 
+			Effect.effectManagerGun = GameData.inst.add.group(<Phaser.Types.GameObjects.Group.GroupConfig>{ 
 				defaultKey: "red_laser", 
 				maxSize: 10
 			});

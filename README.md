@@ -5,8 +5,7 @@ A space war game
 
 Current progress:
 
-![Progress](/assets/spec/2019-08-23.20-20-25.png "Progress")
-![Progress](/assets/spec/2019-08-23.20-20-52.png "Progress")
+![Progress](/assets/spec/2019-09-02.19-17-57.png "Progress")
 
 TODO:
 * Use more Action Manager

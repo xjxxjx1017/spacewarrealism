@@ -1,7 +1,7 @@
 import {Vue, Preload, Core, Setting} from "./importall";
 declare var ElementUI : any;
 
-const config: GameConfig = {
+const config: Phaser.Types.Core.GameConfig = {
 	width: Setting.GAME_WIDTH,
 	height: Setting.GAME_HEIGHT,
 	type: Phaser.AUTO,
@@ -19,8 +19,16 @@ const config: GameConfig = {
             },
         }
     },
-	backgroundColor: "#cccccc",
-	render: { pixelArt: false, antialias: true, autoResize: false }
+	backgroundColor: "#000000",
+    render: { 
+        pixelArt: false, 
+        antialias: true,
+        roundPixels: false
+    },
+    scale: {
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    }
 };
 
 Vue.use(ElementUI);

@@ -9,6 +9,7 @@ export class Preload extends Phaser.Scene {
     }
     
     public preload() : void {
+        this.load.image('background', 'assets/sprites/concept1_bg.png');
         this.load.image('ship', 'assets/ship.jpg');
         this.load.image('ship-body', 'assets/ship-body.png');
         this.load.image('ship-body-light', 'assets/ship-body-light.png');
@@ -22,6 +23,7 @@ export class Preload extends Phaser.Scene {
         this.load.image('overlay_nohuman', 'assets/buttonoverlay/nohuman.png');
         this.load.image('red_turret', 'assets/sprites/2019.04.01.Turret.png');
         this.load.image('red_laser', 'assets/sprites/2019.04.01.Line.png');
+        this.load.image('sample_overlay', 'assets/sprites/concept2_sample_over.png');
     }
 
     public create(): void {

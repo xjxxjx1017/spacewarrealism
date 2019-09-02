@@ -56,7 +56,7 @@ export class Gun extends FkSerializable{
 	}
 
 	public initAfter(){
-		var cfg : SpriteConfig = { 
+		var cfg : Phaser.Types.GameObjects.Sprite.SpriteConfig = { 
 			key: Gun.IMAGE_RED_TURRET,
 			x: this.dataPos.x, y: this.dataPos.y,
 			scale: {
