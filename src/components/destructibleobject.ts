@@ -1,5 +1,6 @@
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
 import { Lodash as _, EventEntityUpdate, GameData} from "../game/importall";
+import { RenderTexture } from "./destructable-objects-renderers/rendertexture";
 
 export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
@@ -35,118 +36,48 @@ export class FkDstrGridData extends FkBaseDstrGridData {
 }
 
 export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridData> {
-    private IS_DEBUG : boolean = true;
-    private FRAME_COLOR : number = 0x00ff00;
-    private FRAME_FILL_COLOR : number = 0x004400;
-    private FRAME_COLOR_HIDDEN : number = 0xff0000;
-    private FRAME_WIDTH : number = 1;   
-    private dataRenderTexture : string = null; 
     private dataContainer: Phaser.GameObjects.Container;
-    private layerGridEdge : Phaser.GameObjects.Graphics;
-    private layerTexture : Phaser.GameObjects.Image;
-    private debugDrawCounter : number = 0;
+    private renderer1 : RenderTexture;
 
     constructor(){
         super( FkDstrGridData );
+        this.renderer1 = new RenderTexture();
     }
 
     public kill(){
         super.kill();
-        if ( this.layerGridEdge ) {
-            this.layerGridEdge.destroy();
-            this.layerGridEdge = null;
-        }
-        if ( this.layerTexture ) {
-            this.layerTexture.destroy();
-            this.layerTexture = null;
-        }
+        this.renderer1.kill();
     }
 
     public getObjectData( info: any, context: any ): any  {
+        this.renderer1.getObjectData( info, context );
         super.getObjectData( info, context );
-        info["dataRenderTexture"] = this.dataRenderTexture;
         return info;
     }
 
     public constructFromObjectData( info: any, context: any ): any {
-        this.dataContainer = context.dataContainer;
         super.constructFromObjectData( info, context );
-        this.initAfter();
+        this.renderer1.constructFromObjectData( info, context );
         return this;
     }
 
 	public init( _container: Phaser.GameObjects.Container, _posX : number, _posY : number, 
 		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
-        this.dataContainer = _container;
     	super.baseInit( _posX, _posY, _maxWidth, _maxHeight, FkDstrGridData.getStateVisible() );
-        this.initAfter();
+        this.dataContainer = _container;
+        this.renderer1.init( _container, {
+            posX: _posX,
+            posY: _posY,
+            renderTexture: _renderTexture
+        })
         return this;
 	}
 
-    public initAfter() {
-        if ( this.dataRenderTexture != null ) {
-            this.layerGridEdge = GameData.inst.make.graphics({
-                x: this.dataPos.x,
-                y: this.dataPos.y
-            });
-            this.layerTexture = GameData.inst.make.image({
-                x: this.dataPos.x, 
-                y: this.dataPos.y, 
-                texture: this.dataRenderTexture 
-            });
-            this.layerTexture.setMask( this.layerGridEdge.createGeometryMask() );
-            this.dataContainer.add( this.layerTexture );
-        }
-        else {
-            this.layerGridEdge = GameData.inst.make.graphics({
-                x: this.dataPos.x,
-                y: this.dataPos.y
-            });
-            this.dataContainer.add( this.layerGridEdge );
-        }
-    }
-
     public drawDstrObject() {
-        this.layerGridEdge.clear();
-        this.debugDrawCounter = 0;
-        this.draw( ( _rect, _data ) => { this.render( _rect, _data ); } );
-        EventEntityUpdate.Manager.notify( new EventEntityUpdate() );
-        // console.log( "Draw: " + this.debugDrawCounter + " rects" );
-    }
-
-    private render(  _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) {
-        if ( this.dataRenderTexture != null ) {
-            this.renderTexture( _rect, _data );
-            return;
-        }
-        this.renderFrame( _rect, _data );
-        return;
-    }
-
-    private renderFrame( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {
-        if ( _data.dataIsVisible ) {
-            this.debugDrawCounter++;
-            this.layerGridEdge.fillStyle( this.FRAME_FILL_COLOR );
-            this.layerGridEdge.fillRectShape( _rect );
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);
-            this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
-        }
-        else {
-            if ( this.IS_DEBUG ) {
-                this.debugDrawCounter++;
-                this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR_HIDDEN, 1);
-                this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
-            }
-        }
-    }
-
-    private renderTexture( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {
-        if ( _data.dataIsVisible ) {
-            this.debugDrawCounter++;
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, 1);
-            this.layerGridEdge.fillStyle(this.FRAME_FILL_COLOR, 1 );
-            this.layerGridEdge.fillRect( _rect.x, _rect.y, _rect.width, _rect.height );
-        }
+        var renderer = this.renderer1;
+        this.renderer1.renderBegin();
+        this.draw( ( _rect, _data ) => { renderer.render( _rect, _data ); } );
+        this.renderer1.renderEnd();
     }
 
     public static firstCollidePointForMovingPointToDstrObjectList( _objList : FkDestructibleObject[], _p1 : Phaser.Geom.Point, _p2 : Phaser.Geom.Point, _sData : FkDstrGridData ) : Phaser.Geom.Point {
