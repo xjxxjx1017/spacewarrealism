@@ -8,7 +8,11 @@ Current progress:
 ![Progress](/assets/spec/2019-09-02.19-17-57.png "Progress")
 
 TODO:
-* Wire Frame Rendering
+* Metro renderer (fake wire texture)
+* Object list and edit buttons (Vue)
+* Metro edit/save
+* Gun renderer
+* Gun edit/save
 * Collide with meteorite
 * Dynamic UI
 * 丰富游戏内容:
