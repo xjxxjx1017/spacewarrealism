@@ -9,10 +9,10 @@ class RenderTextureConfig {
 
 export class RenderTexture {
     private IS_DEBUG : boolean = true;
-    private FRAME_COLOR : number = 0x00ff00;
-    private FRAME_FILL_COLOR : number = 0x004400;
+    private FRAME_COLOR : number = 0x00fffc;
+    private FRAME_FILL_COLOR : number = 0xFFD300;
     private FRAME_COLOR_HIDDEN : number = 0xff0000;
-    private FRAME_WIDTH : number = 1;   
+    private FRAME_WIDTH : number = 1.2;   
     private dataContainer: Phaser.GameObjects.Container;
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private layerTexture : Phaser.GameObjects.Image;
@@ -101,9 +101,14 @@ export class RenderTexture {
     private renderWireFrame( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {
         if ( _data.dataIsVisible ) {
             this.debugDrawCounter++;
-            this.layerGridEdge.fillStyle( this.FRAME_FILL_COLOR );
+            var p1 = _rect.width;
+            var p2 = 0.6;
+            var alpha = p1 > 20 ? 1 : p1 / 20;
+            var fillAlpha = (1.1 - alpha) * p2;
+            var lineAlpha = p1 < 20 ? 0 : p2 * p1 / 30;
+            this.layerGridEdge.fillStyle( this.FRAME_COLOR, fillAlpha );
             this.layerGridEdge.fillRectShape( _rect );
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_FILL_COLOR, 1);
+            this.layerGridEdge.lineStyle(this.FRAME_WIDTH, this.FRAME_COLOR, lineAlpha);
             this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
         }
     }
