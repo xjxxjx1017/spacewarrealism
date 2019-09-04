@@ -50,14 +50,14 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     }
 
     public getObjectData( info: any, context: any ): any  {
-        this.renderer1.getObjectData( info, context );
+        info["renderer1"] = this.renderer1.getObjectData( {}, context );
         super.getObjectData( info, context );
         return info;
     }
 
     public constructFromObjectData( info: any, context: any ): any {
         super.constructFromObjectData( info, context );
-        this.renderer1.constructFromObjectData( info, context );
+        this.renderer1.constructFromObjectData( info.renderer1, context );
         return this;
     }
 
