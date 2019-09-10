@@ -1,5 +1,6 @@
 import { Lodash as _, Attackable, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil, Setting } from "../importall";
 import { ActionResolver, ActionMove, Action, eActionType, eActionDurationType } from "../actions/actionmanager";
+import { RenderType } from "../../components/destructable-objects-renderers/rendertexture";
 
 export class Meteorite {
     // TODO: delete dataRect, no longer needed
@@ -34,7 +35,7 @@ export class Meteorite {
         this.dataContainer.setSize(_rect.width, _rect.height);
         this.initMatter();
         // Init ship body entity and events
-        this.entity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, null);
+        this.entity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, RenderType.RENDER_TYPE_BigTextureOthersSolid, 'red_turret');
         this.initAfter();
 
         return this;

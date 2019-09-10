@@ -14,6 +14,8 @@ TODO:
 * Gun renderer
 * Gun edit/save
 * Collide with meteorite
+* force apply when attacked
+* Split objects
 * Dynamic UI
 * 丰富游戏内容:
 	* 陨石 -> 采矿

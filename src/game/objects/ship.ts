@@ -1,4 +1,5 @@
 import { Lodash as _, Attackable, FkSerializable, EventShipBrush, EBrushType, EventGameModeChanged, EGameModeChanged, EventStampType, EStampType, EventHpChanged, EventGameUpdate, EventEntityUpdate, EventAttack, PanelEditShip, PanelInformationUnit, PanelGameState, FkDestructibleObject, FkDstrGridData, FkQuadTree, Gun, FkWithMouse, EventCheckCondition, EnumCheckCondition, GameData, FkUtil, Setting } from "../importall";
+import { RenderType } from "../../components/destructable-objects-renderers/rendertexture";
 
 export class Ship extends FkSerializable {
     // TODO: delete dataRect, no longer needed
@@ -84,7 +85,7 @@ export class Ship extends FkSerializable {
         this.dataContainer.setSize(_rect.width, _rect.height);
         this.initMatter();
         // Init ship body entity and events
-        this.dataShipEntity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, null);
+        this.dataShipEntity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, RenderType.RENDER_TYPE_BigHollowOthersSolid, null);
         // Init guns on ship
         this.dataGunList = [];
         this.initAfter();

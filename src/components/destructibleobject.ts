@@ -1,6 +1,6 @@
 import { FkBaseDestructibleObject, FkBaseDstrGridData } from "./fkbasedestructibleobject";
 import { Lodash as _, EventEntityUpdate, GameData} from "../game/importall";
-import { RenderTexture } from "./destructable-objects-renderers/rendertexture";
+import { RenderTexture, RenderType } from "./destructable-objects-renderers/rendertexture";
 
 export class FkDstrGridData extends FkBaseDstrGridData {
     public dataIsVisible : boolean;
@@ -62,18 +62,20 @@ export class FkDestructibleObject extends FkBaseDestructibleObject<FkDstrGridDat
     }
 
 	public init( _container: Phaser.GameObjects.Container, _posX : number, _posY : number, 
-		_maxWidth : number, _maxHeight : number, _renderTexture : string = null ) {
+		_maxWidth : number, _maxHeight : number, _renderType : RenderType, _renderTexture : string = null ) {
     	super.baseInit( _posX, _posY, _maxWidth, _maxHeight, FkDstrGridData.getStateVisible() );
         this.dataContainer = _container;
         this.renderer1.init( _container, {
             posX: _posX,
             posY: _posY,
-            renderTexture: _renderTexture
+            renderTexture: _renderTexture,
+            renderType: _renderType
         })
         return this;
 	}
 
     public drawDstrObject() {
+        var self = this;
         var renderer = this.renderer1;
         this.renderer1.renderBegin();
         this.draw( ( _rect, _data ) => { renderer.render( _rect, _data ); } );
