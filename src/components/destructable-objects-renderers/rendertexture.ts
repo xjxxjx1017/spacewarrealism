@@ -18,12 +18,10 @@ export class RenderTexture {
     private COLOR_AQUA : number = 0x00fffc;
     private COLOR_GOLD : number = 0xFFD300;
     private COLOR_RED : number = 0xff0000;
-    private COLOR_SADDLE_BROWN : number = 0x965000;
+    private COLOR_SADDLE_BROWN : number = 0xD97400;
     private FRAME_WIDTH_WIRE : number = 1.2;   
     private dataContainer: Phaser.GameObjects.Container;
     private layerGridEdge : Phaser.GameObjects.Graphics;
-    private layerGridMask : Phaser.GameObjects.Graphics;
-    private layerTexture : Phaser.GameObjects.Image;
     private config : RenderTextureConfig;
     private debugDrawCounter : number = 0;
 
@@ -31,14 +29,6 @@ export class RenderTexture {
         if ( this.layerGridEdge ) {
             this.layerGridEdge.destroy();
             this.layerGridEdge = null;
-        }
-        if ( this.layerGridMask ) {
-            this.layerGridMask.destroy();
-            this.layerGridMask = null;
-        }
-        if ( this.layerTexture ) {
-            this.layerTexture.destroy();
-            this.layerTexture = null;
         }
     }
 
@@ -75,17 +65,6 @@ export class RenderTexture {
                 x: this.config.posX,
                 y: this.config.posY
             });
-            this.layerTexture = GameData.inst.make.image({
-                x: this.config.posX,
-                y: this.config.posY,
-                texture: this.config.renderTexture 
-            });
-            this.layerGridMask = GameData.inst.make.graphics({
-                x: this.config.posX,
-                y: this.config.posY
-            });
-            this.layerTexture.setMask( this.layerGridMask.createGeometryMask() );
-            this.dataContainer.add( this.layerTexture );
             this.dataContainer.add( this.layerGridEdge );
         }
         else {
@@ -99,8 +78,6 @@ export class RenderTexture {
 
     public renderBegin() {
         this.layerGridEdge.clear();
-        if ( this.layerGridMask )
-            this.layerGridMask.clear();
         this.debugDrawCounter = 0;
     }
 
@@ -145,20 +122,30 @@ export class RenderTexture {
         this.debugDrawCounter++;
         var p1 = _rect.width;
         var p2 = 0.6;
-        var alpha = p1 > 20 ? 1 : p1 / 20;
+        var ww = 3;
+        var www = 5;
+        var alpha = p1 > ww ? 1 : p1 / ww;
         var fillAlpha = (1.1 - alpha) * p2;
-        if( p1 < 20 ){
-            var lineAlpha = p1 < 20 ? 0 : p2 * p1 / 30;
-            this.layerGridEdge.fillStyle( this.COLOR_SADDLE_BROWN, fillAlpha );
-            this.layerGridEdge.fillRectShape( _rect );
-            this.layerGridEdge.lineStyle(this.FRAME_WIDTH_WIRE, this.COLOR_SADDLE_BROWN, lineAlpha);
-            this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
+        var lineAlpha = p1 < ww ? 0 : p2 * p1 / www;
+        this.layerGridEdge.fillStyle( this.COLOR_SADDLE_BROWN, fillAlpha );
+        this.layerGridEdge.fillRectShape( _rect );
+        
+        this.layerGridEdge.lineStyle(this.FRAME_WIDTH_WIRE, this.COLOR_SADDLE_BROWN, lineAlpha);
+        this.layerGridEdge.beginPath();
+        var sum = 0;
+        while( sum <= _rect.width ){
+            var w = Math.random() * 3 + 5;
+            if ( sum + w > _rect.width )
+                break;
+            this.layerGridEdge.moveTo( _rect.x + sum, _rect.y );
+            this.layerGridEdge.lineTo( _rect.x + sum + w, _rect.y + _rect.height );
+            sum += w;
         }
-        else if ( this.layerGridMask ) {
-            //### TODO
-            this.layerGridMask.fillStyle(this.COLOR_SADDLE_BROWN, 1 );
-            this.layerGridMask.fillRect( _rect.x, _rect.y, _rect.width, _rect.height );
-        }
+        this.layerGridEdge.moveTo( _rect.x + sum, _rect.y );
+        this.layerGridEdge.lineTo( _rect.x + _rect.width, _rect.y + _rect.height );
+        this.layerGridEdge.closePath();
+        this.layerGridEdge.strokePath();
+        this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
     }
 
     private renderFrameDebug( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {

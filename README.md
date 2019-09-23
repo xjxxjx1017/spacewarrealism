@@ -8,14 +8,13 @@ Current progress:
 ![Progress](/assets/spec/2019-09-02.19-17-57.png "Progress")
 
 TODO:
-* Metro renderer (fake wire texture)
+* Split objects
 * Object list and edit buttons (Vue)
 * Metro edit/save
 * Gun renderer
 * Gun edit/save
 * Collide with meteorite
 * force apply when attacked
-* Split objects
 * Dynamic UI
 * 丰富游戏内容:
 	* 陨石 -> 采矿

@@ -35,7 +35,7 @@ export class Meteorite {
         this.dataContainer.setSize(_rect.width, _rect.height);
         this.initMatter();
         // Init ship body entity and events
-        this.entity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, RenderType.RENDER_TYPE_BigTextureOthersSolid, 'red_turret');
+        this.entity = new FkDestructibleObject().init(this.dataContainer, -_rect.width / 2, -_rect.height / 2, _rect.width, _rect.height, RenderType.RENDER_TYPE_BigTextureOthersSolid, 'space');
         this.initAfter();
 
         return this;
@@ -65,6 +65,7 @@ export class Meteorite {
                 evt.onKill();
             }
         })
+
         // Show Object
         this.entity.drawDstrObject();
         this.initAction();
