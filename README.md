@@ -8,7 +8,7 @@ Current progress:
 ![Progress](/assets/spec/2019-09-02.19-17-57.png "Progress")
 
 TODO:
-* Rotate blocks bug
+* Render color by Mark, set Mark by checking splits
 * Split objects
 * Object list and edit buttons (Vue)
 * Metro edit/save

@@ -58,7 +58,7 @@ export class Meteorite {
             if (evt.groupId == self.groupId)
                 return;
             var p = new Phaser.Geom.Point();
-            this.dataContainer.getLocalTransformMatrix().applyInverse(evt.p.x, evt.p.y, p);
+            this.dataContainer.getLocalTransformMatrix().rotate(this.dataContainer.rotation).applyInverse(evt.p.x, evt.p.y, p);
             var collide = self.entity.collisionWithPoint(p, FkDstrGridData.getStateVisible());
             if (collide) {
                 Attackable.attackedByPoint(self.entity, function( src, str ){ self.afterAttacked( src, str ); }, p, evt.strength);
