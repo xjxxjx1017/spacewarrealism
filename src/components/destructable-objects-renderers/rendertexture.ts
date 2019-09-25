@@ -20,6 +20,7 @@ export class RenderTexture {
     private COLOR_RED : number = 0xff0000;
     private COLOR_SADDLE_BROWN : number = 0xD97400;
     private FRAME_WIDTH_WIRE : number = 1.2;   
+    private FRAME_WIDTH_WIRE_WIDE : number = 1.5;   
     private dataContainer: Phaser.GameObjects.Container;
     private layerGridEdge : Phaser.GameObjects.Graphics;
     private config : RenderTextureConfig;
@@ -117,6 +118,19 @@ export class RenderTexture {
     }
 
     private renderBigTextureOthersSolid( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {
+        if ( _data.dataIsVisible ) {
+            this.debugDrawCounter++;
+            var p1 = _rect.width;
+            var p2 = 0.6;
+            var alpha = p1 > 20 ? 1 : p1 / 20;
+            var fillAlpha = (1.1 - alpha) * p2;
+            var lineAlpha = p1 < 20 ? 0 : p2 * p1 / 30;
+            this.layerGridEdge.fillStyle( this.COLOR_SADDLE_BROWN, fillAlpha );
+            this.layerGridEdge.fillRectShape( _rect );
+            this.layerGridEdge.lineStyle(this.FRAME_WIDTH_WIRE_WIDE, this.COLOR_SADDLE_BROWN, lineAlpha);
+            this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
+        }
+        /*
         if ( !_data.dataIsVisible )
             return;
         this.debugDrawCounter++;
@@ -130,7 +144,7 @@ export class RenderTexture {
         this.layerGridEdge.fillStyle( this.COLOR_SADDLE_BROWN, fillAlpha );
         this.layerGridEdge.fillRectShape( _rect );
         
-        this.layerGridEdge.lineStyle(this.FRAME_WIDTH_WIRE, this.COLOR_SADDLE_BROWN, lineAlpha);
+        this.layerGridEdge.lineStyle(this.FRAME_WIDTH_WIRE_WIDE, this.COLOR_SADDLE_BROWN, lineAlpha);
         this.layerGridEdge.beginPath();
         var sum = 0;
         while( sum <= _rect.width ){
@@ -145,7 +159,7 @@ export class RenderTexture {
         this.layerGridEdge.lineTo( _rect.x + _rect.width, _rect.y + _rect.height );
         this.layerGridEdge.closePath();
         this.layerGridEdge.strokePath();
-        this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );
+        this.layerGridEdge.strokeRect( _rect.x, _rect.y, _rect.width, _rect.height );*/
     }
 
     private renderFrameDebug( _rect : Phaser.Geom.Rectangle, _data : FkDstrGridData ) : void {

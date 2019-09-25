@@ -138,7 +138,7 @@ export class Ship extends FkSerializable {
             this.dataContainer.getLocalTransformMatrix().applyInverse(evt.p.x, evt.p.y, p);
             var collide = self.dataShipEntity.collisionWithPoint(p, FkDstrGridData.getStateVisible());
             if (collide) {
-                Attackable.attackedByPoint( self.dataShipEntity, function(){ self.afterAttacked(); }, p, evt.strength);
+                Attackable.attackedByPoint( self.dataShipEntity, function( src, str ){ self.afterAttacked( src, str ); }, p, evt.strength);
                 evt.onKill();
             }
         })
@@ -222,7 +222,7 @@ export class Ship extends FkSerializable {
         });
     }
 
-    public afterAttacked() {
+    public afterAttacked( src, str ) {
         var self = this;
         self.dataShipEntity.drawDstrObject();
         var toRemove = [];

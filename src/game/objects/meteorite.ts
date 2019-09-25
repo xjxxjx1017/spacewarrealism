@@ -43,10 +43,10 @@ export class Meteorite {
 
     private initMatter() {
         var self = this;
-        GameData.inst.matter.add.gameObject(this.dataContainer, { shape: { type: 'circle', radius: 10 } });
+        GameData.inst.matter.add.gameObject(this.dataContainer, { shape: { type: 'circle', radius: 5 } });
         
-        this.dataContainer.setFrictionAir(0.00);
-        this.dataContainer.setMass(30);
+        this.dataContainer.setFrictionAir(0.01);
+        this.dataContainer.setMass(3000);
         this.dataContainer.setCollisionCategory( GameData.COLLIDE_SHIP );
         this.dataContainer.setCollidesWith( [1] );
     }
@@ -61,7 +61,7 @@ export class Meteorite {
             this.dataContainer.getLocalTransformMatrix().applyInverse(evt.p.x, evt.p.y, p);
             var collide = self.entity.collisionWithPoint(p, FkDstrGridData.getStateVisible());
             if (collide) {
-                Attackable.attackedByPoint(self.entity, function(){ self.afterAttacked(); }, p, evt.strength);
+                Attackable.attackedByPoint(self.entity, function( src, str ){ self.afterAttacked( src, str ); }, p, evt.strength);
                 evt.onKill();
             }
         })
@@ -82,8 +82,10 @@ export class Meteorite {
         }) * 100);
     }
 
-    private afterAttacked() {
+    private afterAttacked( src:Phaser.Geom.Point, str:number ) {
         var self = this;
+        var l = Math.sqrt( src.x * src.x + src.y * src.y ) ;
+        self.dataContainer.applyForceFrom(  src, { x: src.x / l * 0.01, y: src.y / l * 0.01 } );
         self.entity.drawDstrObject();
     }
 

@@ -67,11 +67,8 @@ export class GameData {
             self.dataShipList.push( ship );
         })
         var meteroData = [
-            new Phaser.Geom.Rectangle( 715, 115, 50, 50 ),
-            new Phaser.Geom.Rectangle( 715, 315, 50, 50 ),
-            new Phaser.Geom.Rectangle( 715, 365, 50, 50 ),
-            new Phaser.Geom.Rectangle( 715, 215, 50, 50 ),
-            new Phaser.Geom.Rectangle( 715, 65, 50, 50 ) ];
+            new Phaser.Geom.Rectangle( 715, 415, 50, 250 ),
+            new Phaser.Geom.Rectangle( 715, 165, 50, 150 ) ];
         this.meteroList = [];
         var groupId = 1000;
         _.forEach( meteroData, function(d){
@@ -82,7 +79,7 @@ export class GameData {
                 type: eActionType.ACTION_MOVE,
                 durType: eActionDurationType.SUSTAIN,
                 durTime: 5,
-                vec1: {x: -0.1, y: 0}
+                vec1: {x: -50, y: 0}
             } );
         })
         // Initialize UI - mouse tracker
