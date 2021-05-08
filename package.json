@@ -26,7 +26,7 @@
   "homepage": "https://github.com/xjxxjx1017/spacewarrealism#readme",
   "dependencies": {
     "element-ui": "^2.6.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "phaser": "^3.19.0"
   },
   "devDependencies": {
